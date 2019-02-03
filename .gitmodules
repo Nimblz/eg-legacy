@@ -1,0 +1,3 @@
+[submodule "modules/PizzaAlpaca"]
+	path = modules/PizzaAlpaca
+	url = https://github.com/Nimblz/PizzaAlpaca.git
