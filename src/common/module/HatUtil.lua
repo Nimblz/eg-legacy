@@ -5,7 +5,7 @@ local HatUtil = {}
 
 HatUtil.Hats = {}
 
-for k,v in pairs(HatsBin:GetChildren()) do
+for _,v in pairs(HatsBin:GetChildren()) do
 	if v:IsA"BasePart" then
 		table.insert(HatUtil.Hats,v)
 	end
