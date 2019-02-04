@@ -1,3 +1,5 @@
+-- Todo: Refactor E V E R Y T H A N G
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Common = ReplicatedStorage:WaitForChild("common")
