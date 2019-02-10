@@ -1,0 +1,38 @@
+{
+  "name": "eg",
+  "tree": {
+    "$className": "DataModel",
+
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "$path": "src/server"
+    },
+
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "common": {
+        "$path": "src/common"
+      },
+      "lib": {
+        "$path": "lib"
+      }
+    },
+
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "$path": "src/client"
+      }
+    },
+    "HttpService": {
+      "$className": "HttpService",
+      "$properties": {
+        "HttpEnabled": {
+          "Type": "Bool",
+          "Value": true
+        }
+      }
+    }
+  }
+}
