@@ -3,62 +3,63 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
-local Common = ReplicatedStorage:WaitForChild("common")
-local Object = Common:WaitForChild("object")
+local common = ReplicatedStorage:WaitForChild("common")
+local object = common:WaitForChild("object")
+local util = common:WaitForChild("util")
 
-local LegAnimator = require(Object:WaitForChild("LegAnimator"))
+local LegAnimator = require(object:WaitForChild("LegAnimatorObject"))
 
 local EgLegAnimator = {}
 
-local Animators = {}
+local animators = {}
 
-local function AttachNewAnimator(rig)
+local function attachNewAnimator(rig)
 	print("Attached to:", rig)
 
-	local Humanoid = rig:WaitForChild("Humanoid")
+	local humanoid = rig:WaitForChild("Humanoid")
+	local animator = LegAnimator.new(rig)
 
-	local Animator = LegAnimator.new(rig)
+	animators[rig] = animator
 
-	Animators[rig] = Animator
-
-	Humanoid.Died:Connect(function()
-		Animators[rig] = nil
-		Animator:Destroy()
+	humanoid.Died:Connect(function()
+		animators[rig] = nil
 	end)
 
-	return Animator
+	return animator
 end
 
-local function BindAttacher(player)
+local function bindAttacher(player)
 	player.CharacterAdded:Connect(function(char)
-		AttachNewAnimator(char)
+		attachNewAnimator(char)
 	end)
 end
 
-local function AttachAnimatorsToAllPlayers()
+local function attachAnimatorsToAllPlayers()
 	for _,player in pairs(Players:GetPlayers()) do
-		local Rig = player.Character
-		if Rig then
-			AttachNewAnimator(Rig)
+		local rig = player.Character
+		if rig then
+			attachNewAnimator(rig)
 		end
-		BindAttacher(player)
+		bindAttacher(player)
 	end
 end
 
-function EgLegAnimator:RenderStep(elapsed,dt)
+function EgLegAnimator:renderStep(elapsed,dt)
 
-	for _,Animator in pairs(Animators) do
-		Animator:Step(elapsed,dt)
+	for _,animator in pairs(animators) do
+		animator:step(elapsed,dt)
 	end
 
 end
 
-function EgLegAnimator:Init()
-	AttachAnimatorsToAllPlayers()
+function EgLegAnimator:init()
+	attachAnimatorsToAllPlayers()
 
 	Players.PlayerAdded:Connect(function(player)
-		BindAttacher(player)
+		bindAttacher(player)
 	end)
+
+	game:GetService("RunService").RenderStepped:Connect(function() self:renderStep() end)
 end
 
 return EgLegAnimator

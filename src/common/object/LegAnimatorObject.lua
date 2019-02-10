@@ -2,21 +2,20 @@
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Common = ReplicatedStorage:WaitForChild("common")
-local Object = Common:WaitForChild("object")
-local Module = Common:WaitForChild("module")
+local common = ReplicatedStorage:WaitForChild("common")
+local object = common:WaitForChild("object")
+local util = common:WaitForChild("util")
 
-local IKUtil = require(Module:WaitForChild("IKUtil"))
-local Leg = require(Object:WaitForChild("Leg"))
+local IKUtil = require(util:WaitForChild("IKUtil"))
+local Leg = require(object:WaitForChild("Leg"))
 
 local STEP_TIME = 0.2 -- Time in secs
-
 local DOWN = Vector3.new(0,-1,0)
 
 local LegAnimator = {}
 
 -- TODO: Move this somewhere else.
-local function BezierSolve(V1,V2,V3,a)
+local function bezierSolve(V1,V2,V3,a)
 	return V1:lerp(V2,a):lerp(V3,a)
 end
 
@@ -48,16 +47,16 @@ function LegAnimator.new(rig)
 
 	}, {__index = LegAnimator})
 
-	self.Legs.Right:SetOtherLeg(self.Legs.Left)
-	self.Legs.Left:SetOtherLeg(self.Legs.Right)
+	self.Legs.Right:setOtherLeg(self.Legs.Left)
+	self.Legs.Left:setOtherLeg(self.Legs.Right)
 
 	return self
 end
 
-function LegAnimator:Destroy()
+function LegAnimator:destroy()
 end
 
-function LegAnimator:WalkStep(XZVel)
+function LegAnimator:walkStep(XZVel)
 
 	local LeftLeg = self.Legs.Left
 	local RightLeg = self.Legs.Right
@@ -100,7 +99,7 @@ function LegAnimator:WalkStep(XZVel)
 	end
 end
 
-function LegAnimator:Step(et,dt)
+function LegAnimator:step(et,dt)
 	-- Do the stuff!
 
 	local LeftLeg = self.Legs.Left
@@ -116,13 +115,13 @@ function LegAnimator:Step(et,dt)
 	local IsGrounded = (Humanoid.FloorMaterial ~= Enum.Material.Air)
 
 	if IsGrounded then
-		self:WalkStep(XZVel)
+		self:walkStep(XZVel)
 		-- Tween feet to desired positions
 		local LeftLegT = tick() - LeftLeg.StepStartTick
 		local RightLegT = tick() - RightLeg.StepStartTick
 		if LeftLegT < STEP_TIME then
 			local MidPoint = LeftLeg.StepStart:Lerp(LeftLeg.FootTarget,0.5)
-			LeftLeg.FootPos = BezierSolve(LeftLeg.StepStart,MidPoint + Vector3.new(0,4,0),LeftLeg.FootTarget,LeftLegT/STEP_TIME)
+			LeftLeg.FootPos = bezierSolve(LeftLeg.StepStart,MidPoint + Vector3.new(0,4,0),LeftLeg.FootTarget,LeftLegT/STEP_TIME)
 		else
 			LeftLeg.FootPos = LeftLeg.FootTarget
 			LeftLeg.Planted = true
@@ -130,7 +129,7 @@ function LegAnimator:Step(et,dt)
 
 		if RightLegT < STEP_TIME then
 			local MidPoint = RightLeg.StepStart:Lerp(RightLeg.FootTarget,0.5)
-			RightLeg.FootPos = BezierSolve(RightLeg.StepStart,MidPoint + Vector3.new(0,4,0),RightLeg.FootTarget,RightLegT/STEP_TIME)
+			RightLeg.FootPos = bezierSolve(RightLeg.StepStart,MidPoint + Vector3.new(0,4,0),RightLeg.FootTarget,RightLegT/STEP_TIME)
 		else
 			RightLeg.FootPos = RightLeg.FootTarget
 		end
@@ -146,13 +145,13 @@ function LegAnimator:Step(et,dt)
 	end
 
 	local LeftHipCF = Rig.Torso.CFrame * LeftLeg.OrigHipC0
-	local LeftHipPlane, LeftHipAngle, LeftKneeAngle = IKUtil.SolveIK(LeftHipCF, LeftLeg.FootPos, 1.4, 1.4)
+	local LeftHipPlane, LeftHipAngle, LeftKneeAngle = IKUtil.solveIK(LeftHipCF, LeftLeg.FootPos, 1.4, 1.4)
 
 	LeftLeg.Hip.C0 = Rig.Torso.CFrame:toObjectSpace(LeftHipPlane) * CFrame.Angles(LeftHipAngle, 0, 0)
 	LeftLeg.Knee.C0 = LeftLeg.OrigKneeC0 * CFrame.Angles(LeftKneeAngle, 0, 0)
 
 	local RightHipCF = Rig.Torso.CFrame * RightLeg.OrigHipC0
-	local RightHipPlane, RightHipAngle, RightKneeAngle = IKUtil.SolveIK(RightHipCF, RightLeg.FootPos, 1.4, 1.4)
+	local RightHipPlane, RightHipAngle, RightKneeAngle = IKUtil.solveIK(RightHipCF, RightLeg.FootPos, 1.4, 1.4)
 
 	RightLeg.Hip.C0 = Rig.Torso.CFrame:toObjectSpace(RightHipPlane) * CFrame.Angles(RightHipAngle, 0, 0)
 	RightLeg.Knee.C0 = RightLeg.OrigKneeC0 * CFrame.Angles(RightKneeAngle, 0, 0)

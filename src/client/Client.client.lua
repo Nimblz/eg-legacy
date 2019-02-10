@@ -1,24 +1,32 @@
-local PlayerScripts = script.Parent
+local Players = game:GetService("Players")
+local PlayerScripts = Players.LocalPlayer:WaitForChild("PlayerScripts")
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Common = ReplicatedStorage:WaitForChild("common")
-local Lib = ReplicatedStorage:WaitForChild("lib")
+local common = ReplicatedStorage:WaitForChild("common")
+local commonUtil = common:WaitForChild("util")
 
-local PizzaAlpaca = Lib:WaitForChild("pizzaalpaca")
-local PizzaAlpaca_Object = PizzaAlpaca:WaitForChild("object")
-local PizzaAlpaca_Module = PizzaAlpaca:WaitForChild("module")
+local moduleBin = PlayerScripts:WaitForChild("module")
 
-local PRINT_DEBUG = true
+local FuncUtil = require(commonUtil:WaitForChild("FuncUtil"))
 
--- Create new modulemanager with debug prints on
-local ModuleManager = require(PizzaAlpaca_Object:WaitForChild("ModuleManager")).new(PRINT_DEBUG)
+local Client = {}
+Client.modules = {
+	EgLegAnimator = require(moduleBin:WaitForChild("EgLegAnimator")),
+	Portals = require(moduleBin:WaitForChild("Portals")),
+}
 
--- Adds all child modules in an instance to the loading queue. This is not recursive.
-ModuleManager:AddModuleDirectory(PizzaAlpaca_Module)
-ModuleManager:AddModuleDirectory(PlayerScripts:WaitForChild("module"))
-ModuleManager:AddModuleDirectory(Common:WaitForChild("module"))
+function Client:getModule(name)
+	assert(self.modules[name],"No such module: "..name)
+	return self.modules[name]
+end
 
--- After all modules are added, load them, init them, then start them.
-ModuleManager:LoadAllModules()
-ModuleManager:InitAllModules()
-ModuleManager:StartAllModules()
+function Client:load()
+	-- init all modules
+	FuncUtil.callOnAll(Client.modules,"init")
+	-- start all modules
+	FuncUtil.callOnAll(Client.modules,"start",Client)
+end
+
+
+Client:load()

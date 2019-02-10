@@ -11,7 +11,7 @@ for _,v in pairs(HatsBin:GetChildren()) do
 	end
 end
 
-function HatUtil.EquipHatToPlayer(player,hat)
+function HatUtil.equipHatToPlayer(player,hat)
 	assert(hat and hat:IsA"BasePart" and hat:FindFirstChild("HatAttachment"), "Invalid hat.")
 
 	local Character = player.Character

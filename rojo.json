@@ -13,10 +13,6 @@
     "common": {
       "path": "src/common",
       "target": "ReplicatedStorage.common"
-    },
-    "pizzaalpaca": {
-      "path": "modules/pizzaalpaca/lib",
-      "target": "ReplicatedStorage.lib.pizzaalpaca"
     }
   }
 }

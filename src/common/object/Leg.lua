@@ -19,7 +19,7 @@ function Leg.new(rig,hip,knee)
 	},{__index = Leg})
 end
 
-function Leg:SetOtherLeg(otherleg)
+function Leg:setOtherLeg(otherleg)
 	self.OtherLeg = otherleg
 
 	return self
