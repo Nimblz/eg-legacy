@@ -5,7 +5,6 @@ local Players = game:GetService("Players")
 
 local common = ReplicatedStorage:WaitForChild("common")
 local object = common:WaitForChild("object")
-local util = common:WaitForChild("util")
 
 local LegAnimator = require(object:WaitForChild("LegAnimatorObject"))
 

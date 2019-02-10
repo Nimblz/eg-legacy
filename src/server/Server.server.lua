@@ -1,23 +1,13 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local common = ReplicatedStorage:WaitForChild("common")
-local object = common:WaitForChild("object")
 local util = common:WaitForChild("util")
 local remote = ReplicatedStorage:WaitForChild("remote")
 
-local requestReloadEvent = remote:WaitForChild("RequestReloadCharacter")
 local requestHatEvent = remote:WaitForChild("RequestHat")
 local requestColorEvent = remote:WaitForChild("RequestColor")
 
 local HatUtil = require(util:WaitForChild("HatUtil"))
-
-requestReloadEvent.OnServerEvent:Connect(function(player)
-	local H = player.Character:FindFirstChild("Humanoid")
-
-	if H then
-		H.Health = 0
-	end
-end)
 
 requestHatEvent.OnServerEvent:Connect(function(player,hat)
 	local success, msg = pcall(HatUtil.EquipHatToPlayer, player, hat)
