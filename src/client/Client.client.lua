@@ -11,9 +11,11 @@ local moduleBin = PlayerScripts:WaitForChild("module")
 local FuncUtil = require(commonUtil:WaitForChild("FuncUtil"))
 
 local Client = {}
+
 Client.modules = {
 	EgLegAnimator = require(moduleBin:WaitForChild("EgLegAnimator")),
 	Portals = require(moduleBin:WaitForChild("Portals")),
+	Cannons = require(moduleBin:WaitForChild("Cannons")),
 }
 
 function Client:getModule(name)
