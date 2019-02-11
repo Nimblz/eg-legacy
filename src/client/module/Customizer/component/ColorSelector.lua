@@ -1,8 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
 
 local Remote = ReplicatedStorage:WaitForChild("remote")
-local Common = ReplicatedStorage:WaitForChild("common")
 local Lib = ReplicatedStorage:WaitForChild("lib")
 
 local RequestColor = Remote:WaitForChild("RequestColor")
@@ -10,14 +8,14 @@ local RequestColor = Remote:WaitForChild("RequestColor")
 local Roact = require(Lib:WaitForChild("Roact"))
 
 return function(props)
-	local Colors = {}
-	
+    local Colors = {}
+
 	Colors.Layout = Roact.createElement("UIGridLayout", {
 		CellPadding = UDim2.new(0,5,0,5),
 		CellSize = UDim2.new(0,40,0,40),
 		SortOrder = Enum.SortOrder.LayoutOrder
 	})
-	
+
 	for idx,color in pairs(props.Colors) do
 		Colors[idx] = Roact.createElement("TextButton", {
 			BackgroundColor3 = color,
@@ -29,7 +27,7 @@ return function(props)
 			end,
 		})
 	end
-	
+
 	return Roact.createElement("Frame", {
 		Visible = props.Enabled,
 		Size = UDim2.new(0,45*12,0,math.ceil(#props.Colors/12)),
