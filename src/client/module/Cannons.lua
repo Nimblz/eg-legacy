@@ -32,9 +32,11 @@ end
 local function cannonShoot(model)
 
     local cannon = model:WaitForChild("Cannon")
+    local highPointPart = model:WaitForChild("High")
+    local goalPart = model:WaitForChild("Goal")
 
-    local highPoint = model:WaitForChild("High").Position
-    local goal = model:WaitForChild("Goal").Position
+    local highPoint = highPointPart.Position
+    local goal = goalPart.Position
 
     local steps = 30
 
@@ -45,6 +47,9 @@ local function cannonShoot(model)
 
         if character and character.PrimaryPart then
             local rootPart = character.PrimaryPart
+            local humanoid = character.Humanoid
+
+            humanoid:SetState(Enum.HumanoidStateType.Sitting)
 
             local bodyPosition = Instance.new("BodyPosition",rootPart)
             bodyPosition.Position = cannon.Position
@@ -68,9 +73,14 @@ local function cannonShoot(model)
 end
 
 local function createCannon(model)
-    local cannon = model:WaitForChild("Cannon")
-
     local debounce = false
+
+    local cannon = model:WaitForChild("Cannon")
+    local highPointPart = model:WaitForChild("High")
+    local goalPart = model:WaitForChild("Goal")
+
+    highPointPart.Transparency = 1
+    goalPart.Transparency = 1
 
     cannon.Touched:Connect(function(hit)
         if not debounce then

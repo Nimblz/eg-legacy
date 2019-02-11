@@ -15,6 +15,7 @@ Server.modules = {
 	TipJarProducts = require(moduleBin:WaitForChild("TipJarProducts")),
 	TimeBadges = require(moduleBin:WaitForChild("TimeBadges")),
 	CustomizerRemotes = require(moduleBin:WaitForChild("CustomizerRemotes")),
+	CharacterHandler = require(moduleBin:WaitForChild("CharacterHandler")),
 }
 
 function Server:getModule(name)

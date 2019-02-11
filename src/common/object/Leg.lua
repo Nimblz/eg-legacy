@@ -11,6 +11,9 @@ function Leg.new(rig,hip,knee)
 		FootTarget = Vector3.new(0,0,0),
 		StepStart = Vector3.new(0,0,0),
 		StepStartTick = tick(),
+		StepTime = 0.2,
+
+		Planted = true,
 
 		OtherLeg = nil,
 
