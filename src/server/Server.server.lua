@@ -1,32 +1,33 @@
+local ServerScriptService = game:GetService("ServerScriptService")
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local common = ReplicatedStorage:WaitForChild("common")
-local util = common:WaitForChild("util")
-local remote = ReplicatedStorage:WaitForChild("remote")
+local commonUtil = common:WaitForChild("util")
 
-local requestHatEvent = remote:WaitForChild("RequestHat")
-local requestColorEvent = remote:WaitForChild("RequestColor")
+local moduleBin = ServerScriptService:WaitForChild("module")
 
-local HatUtil = require(util:WaitForChild("HatUtil"))
+local FuncUtil = require(commonUtil:WaitForChild("FuncUtil"))
 
-requestHatEvent.OnServerEvent:Connect(function(player,hat)
-	local success, msg = pcall(HatUtil.equipHatToPlayer, player, hat)
+local Server = {}
 
-	if not success then
-		warn(msg)
-	end
-end)
+Server.modules = {
+	TipJarProducts = require(moduleBin:WaitForChild("TipJarProducts")),
+	TimeBadges = require(moduleBin:WaitForChild("TimeBadges")),
+	CustomizerRemotes = require(moduleBin:WaitForChild("CustomizerRemotes")),
+}
 
-requestColorEvent.OnServerEvent:Connect(function(player,color)
-	assert(color and typeof(color) == "Color3")
+function Server:getModule(name)
+	assert(self.modules[name],"No such module: "..name)
+	return self.modules[name]
+end
 
-	local Character = player.Character
+function Server:load()
+	-- init all modules
+	FuncUtil.callOnAll(Server.modules,"init")
+	-- start all modules
+	FuncUtil.callOnAll(Server.modules,"start",Server)
+end
 
-	if Character then
-		for _,v in pairs(Character:GetChildren()) do
-			if v:IsA("BasePart") then
-				v.Color = color
-			end
-		end
-	end
-end)
+
+Server:load()

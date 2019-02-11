@@ -15,3 +15,5 @@ supportEvent.OnServerEvent:connect(function(player,id)
 
 	MarketplaceService:PromptProductPurchase(player,id or 467033474)
 end)
+
+return {}

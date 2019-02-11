@@ -32,15 +32,19 @@ Players.PlayerRemoving:Connect(function(player)
     joinTimes[player] = nil
 end)
 
-while true do
+spawn(function()
+    while true do
 
-    for _,player in pairs(Players:GetPlayers()) do
-        for timeReq, badgeId in pairs(badges) do
-            if tick() - joinTimes[player] > timeReq then
-                awardBadge(player,badgeId)
+        for _,player in pairs(Players:GetPlayers()) do
+            for timeReq, badgeId in pairs(badges) do
+                if tick() - joinTimes[player] > timeReq then
+                    awardBadge(player,badgeId)
+                end
             end
         end
-    end
 
-    wait(1)
-end
+        wait(1)
+    end
+end)
+
+return {}
