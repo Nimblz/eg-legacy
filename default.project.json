@@ -12,9 +12,6 @@
       "$className": "ReplicatedStorage",
       "common": {
         "$path": "src/common"
-      },
-      "lib": {
-        "$path": "lib"
       }
     },
 
