@@ -4,7 +4,7 @@ local LocalPlayer = Players.LocalPlayer
 
 local Portals = {}
 
-local World = Workspace:WaitForChild("World")
+local World = Workspace:WaitForChild("staticworld")
 local PortalsBin = World:WaitForChild("Portals")
 local Portals1 = PortalsBin:WaitForChild("Portals1")
 local Portals2 = PortalsBin:WaitForChild("Portals2")
@@ -52,7 +52,7 @@ local function CreatePortal(part1,part2)
 	end)
 end
 
-function Portals.Init()
+function Portals:init()
     for _,awayPortal in pairs(Portals2:GetChildren()) do
         local HomePortal = Portals1:FindFirstChild(awayPortal.Name)
 
