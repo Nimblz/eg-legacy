@@ -37,7 +37,9 @@ local function attachAnimatorsToAllPlayers()
 	for _,player in pairs(Players:GetPlayers()) do
 		local rig = player.Character
 		if rig then
-			attachNewAnimator(rig)
+			spawn(function()
+				attachNewAnimator(rig)
+			end)
 		end
 		bindAttacher(player)
 	end
