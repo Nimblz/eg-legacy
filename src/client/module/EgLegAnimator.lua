@@ -60,7 +60,7 @@ function EgLegAnimator:init()
 		bindAttacher(player)
 	end)
 
-	game:GetService("RunService").RenderStepped:Connect(function() self:renderStep() end)
+	game:GetService("RunService"):BindToRenderStep("egleg",Enum.RenderPriority.Last.Value,function() self:renderStep() end)
 end
 
 return EgLegAnimator

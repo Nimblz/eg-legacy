@@ -94,7 +94,7 @@ function LegAnimator:walkStep(XZVel)
 	local AvgAngle = XZVel.Unit:Dot((AvgFootPosition - (Root.Position)).Unit)
 	local AvgDist = (AvgFootPosition - Rig.PrimaryPart.Position).Magnitude
 
-	print(AvgAngle)
+	
 	if (XZVel.Magnitude < 3) then
 		if (LeftLeg.FootTarget - LeftRayPos).Magnitude > 0.5 then
 			setupFootTween(LeftLeg,LeftRayPos,0.2*(Humanoid.HipHeight/5))
@@ -115,27 +115,10 @@ function LegAnimator:walkStep(XZVel)
 			self.LeftForward = false
 		end
 	end
-
-	-- if LeftFootAngle < 0 or (RightRayPos-RightLeg.FootTarget).Magnitude > 10 or (XZVel.Magnitude < 0.05 and (RightRayPos-RightLeg.FootTarget).Magnitude > 0.5) then
-	-- 	self.LeftForward = false
-	-- 	RightLeg.StepStartTick = tick()
-	-- 	RightLeg.StepStart = RightLeg.FootPos
-	-- 	RightLeg.FootTarget = RightRayPos
-	-- 	LeftLeg.Planted = false
-	-- end
-
-	-- if RightFootAngle < 0 or (LeftRayPos-LeftLeg.FootTarget).Magnitude > 10 or (XZVel.Magnitude < 0.05 and (LeftRayPos-LeftLeg.FootTarget).Magnitude > 0.5)  then
-	-- 	self.LeftForward = true
-	-- 	LeftLeg.StepStartTick = tick()
-	-- 	LeftLeg.StepStart = LeftLeg.FootPos
-	-- 	LeftLeg.FootTarget = LeftRayPos
-	-- 	LeftLeg.Planted = false
-	-- end
 end
 
 function LegAnimator:step(et,dt)
 	-- Do the stuff!
-
 	local LeftLeg = self.Legs.Left
 	local RightLeg = self.Legs.Right
 

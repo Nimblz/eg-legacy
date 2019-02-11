@@ -4,24 +4,65 @@ local WALK_SPEED = 16
 
 local RigUtil = {}
 
-local function newValue(type,value,name,parent)
+local scalables = {
+    Attachment = {
+        scaledProps = {
+            Position = "Vector3",
+        },
+    },
+    BasePart = {
+        scaledProps = {
+            Size = "Vector3",
+        },
+    },
+    SpecialMesh = {
+        scaledProps = {
+            Scale = "Vector3",
+        },
+    },
+    Humanoid = {
+        scaledProps = {
+            WalkSpeed = "Number",
+            HipHeight = "Number",
+        },
+        scaleFunc = (function(obj,prop,orig,newScale)
+            if prop == "WalkSpeed" then
+                return orig
+            end
+            return orig*newScale
+        end),
+    }
+}
+
+local function newValue(type,value,name)
     local valueobj = Instance.new(type.."Value")
-    valueobj.Name = name or ""
+    valueobj.Name = name or "Original_"..type
     valueobj.Value = value
-    valueobj.Parent = parent
     return valueobj
 end
 
-function RigUtil.configureRig(rig)
+local function forEachScalable(rig, func)
     for _,obj in pairs(rig:GetDescendants()) do
-        if obj:IsA("Attachment") then
-            newValue("Vector3",obj.Position,"OriginalPosition",obj)
-        end
-        if obj:IsA("BasePart") then
-            newValue("Vector3",obj.Size,"OriginalSize",obj)
+        for type,typeStruct in pairs(scalables) do
+            if obj:IsA(type) then
+                for propName,valueType in pairs(typeStruct.scaledProps) do
+                    func(obj,propName,valueType,typeStruct)
+                end
+            end
         end
     end
+end
 
+function RigUtil.configureRig(rig)
+
+    -- create original property tags
+    forEachScalable(rig, function(obj,propName,valueType)
+        local origValue = newValue(valueType,obj[propName],"Original_"..propName)
+
+        origValue.Parent = obj
+    end)
+
+    -- build the rig
     local humanoid = rig:FindFirstChild("Humanoid")
 
     if humanoid then
@@ -31,23 +72,25 @@ end
 
 function RigUtil.rescaleRig(rig,newScale)
     for _,obj in pairs(rig:GetDescendants()) do
-        if obj:IsA("Attachment") then
-            local origPos = obj:FindFirstChild("OriginalPosition").Value
-
-            obj.Position = origPos * newScale
-        end
-        if obj:IsA("BasePart") then
-            local origSize = obj:FindFirstChild("OriginalSize").Value
-            obj.Size = origSize * newScale
-        end
-        if obj:IsA("Humanoid") then
-            obj.HipHeight = HIP_HEIGHT * newScale
-            obj.WalkSpeed = WALK_SPEED * (1+(math.abs(1-newScale)/6))
-        end
+        -- destroy motors
         if obj:IsA("Motor6D") then
             obj:Destroy()
         end
     end
+
+    -- set based on original props and scale
+    forEachScalable(rig, function(obj,propName,valueType,typeStruct)
+        local origValue = obj:FindFirstChild("Original_"..propName)
+
+        if origValue then
+            -- if there's a special reducer use it
+            if typeStruct.scaleFunc then
+                obj[propName] = typeStruct.scaleFunc(obj,propName,origValue.Value,newScale)
+            else
+                obj[propName] = origValue.Value * newScale
+            end
+        end
+    end)
 
     local humanoid = rig:FindFirstChild("Humanoid")
 

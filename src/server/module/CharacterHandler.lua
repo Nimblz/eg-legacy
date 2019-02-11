@@ -31,8 +31,6 @@ local function loadCharacter(player)
 
     RigUtil.configureRig(newRig)
 
-    RigUtil.rescaleRig(newRig,math.random(1,5))
-
     newRig.Parent = Workspace
 
     player.Character = newRig
