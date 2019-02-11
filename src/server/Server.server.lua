@@ -10,7 +10,7 @@ local requestColorEvent = remote:WaitForChild("RequestColor")
 local HatUtil = require(util:WaitForChild("HatUtil"))
 
 requestHatEvent.OnServerEvent:Connect(function(player,hat)
-	local success, msg = pcall(HatUtil.EquipHatToPlayer, player, hat)
+	local success, msg = pcall(HatUtil.equipHatToPlayer, player, hat)
 
 	if not success then
 		warn(msg)

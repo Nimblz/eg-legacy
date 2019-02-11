@@ -13,16 +13,16 @@ local Cannons = {}
 
 local shooting = false
 
-function getCannons()
+local function getCannons()
     return Workspace:WaitForChild("cannons"):GetChildren()
 end
 
-function playerFromPart(part)
+local function playerFromPart(part)
     local Char = part.Parent
     return Players:GetPlayerFromCharacter(Char)
 end
 
-function blastTween(part)
+local function blastTween(part)
     local OriginalSize = part.Mesh.Scale
 
     TweenService:Create(part.Mesh,GrowTweenInfo,{Scale = OriginalSize*(4/3)}):Play()
@@ -30,7 +30,7 @@ function blastTween(part)
     TweenService:Create(part.Mesh,WobbleTweenInfo,{Scale = OriginalSize}):Play()
 end
 
-function cannonShoot(model)
+local function cannonShoot(model)
 
     local cannon = model:WaitForChild("Cannon")
 
@@ -52,7 +52,7 @@ function cannonShoot(model)
             bodyPosition.MaxForce = Vector3.new(300000,300000,300000)
             bodyPosition.P = 20000
             bodyPosition.D = 800
-            
+
             blastTween(cannon)
 
             for i = 0,1,1/steps do
@@ -68,7 +68,7 @@ function cannonShoot(model)
     end
 end
 
-function createCannon(model)
+local function createCannon(model)
     local cannon = model:WaitForChild("Cannon")
 
     local debounce = false
@@ -91,7 +91,7 @@ end
 
 function Cannons:init()
     local cannonModels = getCannons()
-    
+
     for _, cannon in pairs(cannonModels) do
         createCannon(cannon)
     end
