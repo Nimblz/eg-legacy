@@ -35,7 +35,7 @@ local function loadCharacter(player)
 
     player.Character = newRig
 
-    newRig:MoveTo(Vector3.new(0,100,0))
+    newRig:MoveTo(Vector3.new(0,100,30))
 
     bindRespawn(player,newRig)
 end
