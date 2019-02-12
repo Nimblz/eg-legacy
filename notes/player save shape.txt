@@ -35,6 +35,15 @@
             playTime = 1337 -- in mins
             metersWalked = 9001
             coins = 1000
+            achievements = {
+                joinGame = true
+                coins1000 = true
+                touchLava = true
+                discoverForestTemple = true
+                discoverScoob = true
+                discoverSkyIsland = true
+                activateAllPortals = false
+            }
         }
 
         productsPurchased = {
