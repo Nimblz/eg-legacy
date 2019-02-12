@@ -14,8 +14,8 @@ local Server = {}
 Server.modules = {
 	TipJarProducts = require(moduleBin:WaitForChild("TipJarProducts")),
 	TimeBadges = require(moduleBin:WaitForChild("TimeBadges")),
-	CustomizerRemotes = require(moduleBin:WaitForChild("CustomizerRemotes")),
 	CharacterHandler = require(moduleBin:WaitForChild("CharacterHandler")),
+	Coins = require(moduleBin:WaitForChild("Coins")),
 }
 
 function Server:getModule(name)
@@ -30,5 +30,5 @@ function Server:load()
 	FuncUtil.callOnAll(Server.modules,"start",Server)
 end
 
-
+-- Load modules
 Server:load()

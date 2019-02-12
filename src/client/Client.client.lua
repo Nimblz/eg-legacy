@@ -16,7 +16,6 @@ Client.modules = {
 	EgLegAnimator = require(moduleBin:WaitForChild("EgLegAnimator")),
 	Portals = require(moduleBin:WaitForChild("Portals")),
 	Cannons = require(moduleBin:WaitForChild("Cannons")),
-	Customizer = require(moduleBin:WaitForChild("Customizer")),
 }
 
 function Client:getModule(name)
