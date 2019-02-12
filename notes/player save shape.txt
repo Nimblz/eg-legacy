@@ -1,0 +1,45 @@
+{
+    nimblz {
+        portals { -- [portal] = isActive
+            red = true
+            orange = false
+            yellow = true
+            ...
+        }
+
+        inventory = { -- [catagory][itemid] = isObtained
+            hat = {
+                dimmadome = true
+                baseballcap = true
+                bighead = false
+                ...
+            }
+
+            tool = {
+                gun = true
+                whisk = false
+                ...
+            }
+
+            face = {...}
+
+            ability = { -- [ability] = isObtained
+                highJump = true
+                waterWalk = true
+                fly = false
+                ...
+            }
+        }
+        
+        stats = {
+            playTime = 1337 -- in mins
+            metersWalked = 9001
+            coins = 1000
+        }
+
+        productsPurchased = {
+            becomeGiantProduct = true
+            rainbowEgProduct = true
+        }
+    }
+}
