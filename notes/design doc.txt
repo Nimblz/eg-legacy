@@ -1,0 +1,13 @@
+- [ eg ] -
+
+# intentions
+  I want to make a chill game in the vein of blammo. I want a vast world where
+quirky custom characters can explore and interact. I want npc characters to talk
+to and complete objectives with. I want hidden items and power up abilities
+placed around the map. I want a currency system with coins spawned around the map
+that players can collect. Players may use coins to buy hats and other custom-
+ization items.
+
+## target audience
+ * People who want a world to explore and items to find, akin to the 2013 egg hunt.
+ * Memers
