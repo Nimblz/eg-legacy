@@ -1,21 +1,26 @@
-local Workspace = game:GetService("Workspace")
+-- server side coins
+
+local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local common = ReplicatedStorage:WaitForChild("common")
 local remote = ReplicatedStorage:WaitForChild("remote")
-local coin = remote:WaitForChild("remote")
+local remote_coin = remote:WaitForChild("coin")
 
-local RequestCoinCollectEvent = coin:WaitForChild("RequestCoinCollect")
-local CoinRespawnEvent = coin:WaitForChild("RequestCoinCollect")
+local Actions = require(common:WaitForChild("Actions"))
 
-local RESPAWN_TIME = 10
+local RequestCoinCollectEvent = remote_coin:WaitForChild("RequestCoinCollect")
+local CoinRespawnEvent = remote_coin:WaitForChild("CoinRespawn")
 
-local PlayerData
+local RESPAWN_TIME = 10 -- secs it takes for a coin to reappear
+
+local store
 
 local Coins = {}
 
 local coinCollections = {}
-local coinSpawns = {}
+local coinSpawns = CollectionService:GetTagged("coin_spawn")
 
 local function onPlayerJoin(player)
     coinCollections[player] = {}
@@ -47,12 +52,13 @@ function Coins:init()
 
     Players.PlayerAdded:Connect(onPlayerJoin)
     Players.PlayerAdded:Connect(onPlayerRemoving)
-
-    RequestCoinCollectEvent.OnServerEvent:connect(requestCoinCollect)
 end
 
-function Coins:start()
+function Coins:start(server)
 
+    store = server.store
+
+    RequestCoinCollectEvent.OnServerEvent:connect(requestCoinCollect)
 end
 
 return Coins
