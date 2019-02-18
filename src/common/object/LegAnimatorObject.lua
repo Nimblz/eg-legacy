@@ -94,7 +94,7 @@ function LegAnimator:walkStep(XZVel)
 	local AvgAngle = XZVel.Unit:Dot((AvgFootPosition - (Root.Position)).Unit)
 	local AvgDist = (AvgFootPosition - Rig.PrimaryPart.Position).Magnitude
 
-	
+
 	if (XZVel.Magnitude < 3) then
 		if (LeftLeg.FootTarget - LeftRayPos).Magnitude > 0.5 then
 			setupFootTween(LeftLeg,LeftRayPos,0.2*(Humanoid.HipHeight/5))
@@ -105,12 +105,12 @@ function LegAnimator:walkStep(XZVel)
 	end
 
 	if not self.LeftForward then
-		if (RightLeg.Planted and AvgAngle < 0) or AvgDist > Humanoid.HipHeight*5 then
+		if (RightLeg.Planted and AvgAngle < 0) or AvgDist > Humanoid.HipHeight*2 then
 			setupFootTween(LeftLeg,LeftRayPos,TimeToReachRightRayPos/2)
 			self.LeftForward = true
 		end
 	else
-		if (LeftLeg.Planted and AvgAngle < 0) or AvgDist > Humanoid.HipHeight*5  then
+		if (LeftLeg.Planted and AvgAngle < 0) or AvgDist > Humanoid.HipHeight*2  then
 			setupFootTween(RightLeg,RightRayPos,TimeToReachLeftRayPos/2)
 			self.LeftForward = false
 		end
@@ -176,7 +176,7 @@ function LegAnimator:step(et,dt)
 	local RightHipPlane, RightHipAngle, RightKneeAngle = IKUtil.solveIK(
 		RightHipCF, RightLeg.FootPos,
 		Rig.UpperRightLeg.Size.Y, Rig.LowerRightLeg.Size.Y
-)
+	)
 
 	RightLeg.Hip.C0 = Torso.CFrame:toObjectSpace(RightHipPlane) * CFrame.Angles(RightHipAngle, 0, 0)
 	RightLeg.Knee.C0 = RightLeg.OrigKneeC0 * CFrame.Angles(RightKneeAngle, 0, 0)
