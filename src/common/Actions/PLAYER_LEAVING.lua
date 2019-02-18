@@ -7,6 +7,6 @@ return function(player)
     return function(store)
         -- TODO: Actually save data
 
-        store:dispatch()
+        store:dispatch(PLAYER_REMOVE(player))
     end
 end
