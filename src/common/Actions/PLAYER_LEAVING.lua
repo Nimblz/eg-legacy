@@ -5,7 +5,7 @@ local PLAYER_REMOVE = require(script.Parent:WaitForChild("PLAYER_REMOVE"))
 return function(player)
 
     return function(store)
-        -- TODO: Save data
+        -- TODO: Actually save data
 
         store:dispatch()
     end
