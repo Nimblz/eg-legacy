@@ -4,10 +4,9 @@ local LocalPlayer = Players.LocalPlayer
 
 local Portals = {}
 
-local World = Workspace:WaitForChild("staticworld")
-local PortalsBin = World:WaitForChild("Portals")
-local Portals1 = PortalsBin:WaitForChild("Portals1")
-local Portals2 = PortalsBin:WaitForChild("Portals2")
+local portalsBin = Workspace:WaitForChild("portals")
+local portals1 = portalsBin:WaitForChild("portals1")
+local portals2 = portalsBin:WaitForChild("portals2")
 
 local function Teleport(whereTo)
 	local Char = LocalPlayer.Character
@@ -18,27 +17,27 @@ local function Teleport(whereTo)
 end
 
 local function CreatePortal(part1,part2)
-	local Debounce = false
-	local Active = false
+	local debounce = false
+	local active = false
 
-	part1.Touched:Connect(function(hit)
+	part1.Touched:Connect( function(hit)
 		if hit.Parent == LocalPlayer.Character then
-			if not Debounce and Active then
-				Debounce = true
-					Teleport(part2.CFrame * CFrame.new(0,0,-2))
+			if not debounce and active then
+				debounce = true
+				Teleport(part2.CFrame * CFrame.new(0,0,-2))
 			end
 		wait(0.5)
-		Debounce = false
+		debounce = false
 		end
 	end)
 
-	part2.Touched:Connect(function(hit)
+	part2.Touched:Connect( function(hit)
 		if hit.Parent == LocalPlayer.Character then
-			if not Debounce then
-				Debounce = true
+			if not debounce then
+				debounce = true
 
-				if not Active then
-					Active = true
+				if not active then
+					active = true
 					part1.Transparency = 0.5
 					part2.Transparency = 0.5
 				else
@@ -46,20 +45,20 @@ local function CreatePortal(part1,part2)
 				end
 
 				wait(0.5)
-				Debounce = false
+				debounce = false
 			end
 		end
 	end)
 end
 
 function Portals:init()
-    for _,awayPortal in pairs(Portals2:GetChildren()) do
-        local HomePortal = Portals1:FindFirstChild(awayPortal.Name)
+    for _,awayPortal in pairs(portals2:GetChildren()) do
+        local homePortal = portals1:FindFirstChild(awayPortal.Name)
 
-        local HomePortalTrigger = HomePortal:FindFirstChild("PortalPart")
-        local AwayPortalTrigger = awayPortal:FindFirstChild("PortalPart")
+        local homePortalTrigger = homePortal:FindFirstChild("PortalPart")
+        local awayPortalTrigger = awayPortal:FindFirstChild("PortalPart")
 
-        CreatePortal(HomePortalTrigger,AwayPortalTrigger)
+        CreatePortal(homePortalTrigger,awayPortalTrigger)
 	end
 end
 
