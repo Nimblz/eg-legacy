@@ -13,40 +13,32 @@ local RESPAWN_TIME = 0.5
 
 local CharacterHandler = {}
 
-local function bindRespawn(player,rig)
-    local humanoid = rig:FindFirstChild("Humanoid")
+local bindRespawn
 
-    if humanoid then
-        humanoid.Died:Connect(function()
-            wait(RESPAWN_TIME)
-            loadCharacter(player)
-        end)
-    end
-end
-
-local function loadCharacter(player)
-    local newRig = egRig:Clone()
-
-    newRig.Name = player.Name
-
-    RigUtil.configureRig(newRig)
-
-    newRig.Parent = Workspace
-
-    player.Character = newRig
-
-    newRig:MoveTo(Vector3.new(0,100,30))
-
-    bindRespawn(player,newRig)
+function bindRespawn(player)
+    player.CharacterAdded:Connect(function(rig)
+        local humanoid = rig:WaitForChild("Humanoid")
+        if humanoid then
+            humanoid:BuildRigFromAttachments()
+            local connection
+            connection = humanoid.Died:Connect(function()
+                connection:Disconnect()
+                wait(RESPAWN_TIME)
+                player:LoadCharacter()
+            end)
+        end
+    end)
 end
 
 function CharacterHandler:init()
     Players.PlayerAdded:Connect(function(player)
-        loadCharacter(player)
+        bindRespawn(player)
+        player:LoadCharacter()
     end)
 
     for _,player in pairs(Players:GetPlayers()) do
-        loadCharacter(player)
+        bindRespawn(player)
+        player:LoadCharacter()
     end
 end
 
