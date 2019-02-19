@@ -17,7 +17,7 @@ function PlayerHandler:start(server)
         store:dispatch(Actions.PLAYER_JOINED(player))
     end)
 
-    Players.PlayerAdded:Connect(function(player)
+    Players.PlayerRemoving:Connect(function(player)
         store:dispatch(Actions.PLAYER_LEAVING(player))
     end)
 end
