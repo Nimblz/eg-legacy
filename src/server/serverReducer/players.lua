@@ -4,7 +4,7 @@ return (function(state,action)
     if action.type == "PLAYER_ADD" then -- should be a thunk
         local player = action.player
 
-        state[player] = {}
+        state[player] = action.saveData
     end
 
     if action.type == "PLAYER_REMOVE" then
