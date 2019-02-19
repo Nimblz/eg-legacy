@@ -37,7 +37,7 @@ end
 
 function Sound:init()
     Sound.effectsGroup = Instance.new("SoundGroup")
-    Sound.musicGroup = Instance.new("EffectsGroup")
+    Sound.musicGroup = Instance.new("SoundGroup")
 
     Sound.effectsGroup.Parent = SoundService
     Sound.musicGroup.Parent = SoundService
