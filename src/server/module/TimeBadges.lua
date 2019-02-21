@@ -35,11 +35,13 @@ function TimeBadges:init()
         while true do
 
             for _,player in pairs(Players:GetPlayers()) do
-                for timeReq, badgeId in pairs(badges) do
-                    if Workspace.DistributedGameTime - joinTimes[player] > timeReq then
-                        awardBadge(player,badgeId)
-                    end
-                end
+				if joinTimes[player] then
+	                for timeReq, badgeId in pairs(badges) do
+	                    if Workspace.DistributedGameTime - joinTimes[player] > timeReq then
+	                        awardBadge(player,badgeId)
+	                    end
+	                end
+				end
             end
 
             wait(1)
