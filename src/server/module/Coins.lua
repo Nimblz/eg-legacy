@@ -13,7 +13,7 @@ local Actions = require(common:WaitForChild("Actions"))
 local RequestCoinCollectEvent = remote_coin:WaitForChild("RequestCoinCollect")
 local CoinRespawnEvent = remote_coin:WaitForChild("CoinRespawn")
 
-local RESPAWN_TIME = 30 -- secs it takes for a coin to reappear
+local RESPAWN_TIME = 120 -- secs it takes for a coin to reappear
 
 local store
 
