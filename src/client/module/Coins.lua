@@ -5,14 +5,11 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-local common = ReplicatedStorage:WaitForChild("common")
 local remote = ReplicatedStorage:WaitForChild("remote")
 local model = ReplicatedStorage:WaitForChild("model")
 local remote_coin = remote:WaitForChild("coin")
 
 local localPlayer = Players.LocalPlayer
-
-local Actions = require(common:WaitForChild("Actions"))
 
 local requestCoinCollectEvent = remote_coin:WaitForChild("RequestCoinCollect")
 local coinRespawnEvent = remote_coin:WaitForChild("CoinRespawn")
