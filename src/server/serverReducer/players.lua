@@ -13,5 +13,10 @@ return (function(state,action)
         state[player] = nil
     end
 
+    if action.type == "COIN_ADD" then
+        local player = action.player
+        state[player].stats.coins = state[player].stats.coins + action.coins
+    end
+
     return state
 end)

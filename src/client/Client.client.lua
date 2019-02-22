@@ -16,6 +16,7 @@ Client.modules = {
 	EgLegAnimator = require(moduleBin:WaitForChild("EgLegAnimator")),
 	Portals = require(moduleBin:WaitForChild("Portals")),
 	Cannons = require(moduleBin:WaitForChild("Cannons")),
+	Coins = require(moduleBin:WaitForChild("Coins")),
 	Sound = require(moduleBin:WaitForChild("Sound")),
 }
 
