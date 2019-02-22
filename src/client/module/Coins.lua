@@ -81,6 +81,7 @@ end
 
 local function spawnAllCoins()
     for _,coinSpawn in pairs(coinSpawns) do
+        coinSpawn.Transparency = 1
         spawnCoin(coinSpawn)
     end
 end
