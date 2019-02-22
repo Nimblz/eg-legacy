@@ -79,8 +79,8 @@ function LegAnimator:walkStep(XZVel)
 
 	local TimeToReachAvgPos = (Rig.PrimaryPart.Position * Vector3.new(1,0,1) - AvgFootPosition * Vector3.new(1,0,1)).Magnitude / XZVel.Magnitude
 
-	local LeftFootRay = Ray.new(LeftFootRayOrigin,DOWN*Humanoid.HipHeight*1.3)
-	local RightFootRay = Ray.new(RightFootRayOrigin,DOWN*Humanoid.HipHeight*1.3)
+	local LeftFootRay = Ray.new(LeftFootRayOrigin,DOWN*Humanoid.HipHeight*2)
+	local RightFootRay = Ray.new(RightFootRayOrigin,DOWN*Humanoid.HipHeight*2)
 
 	local LeftRayHit,LeftRayPos,LeftRayNormal = workspace:FindPartOnRayWithIgnoreList(LeftFootRay,{Rig})
 	local RightRayHit,RightRayPos,RightRayNormal = workspace:FindPartOnRayWithIgnoreList(RightFootRay,{Rig})
@@ -105,12 +105,12 @@ function LegAnimator:walkStep(XZVel)
 	end
 
 	if not self.LeftForward then
-		if (RightLeg.Planted and AvgAngle < 0) or AvgDist > Humanoid.HipHeight*2 then
+		if (RightLeg.Planted and AvgAngle < 0) or AvgDist > Humanoid.HipHeight*4 then
 			setupFootTween(LeftLeg,LeftRayPos,TimeToReachRightRayPos/2)
 			self.LeftForward = true
 		end
 	else
-		if (LeftLeg.Planted and AvgAngle < 0) or AvgDist > Humanoid.HipHeight*2  then
+		if (LeftLeg.Planted and AvgAngle < 0) or AvgDist > Humanoid.HipHeight*4  then
 			setupFootTween(RightLeg,RightRayPos,TimeToReachLeftRayPos/2)
 			self.LeftForward = false
 		end
