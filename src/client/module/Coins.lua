@@ -17,7 +17,7 @@ local Actions = require(common:WaitForChild("Actions"))
 local requestCoinCollectEvent = remote_coin:WaitForChild("RequestCoinCollect")
 local coinRespawnEvent = remote_coin:WaitForChild("CoinRespawn")
 
-local RESPAWN_TIME = 2 -- secs it takes for a coin to reappear
+local ANIM_DIST = 256
 
 local Coins = {}
 
@@ -26,25 +26,9 @@ local coinSpawns = CollectionService:GetTagged("coin_spawn")
 
 local coinBin = Workspace:WaitForChild("coinbin")
 
-local function onPlayerJoin(player)
-    coinCollections[player] = {}
-end
-
-local function onPlayerRemoving(player)
-    coinCollections[player] = nil
-end
-
 local function playerFromPart(part)
     local Char = part.Parent
     return Players:GetPlayerFromCharacter(Char)
-end
-
-local function bindCoinRespawn(player,coinPart)
-    spawn(function()
-        wait(RESPAWN_TIME)
-        coinCollections[player][coinPart] = false
-        CoinRespawnEvent:FireClient(player,coinPart)
-    end)
 end
 
 local function collectCoin(coinSpawn)
@@ -83,13 +67,18 @@ end
 
 local function update()
     for _,coin in pairs(coinEnts) do
-        local time = tick() + coin.timeOffset
-        local sinVal = math.sin(time % (math.pi*2))
-        local rotation = (time/2) % (math.pi*2)
+        local camPos = Workspace.CurrentCamera.CFrame.p
+        local coinPos = coin.cFrame.p
 
-        sinVal = sinVal * sinVal
+        if (camPos - coinPos).Magnitude < ANIM_DIST then
+            local time = tick() + coin.timeOffset
+            local sinVal = math.sin(time % (math.pi*2))
+            local rotation = (time/2) % (math.pi*2)
 
-        coin.viewModel.CFrame = coin.cFrame * CFrame.new(0,sinVal*1,0) * CFrame.Angles(0,rotation,0)
+            sinVal = sinVal * sinVal
+
+            coin.viewModel.CFrame = coin.cFrame * CFrame.new(0,sinVal*1,0) * CFrame.Angles(0,rotation,0)
+        end
     end
 end
 
@@ -100,9 +89,6 @@ local function spawnAllCoins()
 end
 
 function Coins:init()
-    Players.PlayerAdded:Connect(onPlayerJoin)
-    Players.PlayerAdded:Connect(onPlayerRemoving)
-
     spawnAllCoins()
 
     coinRespawnEvent.OnClientEvent:Connect(spawnCoin)
