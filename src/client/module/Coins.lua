@@ -34,7 +34,6 @@ local function playerFromPart(part)
 end
 
 local function collectCoin(coinSpawn, coinEnt)
-
     api:requestCoinCollect(coinSpawn)
 
     coinEnt.viewModel:Destroy()
@@ -104,14 +103,11 @@ function Coins:spawnCoin(spawnPart)
     return spawnCoin(spawnPart)
 end
 
-function Coins:init()
+function Coins:start(client)
+    api = client.api
     spawnAllCoins()
 
     RunService:BindToRenderStep("coins",Enum.RenderPriority.Character.Value-1,update)
-end
-
-function Coins:start(client)
-    api = client.api
     Sound = client:getModule("Sound")
 end
 
