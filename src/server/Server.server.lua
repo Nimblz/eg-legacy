@@ -8,12 +8,16 @@ local lib = ReplicatedStorage:WaitForChild("lib")
 local moduleBin = ServerScriptService:WaitForChild("module")
 
 local Rodux = require(lib:WaitForChild("Rodux"))
+local ServerApi = require(ServerScriptService:WaitForChild("ServerApi"))
+local Dictionary = require(common.Dictionary)
 
 local callOnAll = require(commonUtil:WaitForChild("callOnAll"))
 local serverReducer = require(ServerScriptService:WaitForChild("serverReducer"))
 local networkMiddleware = require(ServerScriptService:WaitForChild("networkMiddleware"))
 
 local Server = {}
+
+
 
 Server.modules = {
 	PlayerHandler = require(moduleBin:WaitForChild("PlayerHandler")),
@@ -24,11 +28,46 @@ Server.modules = {
 	LegacyCustomization = require(moduleBin:WaitForChild("LegacyCustomization")),
 }
 
+local function replicate(action,beforeState,afterState)
+	-- Create a version of each action that's explicitly flagged as
+	-- replicated so that clients can handle them explicitly.
+	local replicatedAction = Dictionary.join(action, {
+		replicated = true,
+	})
+
+	-- This is an action that everyone should see!
+	if action.replicateBroadcast then
+		return api:storeAction(ServerApi.AllPlayers, replicatedAction)
+	end
+
+	-- This is an action that we want a specific player to see.
+	if action.replicateTo ~= nil then
+		local player = Players:GetPlayerByUserId(action.replicateTo)
+
+		if player == nil then
+			return
+		end
+
+		return api:storeAction(player, replicatedAction)
+	end
+
+	-- We should probably replicate any actions that modify data shared
+	-- between the client and server.
+	for key in pairs(commonReducers) do
+		if beforeState[key] ~= afterState[key] then
+			return api:storeAction(ServerApi.AllPlayers, replicatedAction)
+		end
+	end
+
+	return
+end
+
 Server.store = Rodux.Store.new(serverReducer, nil, {
 	Rodux.thunkMiddleware,
-	networkMiddleware,
+	networkMiddleware(replicate),
 	--Rodux.loggerMiddleware,
 })
+Server.serverApi = ServerApi.new()
 
 function Server:getModule(name)
 	assert(self.modules[name],"No such module: "..name)

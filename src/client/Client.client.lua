@@ -5,12 +5,20 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local common = ReplicatedStorage:WaitForChild("common")
 local commonUtil = common:WaitForChild("util")
-
+local lib = ReplicatedStorage:WaitForChild("lib")
 local moduleBin = PlayerScripts:WaitForChild("module")
 
-local FuncUtil = require(commonUtil:WaitForChild("FuncUtil"))
+local Rodux = require(lib:WaitForChild("Rodux"))
+local ClientApi = require(PlayerScripts:WaitForChild("ServerApi"))
+
+local callOnAll = require(commonUtil:WaitForChild("callOnAll"))
 
 local Client = {}
+
+Client.store = require(PlayerScripts:WaitForChild("clientReducer"), nil, {
+	Rodux.thunkMiddleware,
+})
+Client.clientApi = ClientApi.new()
 
 Client.modules = {
 	EgLegAnimator = require(moduleBin:WaitForChild("EgLegAnimator")),
@@ -29,9 +37,9 @@ end
 
 function Client:load()
 	-- init all modules
-	FuncUtil.callOnAll(Client.modules,"init")
+	callOnAll(Client.modules,"init")
 	-- start all modules
-	FuncUtil.callOnAll(Client.modules,"start",Client)
+	callOnAll(Client.modules,"start",Client)
 end
 
 
