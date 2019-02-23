@@ -39,7 +39,6 @@ local function bindCoinRespawn(player,coinPart)
 end
 
 local function requestCoinCollect(player,coinPart)
-    print(typeof(coinPart))
     assert(typeof(coinPart) == "Instance", "arg 2 must be a part, got:"..tostring(coinPart))
     assert(coinPart:IsA("BasePart"), "arg 2 must be a part, got:"..tostring(coinPart))
     assert(coinSpawns[coinPart], "Invalid coin spawn")
@@ -58,6 +57,10 @@ function Coins:init()
     for _,v in pairs(CollectionService:GetTagged("coin_spawn")) do
         coinSpawns[v] = v
     end
+
+    for _,player in pairs(Players:GetPlayers()) do
+		onPlayerJoin(player)
+	end
 
     Players.PlayerAdded:Connect(onPlayerJoin)
     Players.PlayerAdded:Connect(onPlayerRemoving)

@@ -15,6 +15,9 @@ local requestCoinCollectEvent = remote_coin:WaitForChild("RequestCoinCollect")
 local coinRespawnEvent = remote_coin:WaitForChild("CoinRespawn")
 
 local ANIM_DIST = 256
+local COIN_SOUND_ID = 1453122289
+
+local Sound
 
 local Coins = {}
 
@@ -28,8 +31,19 @@ local function playerFromPart(part)
     return Players:GetPlayerFromCharacter(Char)
 end
 
-local function collectCoin(coinSpawn)
+local function collectCoin(coinSpawn, coinEnt)
     requestCoinCollectEvent:FireServer(coinSpawn)
+
+    coinEnt.viewModel:Destroy()
+    coinEnt.cFrame = nil
+    coinEnt.spawnPart = nil
+    coinEnts[coinSpawn] = nil
+
+    if Sound then
+        local RandomPitch = 1 + (math.random()*0.2 - 0.1)
+        Sound:playSound(COIN_SOUND_ID,0.5,RandomPitch,coinSpawn)
+    end
+
 end
 
 local function spawnCoin(spawnPart)
@@ -41,6 +55,7 @@ local function spawnCoin(spawnPart)
     }
 
     newCoin.viewModel.Parent = coinBin
+    newCoin.viewModel.CFrame = newCoin.cFrame
     coinEnts[spawnPart] = newCoin
 
     local touchConnection
@@ -48,12 +63,7 @@ local function spawnCoin(spawnPart)
         local touchedPlayer = playerFromPart(hit)
 
         if localPlayer == touchedPlayer then
-            collectCoin(spawnPart)
-            newCoin.viewModel:Destroy()
-            newCoin.cFrame = nil
-            newCoin.spawnPart = nil
-
-            coinEnts[spawnPart] = nil
+            collectCoin(spawnPart, newCoin)
 
             touchConnection:Disconnect()
         end
@@ -92,9 +102,12 @@ function Coins:init()
     coinRespawnEvent.OnClientEvent:Connect(spawnCoin)
 
     RunService:BindToRenderStep("coins",Enum.RenderPriority.Character.Value-1,update)
+
+    print("Number of coins: ", #coinSpawns)
 end
 
 function Coins:start(client)
+    Sound = client:getModule("Sound")
 end
 
 return Coins
