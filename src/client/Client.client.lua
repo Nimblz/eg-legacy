@@ -19,6 +19,7 @@ Client.modules = {
 	Coins = require(moduleBin:WaitForChild("Coins")),
 	Sound = require(moduleBin:WaitForChild("Sound")),
 	LegacyCustomizer = require(moduleBin:WaitForChild("LegacyCustomizer")),
+	Gui = require(moduleBin:WaitForChild("Gui")),
 }
 
 function Client:getModule(name)
