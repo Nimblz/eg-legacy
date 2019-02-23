@@ -20,11 +20,12 @@ Server.modules = {
 	TimeBadges = require(moduleBin:WaitForChild("TimeBadges")),
 	CharacterHandler = require(moduleBin:WaitForChild("CharacterHandler")),
 	Coins = require(moduleBin:WaitForChild("Coins")),
+	LegacyCustomization = require(moduleBin:WaitForChild("LegacyCustomization")),
 }
 
 Server.store = Rodux.Store.new(serverReducer, nil, {
 	Rodux.thunkMiddleware,
-	Rodux.loggerMiddleware,
+	--Rodux.loggerMiddleware,
 })
 
 function Server:getModule(name)
