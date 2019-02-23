@@ -5,8 +5,6 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local common = ReplicatedStorage:WaitForChild("common")
-local remote = ReplicatedStorage:WaitForChild("remote")
-local remote_coin = remote:WaitForChild("coin")
 
 local Actions = require(common:WaitForChild("Actions"))
 
@@ -32,7 +30,7 @@ local function bindCoinRespawn(player,coinPart)
     spawn(function()
         wait(RESPAWN_TIME)
         coinCollections[player][coinPart] = false
-        api.CoinRespawn(player,coinPart)
+        api:coinRespawn(player,coinPart)
     end)
 end
 

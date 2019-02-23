@@ -5,14 +5,9 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-local remote = ReplicatedStorage:WaitForChild("remote")
 local model = ReplicatedStorage:WaitForChild("model")
-local remote_coin = remote:WaitForChild("coin")
 
 local localPlayer = Players.LocalPlayer
-
-local requestCoinCollectEvent = remote_coin:WaitForChild("RequestCoinCollect")
-local coinRespawnEvent = remote_coin:WaitForChild("CoinRespawn")
 
 local ANIM_DIST = 256
 local COIN_SOUND_ID = 1453122289

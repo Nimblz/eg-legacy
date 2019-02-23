@@ -43,7 +43,7 @@ return {
         },
         coinRespawn = {
             arguments = t.tuple(
-                t.instance
+                t.Instance
             )
         }
 	},
