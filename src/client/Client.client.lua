@@ -9,16 +9,11 @@ local lib = ReplicatedStorage:WaitForChild("lib")
 local moduleBin = PlayerScripts:WaitForChild("module")
 
 local Rodux = require(lib:WaitForChild("Rodux"))
-local ClientApi = require(PlayerScripts:WaitForChild("ServerApi"))
+local ClientApi = require(PlayerScripts:WaitForChild("ClientApi"))
 
 local callOnAll = require(commonUtil:WaitForChild("callOnAll"))
 
 local Client = {}
-
-Client.store = require(PlayerScripts:WaitForChild("clientReducer"), nil, {
-	Rodux.thunkMiddleware,
-})
-Client.clientApi = ClientApi.new()
 
 Client.modules = {
 	EgLegAnimator = require(moduleBin:WaitForChild("EgLegAnimator")),
@@ -38,6 +33,23 @@ end
 function Client:load()
 	-- init all modules
 	callOnAll(Client.modules,"init")
+
+	Client.api = ClientApi.connect({
+		initialPlayerState = function(state)
+			Client.store = Rodux.createStore(require(PlayerScripts:WaitForChild("clientReducer"), state, {
+				Rodux.thunkMiddleware,
+			}))
+		end,
+		storeAction = function(action)
+			if Client.store ~= nil then
+				Client.store:dispatch(action)
+			end
+		end,
+		coinRespawn = function(coinSpawn)
+			self:getModule("Coins"):spawnCoin(coinSpawn)
+		end
+	})
+
 	-- start all modules
 	callOnAll(Client.modules,"start",Client)
 end

@@ -20,24 +20,31 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local lib = ReplicatedStorage:WaitForChild("lib")
 
-local t = require(lib:WaitForChild("Typer"))
+local t = require(lib:WaitForChild("t"))
 
 return {
 	fromClient = {
-		clientStart = {
-			arguments = t.tupple()
-		},
+		requestCoinCollect = {
+            arguments = t.tuple(
+                t.Instance
+            )
+        }
 	},
 	fromServer = {
-		initialStoreState = {
-			arguments = t.tupple(
-                t.any
-            )
+		initialPlayerState = {
+			arguments = t.tuple(
+				t.any
+			)
 		},
 		storeAction = {
-			arguments = t.tupple(
+			arguments = t.tuple(
                 t.table
             )
-		},
+        },
+        coinRespawn = {
+            arguments = t.tuple(
+                t.instance
+            )
+        }
 	},
 }

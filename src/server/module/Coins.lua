@@ -10,12 +10,10 @@ local remote_coin = remote:WaitForChild("coin")
 
 local Actions = require(common:WaitForChild("Actions"))
 
-local RequestCoinCollectEvent = remote_coin:WaitForChild("RequestCoinCollect")
-local CoinRespawnEvent = remote_coin:WaitForChild("CoinRespawn")
-
 local RESPAWN_TIME = 120 -- secs it takes for a coin to reappear
 
 local store
+local api
 
 local Coins = {}
 
@@ -34,14 +32,16 @@ local function bindCoinRespawn(player,coinPart)
     spawn(function()
         wait(RESPAWN_TIME)
         coinCollections[player][coinPart] = false
-        CoinRespawnEvent:FireClient(player,coinPart)
+        api.CoinRespawn(player,coinPart)
     end)
 end
 
-local function requestCoinCollect(player,coinPart)
+function Coins:requestCoinCollect(player,coinPart)
     assert(typeof(coinPart) == "Instance", "arg 2 must be a part, got:"..tostring(coinPart))
     assert(coinPart:IsA("BasePart"), "arg 2 must be a part, got:"..tostring(coinPart))
     assert(coinSpawns[coinPart], "Invalid coin spawn")
+
+    print("Collected a coin")
 
     if not coinCollections[player][coinPart] then
         coinCollections[player][coinPart] = true
@@ -70,7 +70,7 @@ function Coins:start(server)
 
     store = server.store
 
-    RequestCoinCollectEvent.OnServerEvent:connect(requestCoinCollect)
+    api = server.api
 end
 
 return Coins

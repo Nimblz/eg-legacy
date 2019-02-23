@@ -33,18 +33,19 @@ function TimeBadges:init()
 
     spawn(function()
         while true do
+            pcall(function()
+                for _,player in pairs(Players:GetPlayers()) do
+                    for timeReq, badgeId in pairs(badges) do
+                        if joinTimes[player] and Workspace.DistributedGameTime then
+                            if Workspace.DistributedGameTime - joinTimes[player] > timeReq then
+                                awardBadge(player,badgeId)
+                            end
+                        end
+                    end
+                end
 
-            for _,player in pairs(Players:GetPlayers()) do
-				if joinTimes[player] and Workspace.DistributedGameTime then
-	                for timeReq, badgeId in pairs(badges) do
-	                    if Workspace.DistributedGameTime - joinTimes[player] > timeReq then
-	                        awardBadge(player,badgeId)
-	                    end
-	                end
-				end
-            end
-
-            wait(1)
+                wait(1)
+            end)
         end
     end)
 end

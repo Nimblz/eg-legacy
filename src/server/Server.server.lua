@@ -17,8 +17,6 @@ local networkMiddleware = require(ServerScriptService:WaitForChild("networkMiddl
 
 local Server = {}
 
-
-
 Server.modules = {
 	PlayerHandler = require(moduleBin:WaitForChild("PlayerHandler")),
 	Cashier = require(moduleBin:WaitForChild("Cashier")),
@@ -28,6 +26,8 @@ Server.modules = {
 	LegacyCustomization = require(moduleBin:WaitForChild("LegacyCustomization")),
 }
 
+-- From Lucien Greathouses RDC 2018 project
+-- https://github.com/LPGhatguy/rdc-project/blob/master/src/server/main.lua
 local function replicate(action,beforeState,afterState)
 	-- Create a version of each action that's explicitly flagged as
 	-- replicated so that clients can handle them explicitly.
@@ -37,37 +37,22 @@ local function replicate(action,beforeState,afterState)
 
 	-- This is an action that everyone should see!
 	if action.replicateBroadcast then
-		return api:storeAction(ServerApi.AllPlayers, replicatedAction)
+		return Server.api:storeAction(ServerApi.AllPlayers, replicatedAction)
 	end
 
 	-- This is an action that we want a specific player to see.
 	if action.replicateTo ~= nil then
-		local player = Players:GetPlayerByUserId(action.replicateTo)
+		local player = action.replicateTo
 
 		if player == nil then
 			return
 		end
 
-		return api:storeAction(player, replicatedAction)
-	end
-
-	-- We should probably replicate any actions that modify data shared
-	-- between the client and server.
-	for key in pairs(commonReducers) do
-		if beforeState[key] ~= afterState[key] then
-			return api:storeAction(ServerApi.AllPlayers, replicatedAction)
-		end
+		return Server.api:storeAction(player, replicatedAction)
 	end
 
 	return
 end
-
-Server.store = Rodux.Store.new(serverReducer, nil, {
-	Rodux.thunkMiddleware,
-	networkMiddleware(replicate),
-	--Rodux.loggerMiddleware,
-})
-Server.serverApi = ServerApi.new()
 
 function Server:getModule(name)
 	assert(self.modules[name],"No such module: "..name)
@@ -75,8 +60,22 @@ function Server:getModule(name)
 end
 
 function Server:load()
+
 	-- init all modules
 	callOnAll(Server.modules,"init")
+
+	Server.store = Rodux.Store.new(serverReducer, nil, {
+		Rodux.thunkMiddleware,
+		networkMiddleware(replicate),
+		--Rodux.loggerMiddleware,
+	})
+
+	Server.api = ServerApi.create({
+		requestCoinCollect = function(player,coinSpawn)
+			self:getModule("Coins"):requestCoinCollect(player,coinSpawn)
+		end
+	})
+
 	-- start all modules
 	callOnAll(Server.modules,"start",Server)
 end

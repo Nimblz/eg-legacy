@@ -12,6 +12,21 @@
       "$className": "ReplicatedStorage",
       "common": {
         "$path": "src/common"
+      },
+      "lib": {
+        "$className": "Folder",
+        "Roact": {
+          "$path": "lib/roact/lib"
+        },
+        "Rodux": {
+          "$path": "lib/rodux/lib"
+        },
+        "RoactRodux": {
+          "$path": "lib/roact-rodux/lib"
+        },
+        "t": {
+          "$path": "lib/t/lib/t.lua"
+        }
       }
     },
 

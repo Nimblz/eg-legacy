@@ -21,6 +21,8 @@ local Sound
 
 local Coins = {}
 
+local api
+
 local coinEnts = {}
 local coinSpawns = CollectionService:GetTagged("coin_spawn")
 
@@ -32,7 +34,8 @@ local function playerFromPart(part)
 end
 
 local function collectCoin(coinSpawn, coinEnt)
-    requestCoinCollectEvent:FireServer(coinSpawn)
+
+    api:requestCoinCollect(coinSpawn)
 
     coinEnt.viewModel:Destroy()
     coinEnt.cFrame = nil
@@ -44,6 +47,24 @@ local function collectCoin(coinSpawn, coinEnt)
         Sound:playSound(COIN_SOUND_ID,0.5,RandomPitch,coinSpawn)
     end
 
+end
+
+
+local function update()
+    for _,coin in pairs(coinEnts) do
+        local camPos = Workspace.CurrentCamera.CFrame.p
+        local coinPos = coin.cFrame.p
+
+        if (camPos - coinPos).Magnitude < ANIM_DIST then
+            local time = tick() + coin.timeOffset
+            local sinVal = math.sin(time % (math.pi*2))
+            local rotation = (time/2) % (math.pi*2)
+
+            sinVal = sinVal * sinVal
+
+            coin.viewModel.CFrame = coin.cFrame * CFrame.new(0,sinVal*1,0) * CFrame.Angles(0,rotation,0)
+        end
+    end
 end
 
 local function spawnCoin(spawnPart)
@@ -72,23 +93,6 @@ local function spawnCoin(spawnPart)
     return newCoin
 end
 
-local function update()
-    for _,coin in pairs(coinEnts) do
-        local camPos = Workspace.CurrentCamera.CFrame.p
-        local coinPos = coin.cFrame.p
-
-        if (camPos - coinPos).Magnitude < ANIM_DIST then
-            local time = tick() + coin.timeOffset
-            local sinVal = math.sin(time % (math.pi*2))
-            local rotation = (time/2) % (math.pi*2)
-
-            sinVal = sinVal * sinVal
-
-            coin.viewModel.CFrame = coin.cFrame * CFrame.new(0,sinVal*1,0) * CFrame.Angles(0,rotation,0)
-        end
-    end
-end
-
 local function spawnAllCoins()
     for _,coinSpawn in pairs(coinSpawns) do
         coinSpawn.Transparency = 1
@@ -96,10 +100,12 @@ local function spawnAllCoins()
     end
 end
 
+function Coins:spawnCoin(spawnPart)
+    return spawnCoin(spawnPart)
+end
+
 function Coins:init()
     spawnAllCoins()
-
-    coinRespawnEvent.OnClientEvent:Connect(spawnCoin)
 
     RunService:BindToRenderStep("coins",Enum.RenderPriority.Character.Value-1,update)
 
@@ -107,6 +113,7 @@ function Coins:init()
 end
 
 function Coins:start(client)
+    api = client.api
     Sound = client:getModule("Sound")
 end
 

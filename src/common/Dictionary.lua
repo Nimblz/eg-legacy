@@ -1,3 +1,5 @@
+-- Author: Lucien Greathouse
+-- https://github.com/LPGhatguy/rdc-project/blob/master/src/common/Dictionary.lua
 --[[
 	Defines utilities for working with 'dictionary-like' tables.
 	This file, along with None.lua, come from a library we'll be releasing soon
