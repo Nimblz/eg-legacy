@@ -8,9 +8,10 @@ local lib = ReplicatedStorage:WaitForChild("lib")
 local moduleBin = ServerScriptService:WaitForChild("module")
 
 local Rodux = require(lib:WaitForChild("Rodux"))
-local FuncUtil = require(commonUtil:WaitForChild("FuncUtil"))
 
+local callOnAll = require(commonUtil:WaitForChild("callOnAll"))
 local serverReducer = require(ServerScriptService:WaitForChild("serverReducer"))
+local networkMiddleware = require(ServerScriptService:WaitForChild("networkMiddleware"))
 
 local Server = {}
 
@@ -25,6 +26,7 @@ Server.modules = {
 
 Server.store = Rodux.Store.new(serverReducer, nil, {
 	Rodux.thunkMiddleware,
+	networkMiddleware,
 	--Rodux.loggerMiddleware,
 })
 
@@ -35,9 +37,9 @@ end
 
 function Server:load()
 	-- init all modules
-	FuncUtil.callOnAll(Server.modules,"init")
+	callOnAll(Server.modules,"init")
 	-- start all modules
-	FuncUtil.callOnAll(Server.modules,"start",Server)
+	callOnAll(Server.modules,"start",Server)
 end
 
 -- Load modules

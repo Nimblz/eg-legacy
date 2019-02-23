@@ -3,5 +3,6 @@ return function(player, coins)
         type = script.Name,
         player = player,
         coins = coins,
+        replicatesTo = player,
     }
 end
