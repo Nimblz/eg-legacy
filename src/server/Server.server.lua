@@ -75,6 +75,7 @@ function Server:load()
 			self:getModule("Coins"):requestCoinCollect(player,coinSpawn)
 		end
 	})
+	Server.api:connect()
 
 	-- start all modules
 	callOnAll(Server.modules,"start",Server)

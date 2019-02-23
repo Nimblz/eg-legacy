@@ -14,10 +14,15 @@ ServerApi.AllPlayers = newproxy(true)
 function ServerApi.create(handlers)
 	assert(typeof(handlers) == "table")
 
-	local self = {}
+	local self = {handlers = handlers}
 
 	setmetatable(self, ServerApi)
 
+	return self
+end
+
+function ServerApi.prototype:connect()
+	local handlers = self.handlers
 	local remotes = Instance.new("Folder")
 	remotes.Name = "Events"
 
@@ -67,8 +72,6 @@ function ServerApi.create(handlers)
 
 	remotes.Parent = ReplicatedStorage
 	self.remotes = remotes
-
-	return self
 end
 
 function ServerApi.prototype:destroy()

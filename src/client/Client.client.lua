@@ -34,26 +34,26 @@ function Client:load()
 	-- init all modules
 	callOnAll(Client.modules,"init")
 
-	Client.api = ClientApi.connect({
-		initialPlayerState = function(state)
-			Client.store = Rodux.Store.new(require(PlayerScripts:WaitForChild("clientReducer")), state, {
-				Rodux.thunkMiddleware,
-			})
-
-			-- player is ready, start all modules
-			callOnAll(Client.modules,"start",Client)
-		end,
-		storeAction = function(action)
-			if Client.store ~= nil then
-				Client.store:dispatch(action)
-			end
-		end,
-		coinRespawn = function(coinSpawn)
-			self:getModule("Coins"):spawnCoin(coinSpawn)
-		end
-	})
-
+	-- player is ready, start all modules
+	callOnAll(Client.modules,"start",self)
 end
 
+Client.api = ClientApi.new({
+	initialPlayerState = function(state)
+		Client.store = Rodux.Store.new(require(PlayerScripts:WaitForChild("clientReducer")), state, {
+			Rodux.thunkMiddleware,
+		})
 
-Client:load()
+		Client:load()
+	end,
+	storeAction = function(action)
+		if Client.store ~= nil then
+			Client.store:dispatch(action)
+		end
+	end,
+	coinRespawn = function(coinSpawn)
+		Client:getModule("Coins"):spawnCoin(coinSpawn)
+	end
+})
+
+Client.api:connect()

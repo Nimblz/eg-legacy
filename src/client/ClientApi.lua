@@ -1,5 +1,7 @@
--- Author: Lucien Greathouse
+-- Author: Lucien Greathouse (LPGhatguy)
 -- https://github.com/LPGhatguy/rdc-project/blob/master/src/client/ClientApi.lua
+
+-- Modifications by Austin Reuschle (Nimblz)
 
 --[[
 	This object's job is to read the common ApiSpec, which defines the protocol
@@ -19,13 +21,16 @@ local ClientApi = {}
 ClientApi.prototype = {}
 ClientApi.__index = ClientApi.prototype
 
-function ClientApi.connect(handlers)
-	assert(typeof(handlers) == "table")
-
-	local self = {}
+function ClientApi.new(handlers)
+	local self = {handlers = handlers}
 
 	setmetatable(self, ClientApi)
 
+	return self
+end
+
+function ClientApi.prototype:connect()
+	local handlers = self.handlers
 	local remotes = ReplicatedStorage:WaitForChild("Events")
 
 	for name, endpoint in pairs(ApiSpec.fromClient) do
@@ -59,8 +64,6 @@ function ClientApi.connect(handlers)
 			error(("Invalid handler %q specified!"):format(name), 2)
 		end
 	end
-
-	return self
 end
 
 return ClientApi
