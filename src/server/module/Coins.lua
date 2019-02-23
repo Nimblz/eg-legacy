@@ -41,8 +41,6 @@ function Coins:requestCoinCollect(player,coinPart)
     assert(coinPart:IsA("BasePart"), "arg 2 must be a part, got:"..tostring(coinPart))
     assert(coinSpawns[coinPart], "Invalid coin spawn")
 
-    print("Collected a coin")
-
     if not coinCollections[player][coinPart] then
         coinCollections[player][coinPart] = true
 
