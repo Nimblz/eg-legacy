@@ -108,8 +108,6 @@ function Coins:init()
     spawnAllCoins()
 
     RunService:BindToRenderStep("coins",Enum.RenderPriority.Character.Value-1,update)
-
-    print("Number of coins: ", #coinSpawns)
 end
 
 function Coins:start(client)

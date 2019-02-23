@@ -13,8 +13,9 @@ end
 
 function PlayerHandler:start(server)
     local store = server.store
+    local api = server.api
     Players.PlayerAdded:Connect(function(player)
-        store:dispatch(Actions.PLAYER_JOINED(player))
+        store:dispatch(Actions.PLAYER_JOINED(player,api))
     end)
 
     Players.PlayerRemoving:Connect(function(player)

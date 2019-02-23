@@ -2,17 +2,17 @@
 
 local PLAYER_ADD = require(script.Parent:WaitForChild("PLAYER_ADD"))
 
-return function(player)
+return function(player,api)
     return function(store)
         local saveData = {
             portals = {
-                red = true,
-                orange = false,
-                yellow = true,
-                green = false,
-                cyan = false,
-                blue = true,
-                purple = true
+                UndergroundPortal = false,
+                AutumnPortal = false,
+                MountainPortal = false,
+                ForestPortal = true,
+                TundraPortal = false,
+                OceanPortal = false,
+                SkyPortal = false
             },
 
             stats = {
@@ -35,5 +35,7 @@ return function(player)
         } -- TODO: Get real save data
 
         store:dispatch(PLAYER_ADD(player,saveData))
+
+        api:initialPlayerState(player,saveData)
     end
 end

@@ -1,9 +1,12 @@
-local reducerRoot = script.Parent
+local reducerRoot = script
 
 local stats = require(reducerRoot:WaitForChild("stats"))
+local portals = require(reducerRoot:WaitForChild("portals"))
 
 return function(state,action)
+    state = state or {}
     return {
-        stats = stats(state.stats,action)
+        portals = portals(state.portals,action),
+        stats = stats(state.stats,action),
     }
 end

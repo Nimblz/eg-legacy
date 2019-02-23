@@ -36,9 +36,12 @@ function Client:load()
 
 	Client.api = ClientApi.connect({
 		initialPlayerState = function(state)
-			Client.store = Rodux.createStore(require(PlayerScripts:WaitForChild("clientReducer"), state, {
+			Client.store = Rodux.Store.new(require(PlayerScripts:WaitForChild("clientReducer")), state, {
 				Rodux.thunkMiddleware,
-			}))
+			})
+
+			-- player is ready, start all modules
+			callOnAll(Client.modules,"start",Client)
 		end,
 		storeAction = function(action)
 			if Client.store ~= nil then
@@ -50,8 +53,6 @@ function Client:load()
 		end
 	})
 
-	-- start all modules
-	callOnAll(Client.modules,"start",Client)
 end
 
 

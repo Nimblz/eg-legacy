@@ -16,18 +16,23 @@ local function Teleport(whereTo)
 	end
 end
 
-local function CreatePortal(part1,part2)
+local function CreatePortal(part1,part2,active)
 	local debounce = false
-	local active = false
+	local active = active or false
+
+	if active then
+		part1.Transparency = 0.5
+		part2.Transparency = 0.5
+	end
 
 	part1.Touched:Connect( function(hit)
 		if hit.Parent == LocalPlayer.Character then
 			if not debounce and active then
 				debounce = true
-				Teleport(part2.CFrame * CFrame.new(0,0,-2))
+				Teleport(part2.CFrame * CFrame.new(0,0,-5))
 			end
-		wait(0.5)
-		debounce = false
+			wait(0.5)
+			debounce = false
 		end
 	end)
 
@@ -41,7 +46,7 @@ local function CreatePortal(part1,part2)
 					part1.Transparency = 0.5
 					part2.Transparency = 0.5
 				else
-					Teleport(part1.CFrame * CFrame.new(0,0,-2))
+					Teleport(part1.CFrame * CFrame.new(0,0,-5))
 				end
 
 				wait(0.5)
@@ -51,14 +56,21 @@ local function CreatePortal(part1,part2)
 	end)
 end
 
-function Portals:init()
+function Portals:start(client)
     for _,awayPortal in pairs(portals2:GetChildren()) do
         local homePortal = portals1:FindFirstChild(awayPortal.Name)
 
         local homePortalTrigger = homePortal:FindFirstChild("PortalPart")
-        local awayPortalTrigger = awayPortal:FindFirstChild("PortalPart")
+		local awayPortalTrigger = awayPortal:FindFirstChild("PortalPart")
 
-        CreatePortal(homePortalTrigger,awayPortalTrigger)
+		local state = client.store:getState()
+		local portalActive = false
+
+		if state and state.portals then
+			portalActive = state.portals[awayPortal.Name] or false
+		end
+
+        CreatePortal(homePortalTrigger,awayPortalTrigger,portalActive)
 	end
 end
 
