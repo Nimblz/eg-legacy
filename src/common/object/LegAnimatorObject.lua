@@ -105,12 +105,12 @@ function LegAnimator:walkStep(XZVel)
 	end
 
 	if not self.LeftForward then
-		if (RightLeg.Planted and AvgAngle < 0) or AvgDist > Humanoid.HipHeight*4 then
+		if (RightLeg.Planted and AvgAngle <= 0) or AvgDist > Humanoid.HipHeight*4 then
 			setupFootTween(LeftLeg,LeftRayPos,TimeToReachRightRayPos/2)
 			self.LeftForward = true
 		end
 	else
-		if (LeftLeg.Planted and AvgAngle < 0) or AvgDist > Humanoid.HipHeight*4  then
+		if (LeftLeg.Planted and AvgAngle <= 0) or AvgDist > Humanoid.HipHeight*4  then
 			setupFootTween(RightLeg,RightRayPos,TimeToReachLeftRayPos/2)
 			self.LeftForward = false
 		end
@@ -124,7 +124,7 @@ function LegAnimator:step(et,dt)
 
 	local Rig = self.Rig
 	local Root = self.Root
-	local Torso = Rig:FindFirstChild("Torso") or Rig:FindFirstChild("LowerTorso")
+	local Torso = Rig:WaitForChild("Torso")
 	local Humanoid = self.Humanoid
 
 	local XZVel = (Root.Velocity*Vector3.new(1,0,1))
@@ -189,7 +189,9 @@ function LegAnimator:step(et,dt)
 	TargetC0CF = TargetC0CF * CFrame.fromAxisAngle(Vector3.new(0,1,0),SinVal*(XZSpeed/(Humanoid.WalkSpeed*6)))
 	end
 	TargetC0CF = TargetC0CF * CFrame.new(0,SinVal*SinVal*-0.33*((XZSpeed+3)/Humanoid.WalkSpeed),0)
-	Torso.Root.C0 = Torso.Root.C0:lerp(TargetC0CF,0.08)
+	if Torso:FindFirstChild("Root") then
+		Torso.Root.C0 = Torso.Root.C0:lerp(TargetC0CF,0.08)
+	end
 end
 
 return LegAnimator
