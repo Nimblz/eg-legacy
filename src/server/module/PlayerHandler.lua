@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 
 local server = script.Parent.Parent
 
-local Thunks = require(server:WaitForChild("thunks"))
+local Thunks = require(server:WaitForChild("Thunks"))
 
 local PlayerHandler = {}
 
