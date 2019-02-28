@@ -49,7 +49,7 @@ local function cannonShoot(model)
             local rootPart = character.PrimaryPart
             local humanoid = character.Humanoid
 
-            humanoid:SetState(Enum.HumanoidStateType.Sitting)
+            humanoid:ChangeState(Enum.HumanoidStateType.Seated)
 
             local bodyPosition = Instance.new("BodyPosition",rootPart)
             bodyPosition.Position = cannon.Position
