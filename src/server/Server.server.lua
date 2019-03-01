@@ -10,6 +10,7 @@ local moduleBin = ServerScriptService:WaitForChild("module")
 local Rodux = require(lib:WaitForChild("Rodux"))
 local ServerApi = require(ServerScriptService:WaitForChild("ServerApi"))
 local Dictionary = require(common.Dictionary)
+local Actions = require(common:WaitForChild("Actions"))
 
 local callOnAll = require(commonUtil:WaitForChild("callOnAll"))
 local serverReducer = require(ServerScriptService:WaitForChild("serverReducer"))
@@ -73,6 +74,10 @@ function Server:load()
 	Server.api = ServerApi.create({
 		requestCoinCollect = function(player,coinSpawn)
 			self:getModule("Coins"):requestCoinCollect(player,coinSpawn)
+		end,
+
+		portalActivate = function(player,portalName)
+			self.store:dispatch(Actions.PORTAL_ACTIVATE(player,portalName))
 		end
 	})
 	Server.api:connect()

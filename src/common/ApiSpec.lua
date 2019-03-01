@@ -28,6 +28,11 @@ return {
             arguments = t.tuple(
                 t.Instance
             )
+		},
+		portalActivate = {
+            arguments = t.tuple(
+                t.string
+            )
         }
 	},
 	fromServer = {

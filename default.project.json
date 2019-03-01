@@ -26,6 +26,9 @@
         },
         "t": {
           "$path": "lib/t/lib/t.lua"
+        },
+        "PlayerDataStore": {
+          "$path": "lib/playerdatastore/lib/PlayerDataStore.lua"
         }
       }
     },

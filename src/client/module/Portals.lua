@@ -16,37 +16,41 @@ local function Teleport(whereTo)
 	end
 end
 
-local function CreatePortal(part1,part2,active)
+local function CreatePortal(homePortal,awayPortal,active,api)
+	local homePortalTrigger = homePortal:FindFirstChild("PortalPart")
+	local awayPortalTrigger = awayPortal:FindFirstChild("PortalPart")
+
 	local debounce = false
 	local active = active or false
 
 	if active then
-		part1.Transparency = 0.5
-		part2.Transparency = 0.5
+		homePortalTrigger.Transparency = 0.5
+		awayPortalTrigger.Transparency = 0.5
 	end
 
-	part1.Touched:Connect( function(hit)
+	homePortalTrigger.Touched:Connect( function(hit)
 		if hit.Parent == LocalPlayer.Character then
 			if not debounce and active then
 				debounce = true
-				Teleport(part2.CFrame * CFrame.new(0,0,-5))
+				Teleport(awayPortalTrigger.CFrame * CFrame.new(0,0,-5))
 			end
 			wait(0.5)
 			debounce = false
 		end
 	end)
 
-	part2.Touched:Connect( function(hit)
+	awayPortalTrigger.Touched:Connect( function(hit)
 		if hit.Parent == LocalPlayer.Character then
 			if not debounce then
 				debounce = true
 
 				if not active then
 					active = true
-					part1.Transparency = 0.5
-					part2.Transparency = 0.5
+					homePortalTrigger.Transparency = 0.5
+					awayPortalTrigger.Transparency = 0.5
+					api:portalActivate(awayPortal.Name)
 				else
-					Teleport(part1.CFrame * CFrame.new(0,0,-5))
+					Teleport(homePortalTrigger.CFrame * CFrame.new(0,0,-5))
 				end
 
 				wait(0.5)
@@ -60,8 +64,6 @@ function Portals:start(client)
     for _,awayPortal in pairs(portals2:GetChildren()) do
         local homePortal = portals1:FindFirstChild(awayPortal.Name)
 
-        local homePortalTrigger = homePortal:FindFirstChild("PortalPart")
-		local awayPortalTrigger = awayPortal:FindFirstChild("PortalPart")
 
 		local state = client.store:getState()
 		local portalActive = false
@@ -70,7 +72,7 @@ function Portals:start(client)
 			portalActive = state.portals[awayPortal.Name] or false
 		end
 
-        CreatePortal(homePortalTrigger,awayPortalTrigger,portalActive)
+        CreatePortal(homePortal,awayPortal,portalActive,client.api)
 	end
 end
 

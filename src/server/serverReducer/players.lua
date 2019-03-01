@@ -16,7 +16,13 @@ return (function(state,action)
     if action.type == "COIN_ADD" then
         local player = action.player
         state[player].stats = state[player].stats or {}
-        state[player].stats.coins = state[player].stats.coins + action.coins
+        state[player].stats.coins = (state[player].stats.coins or 0) + action.coins
+    end
+
+    if action.type == "COIN_REMOVE" then
+        local player = action.player
+        state[player].stats = state[player].stats or {}
+        state[player].stats.coins = (state[player].stats.coins or 0) - action.coins
     end
 
     if action.type == "PORTAL_ACTIVATE" then
