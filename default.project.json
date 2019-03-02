@@ -29,6 +29,9 @@
         },
         "PlayerDataStore": {
           "$path": "lib/playerdatastore/lib/PlayerDataStore.lua"
+        },
+        "Signal": {
+          "$path": "lib/signal/lib/Signal.lua"
         }
       }
     },

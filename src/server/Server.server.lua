@@ -24,6 +24,7 @@ Server.modules = {
 	TimeBadges = require(moduleBin:WaitForChild("TimeBadges")),
 	CharacterHandler = require(moduleBin:WaitForChild("CharacterHandler")),
 	Coins = require(moduleBin:WaitForChild("Coins")),
+	AchievementAwarder = require(moduleBin:WaitForChild("AchievementAwarder")),
 	LegacyCustomization = require(moduleBin:WaitForChild("LegacyCustomization")),
 }
 
@@ -68,7 +69,7 @@ function Server:load()
 	Server.store = Rodux.Store.new(serverReducer, nil, {
 		Rodux.thunkMiddleware,
 		networkMiddleware(replicate),
-		--Rodux.loggerMiddleware,
+		Rodux.loggerMiddleware,
 	})
 
 	Server.api = ServerApi.create({

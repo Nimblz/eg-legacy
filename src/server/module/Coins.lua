@@ -5,8 +5,10 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local common = ReplicatedStorage:WaitForChild("common")
+local lib = ReplicatedStorage:WaitForChild("lib")
 
 local Actions = require(common:WaitForChild("Actions"))
+local Signal = require(lib:WaitForChild("Signal"))
 
 local RESPAWN_TIME = 120 -- secs it takes for a coin to reappear
 
@@ -43,12 +45,19 @@ function Coins:requestCoinCollect(player,coinPart)
         coinCollections[player][coinPart] = true
 
         store:dispatch(Actions.COIN_ADD(player,1))
+        local state = store:getState()
+        local playerState = state.players[player]
+        if playerState then
+            local coinCount = (playerState.stats or {}).coins
+            Coins.coinCollected:fire(player,coinCount)
+        end
 
         bindCoinRespawn(player,coinPart)
     end
 end
 
 function Coins:init()
+    Coins.coinCollected = Signal.new()
 
     for _,v in pairs(CollectionService:GetTagged("coin_spawn")) do
         coinSpawns[v] = v
@@ -63,9 +72,7 @@ function Coins:init()
 end
 
 function Coins:start(server)
-
     store = server.store
-
     api = server.api
 end
 
