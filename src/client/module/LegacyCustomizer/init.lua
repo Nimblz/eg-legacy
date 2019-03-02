@@ -24,14 +24,14 @@ local Props = {
 	Colors = {
 		BrickColor.new("White").Color,
 		Color3.fromRGB(255, 140, 157), -- Pastel Red (not pink)
-		Color3.fromRGB(255, 199, 155),
-		Color3.fromRGB(255, 240, 161),
-		Color3.fromRGB(163, 245, 108),
-		Color3.fromRGB(121, 216, 143),
-		Color3.fromRGB(159, 243, 233),
-		Color3.fromRGB(200, 197, 255),
-		Color3.fromRGB(210, 172, 232),
-		Color3.fromRGB(255, 171, 251),
+		Color3.fromRGB(255, 181, 97), -- orang
+		Color3.fromRGB(255, 232, 101), -- yeller
+		Color3.fromRGB(163, 245, 108), -- lime
+		Color3.fromRGB(121, 216, 143), -- green
+		Color3.fromRGB(159, 243, 233), -- cyan
+		Color3.fromRGB(200, 197, 255), -- indego
+		Color3.fromRGB(210, 172, 232), -- violet
+		Color3.fromRGB(255, 171, 251), -- pank
 	},
 	Enabled = false
 }
