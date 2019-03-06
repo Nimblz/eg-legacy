@@ -1,6 +1,7 @@
 -- Todo: Refactor E V E R Y T H A N G
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
 
 local common = ReplicatedStorage:WaitForChild("common")
 local object = common:WaitForChild("object")
@@ -10,6 +11,10 @@ local IKUtil = require(util:WaitForChild("IKUtil"))
 local Leg = require(object:WaitForChild("Leg"))
 
 local DOWN = Vector3.new(0,-1,0)
+
+local WHITELIST = {
+	Workspace:WaitForChild("staticworld")
+}
 
 local LegAnimator = {}
 
@@ -74,43 +79,38 @@ function LegAnimator:walkStep(XZVel)
 
 	local StepVec = (((XZVel*2)/Humanoid.WalkSpeed) * Humanoid.HipHeight)
 	local AvgFootPosition = LeftLeg.FootTarget:lerp(RightLeg.FootTarget,0.5)
-	local LeftFootRayOrigin = (Root.CFrame * LeftLeg.Hip.C0).p + StepVec
-	local RightFootRayOrigin = (Root.CFrame * RightLeg.Hip.C0).p + StepVec
+	local LeftFootRayOrigin = (Root.CFrame * LeftLeg.Hip.C0).p + StepVec + Vector3.new(0,3,0)
+	local RightFootRayOrigin = (Root.CFrame * RightLeg.Hip.C0).p + StepVec + Vector3.new(0,3,0)
 
-	local TimeToReachAvgPos = (Rig.PrimaryPart.Position * Vector3.new(1,0,1) - AvgFootPosition * Vector3.new(1,0,1)).Magnitude / XZVel.Magnitude
+	local LeftFootRay = Ray.new(LeftFootRayOrigin,DOWN*Humanoid.HipHeight*3)
+	local RightFootRay = Ray.new(RightFootRayOrigin,DOWN*Humanoid.HipHeight*3)
 
-	local LeftFootRay = Ray.new(LeftFootRayOrigin,DOWN*Humanoid.HipHeight*2)
-	local RightFootRay = Ray.new(RightFootRayOrigin,DOWN*Humanoid.HipHeight*2)
-
-	local LeftRayHit,LeftRayPos,LeftRayNormal = workspace:FindPartOnRayWithIgnoreList(LeftFootRay,{Rig})
-	local RightRayHit,RightRayPos,RightRayNormal = workspace:FindPartOnRayWithIgnoreList(RightFootRay,{Rig})
+	local _,LeftRayPos,_ = workspace:FindPartOnRayWithWhitelist(LeftFootRay,WHITELIST)
+	local _,RightRayPos,_ = workspace:FindPartOnRayWithWhitelist(RightFootRay,WHITELIST)
 
 	local TimeToReachLeftRayPos = (Rig.PrimaryPart.Position * Vector3.new(1,0,1) - LeftRayPos * Vector3.new(1,0,1)).Magnitude / XZVel.Magnitude
 	local TimeToReachRightRayPos = (Rig.PrimaryPart.Position * Vector3.new(1,0,1) - RightRayPos * Vector3.new(1,0,1)).Magnitude / XZVel.Magnitude
 
-	local LeftFootAngle = XZVel.Unit:Dot((LeftLeg.FootTarget - (Root.Position)).Unit)
-	local RightFootAngle = XZVel.Unit:Dot((RightLeg.FootTarget - (Root.Position)).Unit)
+	TimeToReachLeftRayPos = math.clamp(TimeToReachLeftRayPos,0,XZVel.Magnitude*Humanoid.HipHeight + 0.3)
+	TimeToReachRightRayPos = math.clamp(TimeToReachRightRayPos,0,XZVel.Magnitude*Humanoid.HipHeight + 0.3)
 
-	local AvgAngle = XZVel.Unit:Dot((AvgFootPosition - (Root.Position)).Unit)
-	local AvgDist = (AvgFootPosition - Rig.PrimaryPart.Position).Magnitude
+	local Infront = Root.CFrame * CFrame.new(0,0,-1)
+	local AvgAngle = XZVel.Unit:Dot((AvgFootPosition - (Infront.p)).Unit)
 
-
-	if (XZVel.Magnitude < 3) then
-		if (LeftLeg.FootTarget - LeftRayPos).Magnitude > 0.5 then
+	if (XZVel.Magnitude < 1) then
+		if (LeftLeg.FootTarget - LeftRayPos).Magnitude > 0.7 then
 			setupFootTween(LeftLeg,LeftRayPos,0.2*(Humanoid.HipHeight/5))
 		end
-		if (RightLeg.FootTarget - RightRayPos).Magnitude > 0.5 then
+		if (RightLeg.FootTarget - RightRayPos).Magnitude > 0.7 then
 			setupFootTween(RightLeg,RightRayPos,0.2*(Humanoid.HipHeight/5))
 		end
-	end
-
-	if not self.LeftForward then
-		if (RightLeg.Planted and AvgAngle <= 0) or AvgDist > Humanoid.HipHeight*4 then
+	elseif not self.LeftForward then
+		if (RightLeg.Planted and LeftLeg.Planted and math.abs(AvgAngle) >= 0) then
 			setupFootTween(LeftLeg,LeftRayPos,TimeToReachRightRayPos/2)
 			self.LeftForward = true
 		end
 	else
-		if (LeftLeg.Planted and AvgAngle <= 0) or AvgDist > Humanoid.HipHeight*4  then
+		if (LeftLeg.Planted and RightLeg.Planted and math.abs(AvgAngle) >= 0) then
 			setupFootTween(RightLeg,RightRayPos,TimeToReachLeftRayPos/2)
 			self.LeftForward = false
 		end
@@ -166,7 +166,7 @@ function LegAnimator:step(et,dt)
 	local LeftHipCF = Torso.CFrame * LeftLeg.OrigHipC0
 	local LeftHipPlane, LeftHipAngle, LeftKneeAngle = IKUtil.solveIK(
 		LeftHipCF, LeftLeg.FootPos,
-		Rig.UpperLeftLeg.Size.Y, Rig.LowerLeftLeg.Size.Y
+		Rig.UpperLeftLeg.Size.Y-0.3, Rig.LowerLeftLeg.Size.Y
 	)
 
 	LeftLeg.Hip.C0 = Torso.CFrame:toObjectSpace(LeftHipPlane) * CFrame.Angles(LeftHipAngle, 0, 0)
@@ -175,7 +175,7 @@ function LegAnimator:step(et,dt)
 	local RightHipCF = Torso.CFrame * RightLeg.OrigHipC0
 	local RightHipPlane, RightHipAngle, RightKneeAngle = IKUtil.solveIK(
 		RightHipCF, RightLeg.FootPos,
-		Rig.UpperRightLeg.Size.Y, Rig.LowerRightLeg.Size.Y
+		Rig.UpperRightLeg.Size.Y-0.3, Rig.LowerRightLeg.Size.Y
 	)
 
 	RightLeg.Hip.C0 = Torso.CFrame:toObjectSpace(RightHipPlane) * CFrame.Angles(RightHipAngle, 0, 0)
