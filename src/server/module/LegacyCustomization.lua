@@ -1,4 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
 
 local common = ReplicatedStorage:WaitForChild("common")
 local util = common:WaitForChild("util")
@@ -32,6 +33,14 @@ function LegacyCustomization:init()
                     v.Color = color
                 end
             end
+        end
+    end)
+
+    Workspace.ChildAdded:Connect(function(newChild)
+        if newChild:IsA("Accessory") then
+            newChild:ClearAllChildren()
+            wait(0)
+            newChild:Destroy()
         end
     end)
 end
