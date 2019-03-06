@@ -69,7 +69,7 @@ function Server:load()
 	Server.store = Rodux.Store.new(serverReducer, nil, {
 		Rodux.thunkMiddleware,
 		networkMiddleware(replicate),
-		Rodux.loggerMiddleware,
+		--Rodux.loggerMiddleware,
 	})
 
 	Server.api = ServerApi.create({
