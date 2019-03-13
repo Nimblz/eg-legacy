@@ -24,6 +24,9 @@
         "RoactRodux": {
           "$path": "lib/roact-rodux/lib"
         },
+        "Otter": {
+          "$path": "lib/otter/lib"
+        },
         "t": {
           "$path": "lib/t/lib/t.lua"
         },
