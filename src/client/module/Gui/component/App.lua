@@ -32,7 +32,7 @@ function App:render()
                 SortOrder = Enum.SortOrder.LayoutOrder,
                 VerticalAlignment = Enum.VerticalAlignment.Center,
             }),
-            coinCounter = StatCounter({
+            coinCounter = Roact.createElement(StatCounter,{
                 iconImage = "rbxassetid://1025945542",
                 statName = "Coins: ",
                 value = self.props.coins

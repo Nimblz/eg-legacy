@@ -92,6 +92,7 @@ local function spawnAllCoins()
         coinSpawn.Transparency = 1
         spawnCoin(coinSpawn)
     end
+    print("Total coin entities: "..#coinSpawns)
 end
 
 function Coins:spawnCoin(spawnPart)
