@@ -21,7 +21,6 @@ local Server = {}
 Server.modules = {
 	PlayerHandler = require(moduleBin:WaitForChild("PlayerHandler")),
 	Cashier = require(moduleBin:WaitForChild("Cashier")),
-	TimeBadges = require(moduleBin:WaitForChild("TimeBadges")),
 	CharacterHandler = require(moduleBin:WaitForChild("CharacterHandler")),
 	Coins = require(moduleBin:WaitForChild("Coins")),
 	AchievementAwarder = require(moduleBin:WaitForChild("AchievementAwarder")),

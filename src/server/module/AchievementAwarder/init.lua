@@ -1,4 +1,4 @@
-
+local BadgeService = game:GetService("BadgeService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -27,6 +27,14 @@ local function achievementAward(server, player,achievement)
             server.store:dispatch(Actions.ACHIEVEMENT_GET(player,achievement.id))
             if achievement.onAward then
                 achievement.onAward(server,player)
+            end
+            if achievement.badgeId then
+                if not BadgeService:UserHasBadgeAsync(player.UserId, achievement.badgeId) then
+                    print("Awarded",achievement.badgeId,"to",player)
+                    BadgeService:AwardBadge(player.UserId,achievement.badgeId)
+                else
+                    print("User already has badge.")
+                end
             end
             AchievementAwarder.achievementGet:fire(player,achievement)
         end
