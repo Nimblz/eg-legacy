@@ -1,12 +1,7 @@
-local reducerRoot = script
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local common = ReplicatedStorage:WaitForChild("common")
+local commonReducers = common:WaitForChild("commonReducers")
 
-local stats = require(reducerRoot:WaitForChild("stats"))
-local portals = require(reducerRoot:WaitForChild("portals"))
+local playerState = require(commonReducers:WaitForChild("playerState"))
 
-return function(state,action)
-    state = state or {}
-    return {
-        portals = portals(state.portals,action),
-        stats = stats(state.stats,action),
-    }
-end
+return playerState

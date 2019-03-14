@@ -4,8 +4,9 @@ local achievements = require(script.Parent:WaitForChild("achievements"))
 return (function(state,action)
     state = state or {}
 
-    state.coins = coins(state.coins,action)
-    state.achievements = achievements(state.achievements,action)
-
-    return state
+    return {
+        coins = coins(state.coins,action),
+        achievements = achievements(state.achievements,action),
+        coinCollectionRange = 5,
+    }
 end)
