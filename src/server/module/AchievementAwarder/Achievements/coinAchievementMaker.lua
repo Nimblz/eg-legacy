@@ -28,8 +28,5 @@ return function(quantity,badgeId)
             end)
         end),
         queryComplete = (function(server,player) queryComplete(server,player,quantity) end),
-        onAward = (function(server,player)
-            print("your winner!")
-        end)
     }
 end
