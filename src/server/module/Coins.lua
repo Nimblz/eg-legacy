@@ -11,6 +11,7 @@ local Actions = require(common:WaitForChild("Actions"))
 local Signal = require(lib:WaitForChild("Signal"))
 
 local RESPAWN_TIME = 120 -- secs it takes for a coin to reappear
+local COLLECTION_RANGE_PADDING = 3 -- padding for collection range
 
 local store
 local api
