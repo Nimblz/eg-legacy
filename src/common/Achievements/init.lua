@@ -27,6 +27,7 @@ local Achievements = {
         "an hour straight in eg! you can stop playing! there's not even anything fun to do!",
         2124454470
     ),
+    All_Portals = require(script:WaitForChild("All_Portals")),
 }
 --[[ times
     [1] = 2124454471,

@@ -27,6 +27,6 @@ return function(quantity,badgeId)
                 end
             end)
         end),
-        queryComplete = (function(server,player) queryComplete(server,player,quantity) end),
+        queryComplete = (function(server,player) return queryComplete(server,player,quantity) end),
     }
 end

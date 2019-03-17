@@ -8,7 +8,7 @@ local lib = ReplicatedStorage:WaitForChild("lib")
 local Actions = require(common:WaitForChild("Actions"))
 local Signal = require(lib:WaitForChild("Signal"))
 
-local Achievements = require(script:WaitForChild("Achievements"))
+local Achievements = require(common:WaitForChild("Achievements"))
 
 local AchievementAwarder = {}
 AchievementAwarder.achievements = {}
@@ -28,15 +28,13 @@ local function achievementAward(server, player,achievement)
             if achievement.onAward then
                 achievement.onAward(server,player)
             end
-            if achievement.badgeId then
-                if not BadgeService:UserHasBadgeAsync(player.UserId, achievement.badgeId) then
-                    print("Awarded",achievement.badgeId,"to",player)
-                    BadgeService:AwardBadge(player.UserId,achievement.badgeId)
-                else
-                    print("User already has badge.")
-                end
-            end
             AchievementAwarder.achievementGet:fire(player,achievement)
+        end
+        if achievement.badgeId then
+            if not BadgeService:UserHasBadgeAsync(player.UserId, achievement.badgeId) then
+                print("Awarded",achievement.badgeId,"to",player)
+                BadgeService:AwardBadge(player.UserId,achievement.badgeId)
+            end
         end
     end
 end
@@ -53,6 +51,7 @@ local function playerJoined(server,player)
     -- check for and award any achievments that the player should have.
     for _, achievement in pairs(AchievementAwarder.achievements) do
         if achievement.queryComplete(server,player) then
+            print(("Loaded player %s meets requirements for achievement: %s"):format(player.Name,achievement.name))
             achievementAward(server,player,achievement)
         end
     end
@@ -60,15 +59,15 @@ end
 
 function AchievementAwarder:start(server)
 
-    Players.PlayerAdded:connect(function(player)
-        playerJoined(server,player)
-    end)
-
-    -- init badges
+    -- init cheevos
     for id, achievement in pairs(Achievements) do
         initAchievement(achievement,server)
         AchievementAwarder.achievements[id] = achievement
     end
+
+    server:getModule("PlayerHandler").playerLoaded:connect(function(player)
+        playerJoined(server,player)
+    end)
 end
 
 return AchievementAwarder
