@@ -3,6 +3,7 @@ local portals = require(script.Parent:WaitForChild("portals"))
 
 return (function(state,action)
     state = state or {}
+    local newState = {}
 
     -- server TODO: break this into two reducers?
     if action.type == "PLAYER_ADD" then -- load save data
@@ -14,8 +15,8 @@ return (function(state,action)
     end
 
     -- actual common stuff
-    state.stats = stats(state.stats,action)
-    state.portals = portals(state.portals,action)
+    newState.stats = stats(state.stats,action)
+    newState.portals = portals(state.portals,action)
 
-    return state
+    return newState
 end)

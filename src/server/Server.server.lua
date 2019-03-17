@@ -6,6 +6,7 @@ local common = ReplicatedStorage:WaitForChild("common")
 local commonUtil = common:WaitForChild("util")
 local lib = ReplicatedStorage:WaitForChild("lib")
 local moduleBin = ServerScriptService:WaitForChild("module")
+local middleware = ServerScriptService:WaitForChild("middleware")
 
 local Rodux = require(lib:WaitForChild("Rodux"))
 local ServerApi = require(ServerScriptService:WaitForChild("ServerApi"))
@@ -14,7 +15,8 @@ local Actions = require(common:WaitForChild("Actions"))
 
 local callOnAll = require(commonUtil:WaitForChild("callOnAll"))
 local serverReducer = require(ServerScriptService:WaitForChild("serverReducer"))
-local networkMiddleware = require(ServerScriptService:WaitForChild("networkMiddleware"))
+local networkMiddleware = require(middleware:WaitForChild("networkMiddleware"))
+local dataSaveMiddleware = require(middleware:WaitForChild("dataSaveMiddleware"))
 
 local Server = {}
 
@@ -24,6 +26,7 @@ Server.modules = {
 	CharacterHandler = require(moduleBin:WaitForChild("CharacterHandler")),
 	Coins = require(moduleBin:WaitForChild("Coins")),
 	AchievementAwarder = require(moduleBin:WaitForChild("AchievementAwarder")),
+	PortalsListener = require(moduleBin:WaitForChild("PortalsListener")),
 	LegacyCustomization = require(moduleBin:WaitForChild("LegacyCustomization")),
 }
 
@@ -68,6 +71,7 @@ function Server:load()
 	Server.store = Rodux.Store.new(serverReducer, nil, {
 		Rodux.thunkMiddleware,
 		networkMiddleware(replicate),
+		dataSaveMiddleware,
 		--Rodux.loggerMiddleware,
 	})
 
@@ -78,6 +82,7 @@ function Server:load()
 
 		portalActivate = function(player,portalName)
 			self.store:dispatch(Actions.PORTAL_ACTIVATE(player,portalName))
+			self:getModule("PortalsListener"):portalActivate(player,portalName)
 		end
 	})
 	Server.api:connect()

@@ -1,13 +1,19 @@
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local source = script.Parent.Parent
+local lib = ReplicatedStorage:WaitForChild("lib")
 
 local Thunks = require(source:WaitForChild("Thunks"))
 
+local Signal = require(lib:WaitForChild("Signal"))
+
 local PlayerHandler = {}
+PlayerHandler.playerLoaded = Signal.new()
 
 local function playerAdded(player,store,api)
     store:dispatch(Thunks.PLAYER_JOINED(player,api))
+    PlayerHandler.playerLoaded:fire(player)
 end
 
 local function playerLeaving(player,store)
