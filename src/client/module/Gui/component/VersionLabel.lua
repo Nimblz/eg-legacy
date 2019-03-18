@@ -1,0 +1,38 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local lib = ReplicatedStorage:WaitForChild("lib")
+local common = ReplicatedStorage:WaitForChild("common")
+local component = script.Parent
+local common_util = common:WaitForChild("util")
+
+local getTextSize = require(common_util:WaitForChild("getTextSize"))
+
+local VersionInfo = require(common:WaitForChild("VersionInfo"))
+local ShadowedTextLabel = require(component:WaitForChild("ShadowedTextLabel"))
+
+local Roact = require(lib:WaitForChild("Roact"))
+
+return function()
+
+    local currentVersion = VersionInfo:getCurrent()
+
+    local versionText = ("Version: %s (%s)"):format(currentVersion.version,currentVersion.date)
+    local labelSize = getTextSize(versionText,Enum.Font.Gotham,24)
+
+    return Roact.createElement(ShadowedTextLabel, {
+        BackgroundTransparency = 1,
+        Position = UDim2.new(0,10,1,-10),
+        AnchorPoint = Vector2.new(0,1),
+        Font = Enum.Font.Gotham,
+        TextSize = 24,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Bottom,
+        TextColor3 = Color3.fromRGB(255,255,255),
+        TextStrokeColor3 = Color3.fromRGB(0,0,0),
+        TextStrokeTransparency = 0,
+        Text = versionText,
+        Size = UDim2.new(
+            0,labelSize.X,
+            0,labelSize.Y),
+    })
+end
