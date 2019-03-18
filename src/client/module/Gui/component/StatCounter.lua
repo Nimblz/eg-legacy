@@ -72,14 +72,13 @@ function StatCounter:render()
     local valueWidth = getTextSize(props.value,props.font,props.fontSize)
 
     local children = {
-        Roact.createElement("UIListLayout",{
+        layout = Roact.createElement("UIListLayout",{
             SortOrder = Enum.SortOrder.LayoutOrder,
             FillDirection = Enum.FillDirection.Horizontal,
             VerticalAlignment = Enum.VerticalAlignment.Center,
             Padding = UDim.new(0,8),
         }),
-        ShadowedTextLabel({
-            Name = "nameLabel",
+        nameLabel = ShadowedTextLabel({
             Text = props.statName, -- :) <-- this is a smile, i hope it made you smile!
             BackgroundTransparency = 1,
             Font = props.font,
@@ -90,8 +89,7 @@ function StatCounter:render()
             LayoutOrder = 1,
             TextYAlignment = Enum.TextYAlignment.Center,
         }),
-        ShadowedTextLabel({
-            Name = "valueLabel",
+        valueLabel = ShadowedTextLabel({
             BackgroundTransparency = 1,
             Text = props.value,
             Font = props.font,

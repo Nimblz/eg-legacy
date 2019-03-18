@@ -27,6 +27,6 @@ return function(props)
     shadowProps.ZIndex = -1
 
     return Roact.createElement("TextLabel",props,{
-        Roact.createElement("TextLabel", shadowProps)
+        shadow = Roact.createElement("TextLabel", shadowProps)
     })
 end
