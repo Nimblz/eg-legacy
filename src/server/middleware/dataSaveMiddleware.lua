@@ -1,7 +1,10 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
-local PlayerDataStore = require(lib:WaitForChild("PlayerDataStore"))
+local PlayerDataStore
+if game.PlaceId ~= 0 then
+    PlayerDataStore = require(lib:WaitForChild("PlayerDataStore"))
+end
 
 return function(nextDispatch,store)
     return function(action)

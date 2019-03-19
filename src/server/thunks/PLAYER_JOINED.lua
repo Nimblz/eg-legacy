@@ -10,7 +10,11 @@ local PLAYER_ADD = Actions.PLAYER_ADD
 
 return function(player,api)
     return function(store)
-        local playerSaveTable = {}
+        local playerSaveTable = { -- test save
+            stats = {
+                coins = 250,
+            }
+        }
         if game.PlaceId ~= 0 then
             local PlayerDataStore = require(lib:WaitForChild("PlayerDataStore"))
             local saveData = PlayerDataStore:GetSaveData(player)

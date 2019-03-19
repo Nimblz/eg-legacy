@@ -6,7 +6,7 @@ local HatUtil = {}
 HatUtil.Hats = {}
 
 for _,v in pairs(HatsBin:GetChildren()) do
-	if v:IsA"BasePart" then
+	if v:IsA"BasePart" and v:FindFirstChild("HatAttachment") then
 		table.insert(HatUtil.Hats,v)
 	end
 end

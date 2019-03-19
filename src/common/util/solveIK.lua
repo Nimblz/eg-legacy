@@ -1,8 +1,4 @@
-local IKUtil = {}
-
--- https://devforum.roblox.com/t/r15-ik-foot-placement/68675/5
--- Author: WhoBloxedWho
-function IKUtil.solveIK(originCF, targetPos, l1, l2)	
+return function (originCF, targetPos, l1, l2)	
 	-- put our position into local space in regards to the originCF
 	local localized = originCF:pointToObjectSpace(targetPos)
 
@@ -41,5 +37,3 @@ function IKUtil.solveIK(originCF, targetPos, l1, l2)
 		return planeCF, -a1 + math.pi/2, -a2 + a1
 	end
 end
-
-return IKUtil

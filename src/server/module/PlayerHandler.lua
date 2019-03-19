@@ -37,4 +37,17 @@ function PlayerHandler:start(server)
 	end
 end
 
+function PlayerHandler:getLoadedPlayers(store)
+    local loadedPlayers = {}
+
+    local playerStates = store:getState().players or {}
+
+    for player,state in pairs(playerStates) do
+        print(player,state.stats.coins)
+        table.insert(loadedPlayers,player)
+    end
+
+    return loadedPlayers
+end
+
 return PlayerHandler

@@ -7,7 +7,7 @@ local common = ReplicatedStorage:WaitForChild("common")
 local object = common:WaitForChild("object")
 local util = common:WaitForChild("util")
 
-local IKUtil = require(util:WaitForChild("IKUtil"))
+local solveIK = require(util:WaitForChild("solveIK"))
 local Leg = require(object:WaitForChild("Leg"))
 
 local DOWN = Vector3.new(0,-1,0)
@@ -164,7 +164,7 @@ function LegAnimator:step(et,dt)
 	end
 
 	local LeftHipCF = Torso.CFrame * LeftLeg.OrigHipC0
-	local LeftHipPlane, LeftHipAngle, LeftKneeAngle = IKUtil.solveIK(
+	local LeftHipPlane, LeftHipAngle, LeftKneeAngle = solveIK(
 		LeftHipCF, LeftLeg.FootPos,
 		Rig.UpperLeftLeg.Size.Y-0.3, Rig.LowerLeftLeg.Size.Y
 	)
@@ -173,7 +173,7 @@ function LegAnimator:step(et,dt)
 	LeftLeg.Knee.C0 = LeftLeg.OrigKneeC0 * CFrame.Angles(LeftKneeAngle, 0, 0)
 
 	local RightHipCF = Torso.CFrame * RightLeg.OrigHipC0
-	local RightHipPlane, RightHipAngle, RightKneeAngle = IKUtil.solveIK(
+	local RightHipPlane, RightHipAngle, RightKneeAngle = solveIK(
 		RightHipCF, RightLeg.FootPos,
 		Rig.UpperRightLeg.Size.Y-0.3, Rig.LowerRightLeg.Size.Y
 	)

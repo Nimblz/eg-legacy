@@ -49,9 +49,18 @@ end
 
 local function playerJoined(server,player)
     -- check for and award any achievments that the player should have.
+    local state = server.store:getState()
+    local playerState = state.players[player] or {}
     for _, achievement in pairs(AchievementAwarder.achievements) do
-        if achievement.queryComplete(server,player) then
-            print(("Loaded player %s meets requirements for achievement: %s"):format(player.Name,achievement.name))
+        local stats = (playerState.stats or {})
+        local playerAchievements = (stats.achievements or {})
+        local missingBadge = (
+            achievement.badgeId and -- achievement has badge
+            playerAchievements[achievement.id] and -- player has earned in past
+            not BadgeService:UserHasBadgeAsync(player.UserId, achievement.badgeId) -- player has not been awarded badge
+        )
+        if achievement.queryComplete(server,player) or missingBadge then
+            print(("Loaded player %s meets requirements for: %s"):format(player.Name,achievement.name))
             achievementAward(server,player,achievement)
         end
     end
@@ -68,6 +77,10 @@ function AchievementAwarder:start(server)
     server:getModule("PlayerHandler").playerLoaded:connect(function(player)
         playerJoined(server,player)
     end)
+
+    for _,player in pairs(server:getModule("PlayerHandler"):getLoadedPlayers(server.store)) do
+        playerJoined(server,player)
+    end
 end
 
 return AchievementAwarder
