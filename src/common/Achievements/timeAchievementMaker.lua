@@ -24,6 +24,10 @@ return function(timeRequirement,name,desc,badgeId)
                 joinTimes[player] = nil
             end)
 
+            for _,player in pairs(Players:GetPlayers()) do
+                joinTimes[player] = tick()
+            end
+
             spawn(function()
                 while true do
                     for _,player in pairs(Players:GetPlayers()) do
