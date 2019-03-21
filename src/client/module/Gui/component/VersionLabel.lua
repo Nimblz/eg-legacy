@@ -50,10 +50,6 @@ function VersionLabel:render()
     })
 end
 
-local function mapStateToProps(state,props)
-    return {}
-end
-
 local function mapDispatchToProps(dispatch)
     return {
         onClick = function(props)
@@ -68,6 +64,6 @@ local function mapDispatchToProps(dispatch)
     }
 end
 
-VersionLabel = RoactRodux.connect(mapStateToProps,mapDispatchToProps)(VersionLabel)
+VersionLabel = RoactRodux.connect(nil,mapDispatchToProps)(VersionLabel)
 
 return VersionLabel

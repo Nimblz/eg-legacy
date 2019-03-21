@@ -41,10 +41,6 @@ function InventoryView:render()
     end
 end
 
-local function mapStateToProps(state,props)
-    return {}
-end
-
 local function mapDispatchToProps(dispatch)
     return {
         close = function()
@@ -53,6 +49,6 @@ local function mapDispatchToProps(dispatch)
     }
 end
 
-InventoryView = RoactRodux.connect(mapStateToProps,mapDispatchToProps)(InventoryView)
+InventoryView = RoactRodux.connect(nil,mapDispatchToProps)(InventoryView)
 
 return InventoryView

@@ -82,10 +82,6 @@ function SideMenu:render()
     }, menuButtons)
 end
 
-local function mapStateToProps(state,props)
-    return {}
-end
-
 local function mapDispatchToProps(dispatch)
     return {
         menuButtonPressed = function(viewName,props)
@@ -98,6 +94,6 @@ local function mapDispatchToProps(dispatch)
     }
 end
 
-SideMenu = RoactRodux.connect(mapStateToProps,mapDispatchToProps)(SideMenu)
+SideMenu = RoactRodux.connect(nil,mapDispatchToProps)(SideMenu)
 
 return SideMenu

@@ -55,8 +55,4 @@ local function mapStateToProps(state,props)
     }
 end
 
-local function mapDispatchToProps(dispatch)
-    return {}
-end
-
-return RoactRodux.connect(mapStateToProps,mapDispatchToProps)(App)
+return RoactRodux.connect(mapStateToProps,nil)(App)

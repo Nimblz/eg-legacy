@@ -41,10 +41,6 @@ function SettingsView:render()
     end
 end
 
-local function mapStateToProps(state,props)
-    return {}
-end
-
 local function mapDispatchToProps(dispatch)
     return {
         close = function()
@@ -53,6 +49,6 @@ local function mapDispatchToProps(dispatch)
     }
 end
 
-SettingsView = RoactRodux.connect(mapStateToProps,mapDispatchToProps)(SettingsView)
+SettingsView = RoactRodux.connect(nil,mapDispatchToProps)(SettingsView)
 
 return SettingsView

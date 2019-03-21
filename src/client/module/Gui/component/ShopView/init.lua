@@ -41,10 +41,6 @@ function ShopView:render()
     end
 end
 
-local function mapStateToProps(state,props)
-    return {}
-end
-
 local function mapDispatchToProps(dispatch)
     return {
         close = function()
@@ -53,6 +49,6 @@ local function mapDispatchToProps(dispatch)
     }
 end
 
-ShopView = RoactRodux.connect(mapStateToProps,mapDispatchToProps)(ShopView)
+ShopView = RoactRodux.connect(nil,mapDispatchToProps)(ShopView)
 
 return ShopView

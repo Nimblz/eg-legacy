@@ -41,10 +41,6 @@ function ChangelogView:render()
     end
 end
 
-local function mapStateToProps(state,props)
-    return {}
-end
-
 local function mapDispatchToProps(dispatch)
     return {
         close = function()
@@ -53,6 +49,6 @@ local function mapDispatchToProps(dispatch)
     }
 end
 
-ChangelogView = RoactRodux.connect(mapStateToProps,mapDispatchToProps)(ChangelogView)
+ChangelogView = RoactRodux.connect(nil,mapDispatchToProps)(ChangelogView)
 
 return ChangelogView
