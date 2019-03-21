@@ -21,7 +21,15 @@ local function attachNewAnimator(rig)
 	animators[rig] = animator
 
 	humanoid.Died:Connect(function()
+		print("Removing animator for: ", rig)
 		animators[rig] = nil
+	end)
+
+	rig.AncestryChanged:Connect(function(newChild,newParent)
+		if newParent == nil then
+			print("Removing animator for: ", rig)
+			animators[rig] = nil
+		end
 	end)
 
 	return animator
@@ -47,8 +55,10 @@ end
 
 function EgLegAnimator:renderStep(elapsed,dt)
 
-	for _,animator in pairs(animators) do
-		animator:step(elapsed,dt)
+	for rig,animator in pairs(animators) do
+		if rig and rig:FindFirstChild("Torso") then
+			animator:step(elapsed,dt)
+		end
 	end
 
 end
