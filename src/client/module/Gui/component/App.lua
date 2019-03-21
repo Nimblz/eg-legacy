@@ -7,12 +7,13 @@ local Roact = require(lib:WaitForChild("Roact"))
 local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 
 local component = script.Parent
-local common_util = common:WaitForChild("util")
 
-local getTextSize = require(common_util:WaitForChild("getTextSize"))
-
-local StatCounter = require(component:WaitForChild("StatCounter"))
-local ShadowedTextLabel = require(component:WaitForChild("ShadowedTextLabel"))
+local StatsFrame = require(component:WaitForChild("StatsFrame"))
+local ChangelogView = require(component:WaitForChild("ChangelogView"))
+local SettingsView = require(component:WaitForChild("SettingsView"))
+local InventoryView = require(component:WaitForChild("InventoryView"))
+local ShopView = require(component:WaitForChild("ShopView"))
+local SideMenu = require(component:WaitForChild("SideMenu"))
 local VersionLabel = require(component:WaitForChild("VersionLabel"))
 
 local App = Roact.Component:extend("App")
@@ -26,33 +27,31 @@ function App:didMount()
 end
 
 function App:render()
-    return Roact.createElement("ScreenGui", {Name = "gameGui", ResetOnSpawn = false}, {
-        statframe = Roact.createElement("Frame", {
-            Name = "StatFrame",
-            Position = UDim2.new(0,32,0.5,0),
-            Size = UDim2.new(0,400,0,200),
-            AnchorPoint = Vector2.new(0,0.5),
-            BackgroundTransparency = 1,
-        }, {
-            layout = Roact.createElement("UIListLayout",{
-                SortOrder = Enum.SortOrder.LayoutOrder,
-                VerticalAlignment = Enum.VerticalAlignment.Center,
-            }),
+    return Roact.createElement("ScreenGui", {
+        Name = "gameGui",
+        ResetOnSpawn = false,
+        ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+    }, {
+        statframe = StatsFrame(self.props.playerState.stats),
 
-            coinCounter = Roact.createElement(StatCounter,{
-                iconImage = "rbxassetid://1025945542",
-                statName = "Coins: ",
-                value = self.props.coins
-            }),
-        }),
+        changelogView = Roact.createElement(ChangelogView, self.props),
+        settingsView = Roact.createElement(SettingsView, self.props),
+        inventoryView = Roact.createElement(InventoryView, self.props),
+        shopView = Roact.createElement(ShopView, self.props),
 
-        versionlabel = VersionLabel(),
+        sideMenu = Roact.createElement(SideMenu, self.props),
+
+        versionLabel = Roact.createElement(VersionLabel, self.props),
     })
 end
 
 local function mapStateToProps(state,props)
     return {
-        coins = state.stats.coins
+        playerState = state.playerState,
+        settings = state.settings or {}, -- not implemented yet
+
+        view = state.uiState.view,
+        catagory = state.uiState.catagory,
     }
 end
 

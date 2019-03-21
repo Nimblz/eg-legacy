@@ -1,9 +1,11 @@
+-- dont look im indecent!
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
-local component = script.Parent
+local component = script.Parent.Parent
 local common_util = common:WaitForChild("util")
 
 local getTextSize = require(common_util:WaitForChild("getTextSize"))

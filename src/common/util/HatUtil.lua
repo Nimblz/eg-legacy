@@ -27,6 +27,9 @@ function HatUtil.equipHatToPlayer(player,hat)
 
 			local NewAccessory = Instance.new("Accessory")
 			NewHandle.Name = "Handle"
+			NewHandle.Anchored = false
+			NewHandle.CanCollide = false
+			NewHandle.Massless = true
 			NewHandle.Parent = NewAccessory
 
 			Humanoid:AddAccessory(NewAccessory)

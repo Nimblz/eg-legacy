@@ -19,14 +19,32 @@ local function shallowcopy(orig)
 end
 
 return function(props)
+
+    local textProps = shallowcopy(props)
+
+    textProps.Position = UDim2.new(0,0,0,0)
+    textProps.Size = UDim2.new(1,0,1,0)
+    textProps.AnchorPoint = Vector2.new(0,0)
+    textProps.TextColor3 = textProps.TextColor3 or Color3.fromRGB(255,255,255)
+    textProps.ZIndex = 2
+
     local shadowProps = shallowcopy(props) -- quick and dirty copy
 
     shadowProps.TextColor3 = Color3.fromRGB(0,0,0)
     shadowProps.Position = UDim2.new(0,2,0,1)
-    shadowProps.AnchorPoint = Vector2.new(0,0)
-    shadowProps.ZIndex = -1
+    shadowProps.ZIndex = 1
 
-    return Roact.createElement("TextLabel",props,{
-        shadow = Roact.createElement("TextLabel", shadowProps)
+    local textLabel = Roact.createElement("TextLabel", textProps)
+    local shadowLabel = Roact.createElement("TextLabel", shadowProps)
+
+    return Roact.createElement("Frame",{
+        Position = props.Position,
+        AnchorPoint = props.AnchorPoint,
+        Size = props.Size,
+        BackgroundTransparency = 1,
+        LayoutOrder = props.LayoutOrder
+    },{
+        textLabel,
+        shadowLabel,
     })
 end

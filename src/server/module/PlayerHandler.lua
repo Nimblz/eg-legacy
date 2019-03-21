@@ -12,6 +12,7 @@ local PlayerHandler = {}
 PlayerHandler.playerLoaded = Signal.new()
 
 local function playerAdded(player,store,api)
+    print("Loading data for: ", player)
     store:dispatch(Thunks.PLAYER_JOINED(player,api))
     PlayerHandler.playerLoaded:fire(player)
 end
@@ -43,7 +44,6 @@ function PlayerHandler:getLoadedPlayers(store)
     local playerStates = store:getState().players or {}
 
     for player,state in pairs(playerStates) do
-        print(player,state.stats.coins)
         table.insert(loadedPlayers,player)
     end
 

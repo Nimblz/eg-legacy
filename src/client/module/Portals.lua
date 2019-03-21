@@ -65,7 +65,7 @@ function Portals:start(client)
         local homePortal = portals1:FindFirstChild(awayPortal.Name)
 
 
-		local state = client.store:getState()
+		local state = client.store:getState().playerState or {}
 		local portalActive = false
 
 		if state and state.portals then

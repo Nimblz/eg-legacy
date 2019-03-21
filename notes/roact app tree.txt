@@ -1,0 +1,87 @@
+heres how the ui should be structured?
+
+-- minimize component state, should only be used for animation and other self contained things.
+
+appRoot {
+    app {
+        statframe {
+            coinStatLabel
+            -- any other important stats
+        }
+        menubarframe {
+            inventorybutton -- open your inventory
+            shopbutton -- open the shop
+            homebutton -- tele back to town
+            settingsbutton -- open the settings
+
+            -- these all are just buttons that dispatch their respective actions to the player store
+            with the exception of homebutton which just teleports the player to the fountain
+        }
+        versionLabel -- label that shows current version, clicking dispatches action to open changelog
+
+        changelogWindow {
+            versionLabel {
+                header
+                body
+            }
+            ...
+        }
+
+        inventoryWindow {
+            navigationbar {
+                hats
+                faces
+                tools
+                abilities
+                color
+                material
+
+                -- shows catagories of items that can be enabled/equipped
+            }
+            content {
+                inventoryItemButton {
+                    thumbnail
+                    equipbutton
+                }
+                inventoryItemButton
+                inventoryItemButton
+                ...
+            }
+        }
+
+        shopWindow {
+            navigationbar {
+                hats
+                faces
+                tools
+                abilities
+                color
+                material
+                
+                -- shows catagories of items that can be bought
+            }
+            content {
+                shopButton {
+                    thumbnail
+                    pricelabel
+                    buybutton
+                }
+                shopButton
+                shopButton
+                ...
+            }
+        }
+
+        settingsWindow {
+            musicVolumeSlider
+            effectsVolumeSlider
+            showNamesToggle
+            keybinds { -- not shown on mobile, nothing to rebind
+                keybindLabel {
+                    actionNameLabel
+                    currentBindingButton -- click to rebind, displays current binding
+                }
+            }
+        }
+    }
+}

@@ -79,7 +79,9 @@ function AchievementAwarder:start(server)
     end)
 
     for _,player in pairs(server:getModule("PlayerHandler"):getLoadedPlayers(server.store)) do
-        playerJoined(server,player)
+        spawn(function()
+            playerJoined(server,player)
+        end)
     end
 end
 
