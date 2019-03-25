@@ -39,8 +39,10 @@ function Client:load()
 end
 
 Client.api = ClientApi.new({
-	initialPlayerState = function(state)
-		Client.store = Rodux.Store.new(require(PlayerScripts:WaitForChild("clientReducer")), state, {
+	initialPlayerState = function(playerState)
+		Client.store = Rodux.Store.new(require(PlayerScripts:WaitForChild("clientReducer")), {
+			playerState = playerState
+		}, {
 			Rodux.thunkMiddleware,
 		})
 
