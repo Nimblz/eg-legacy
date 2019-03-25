@@ -124,7 +124,10 @@ function LegAnimator:step(et,dt)
 
 	local Rig = self.Rig
 	local Root = self.Root
-	local Torso = Rig:WaitForChild("Torso")
+	local Torso = Rig:FindFirstChild("Torso")
+
+	if not Torso then return end
+
 	local Humanoid = self.Humanoid
 
 	local XZVel = (Root.Velocity*Vector3.new(1,0,1))
