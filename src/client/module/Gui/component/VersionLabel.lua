@@ -54,12 +54,10 @@ local function mapDispatchToProps(dispatch)
     return {
         onClick = function(props)
             if props.view == "changelog" then
-                print("gooh")
-                dispatch(Actions.UI_VIEW_SET("nil"))
-            else
-                print("hooh")
-                dispatch(Actions.UI_VIEW_SET("changelog")) -- :) u did it
+                dispatch(Actions.UI_VIEW_SET(nil))
+                return
             end
+            dispatch(Actions.UI_VIEW_SET("changelog"))
         end
     }
 end
