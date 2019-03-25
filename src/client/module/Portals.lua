@@ -2,6 +2,9 @@ local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
+local TELE_OFFSET = 7
+local PORTAL_DEBOUNCE = 2.5
+
 local Portals = {}
 
 local portalsBin = Workspace:WaitForChild("portals")
@@ -32,9 +35,10 @@ local function CreatePortal(homePortal,awayPortal,active,api)
 		if hit.Parent == LocalPlayer.Character then
 			if not debounce and active then
 				debounce = true
-				Teleport(awayPortalTrigger.CFrame * CFrame.new(0,0,-5))
+				wait(0.1)
+				Teleport(awayPortalTrigger.CFrame * CFrame.new(0,0,-TELE_OFFSET))
 			end
-			wait(0.5)
+			wait(PORTAL_DEBOUNCE)
 			debounce = false
 		end
 	end)
@@ -43,17 +47,17 @@ local function CreatePortal(homePortal,awayPortal,active,api)
 		if hit.Parent == LocalPlayer.Character then
 			if not debounce then
 				debounce = true
-
+				wait(0.1)
 				if not active then
 					active = true
 					homePortalTrigger.Transparency = 0.5
 					awayPortalTrigger.Transparency = 0.5
 					api:portalActivate(awayPortal.Name)
 				else
-					Teleport(homePortalTrigger.CFrame * CFrame.new(0,0,-5))
+					Teleport(homePortalTrigger.CFrame * CFrame.new(0,0,-TELE_OFFSET))
 				end
 
-				wait(0.5)
+				wait(PORTAL_DEBOUNCE)
 				debounce = false
 			end
 		end
