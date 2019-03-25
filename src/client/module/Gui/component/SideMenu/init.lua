@@ -1,5 +1,9 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+-- scaling constants
+local PIXEL_WIDTH = 175
+local TARGET_WIDTH_SCALE = 0.2
+
 local PADDING = 16
 
 local lib = ReplicatedStorage:WaitForChild("lib")
@@ -34,6 +38,7 @@ local function newButton(name,props,layoutOrder)
         BorderSizePixel = 0,
         BackgroundColor3 = Color3.fromRGB(255,255,255),
         BackgroundTransparency = 1,
+        ImageTransparency = 1/3,
         Image = "rbxassetid://2823570525",
         ScaleType = Enum.ScaleType.Slice,
         SliceCenter = Rect.new(75, 75, 76, 76),
@@ -58,11 +63,17 @@ end
 
 function SideMenu:render()
 
+    local touchEnabled = game:GetService("UserInputService").TouchEnabled
+
     local menuButtons = {
         inventoryButton = newButton("inventory",self.props,1),
         shopButton = newButton("shop",self.props,2),
         settingsButton = newButton("settings",self.props,3),
     }
+
+    menuButtons.scale = Roact.createElement("UIScale", {
+        Scale = (self.props.viewportSize.X * TARGET_WIDTH_SCALE)/PIXEL_WIDTH
+    })
 
     menuButtons.layout = Roact.createElement("UIListLayout", {
         Padding = UDim.new(0,PADDING),
@@ -73,8 +84,8 @@ function SideMenu:render()
 
     return Roact.createElement("Frame", {
         AnchorPoint = Vector2.new(1,0.5),
-        Size = UDim2.new(0,64,1,0),
-        Position = UDim2.new(1,-PADDING,0.5,0),
+        Size = UDim2.new(0,PIXEL_WIDTH,1,0),
+        Position = UDim2.new(1,-PADDING,0.5,(touchEnabled and -32) or 0),
 
         BackgroundTransparency = 1,
         BorderSizePixel = 0,

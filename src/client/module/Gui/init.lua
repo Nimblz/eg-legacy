@@ -14,20 +14,32 @@ local App = require(component:WaitForChild("App"))
 
 local Gui = {}
 
+local function makeElementTree(client)
+    local store = client.store
+    local currentCam = game:GetService("Workspace").CurrentCamera
+
+    local viewportSize = currentCam.ViewportSize
+
+    return Roact.createElement(RoactRodux.StoreProvider, {
+        store = store,
+    }, {
+        app = Roact.createElement(App, {viewportSize = viewportSize}),
+    })
+end
+
 function Gui:init()
 
 end
 
 function Gui:start(client)
-    local store = client.store
 
-    Gui.appRoot = Roact.createElement(RoactRodux.StoreProvider, {
-        store = store,
-    }, {
-        app = Roact.createElement(App),
-    })
+    local currentCam = game:GetService("Workspace").CurrentCamera
 
-    Roact.mount(Gui.appRoot, localPlayer:WaitForChild("PlayerGui"))
+    local handle = Roact.mount(makeElementTree(client), localPlayer:WaitForChild("PlayerGui"))
+
+    currentCam:GetPropertyChangedSignal("ViewportSize"):connect(function()
+        Roact.reconcile(handle, makeElementTree(client))
+    end)
 end
 
 return Gui
