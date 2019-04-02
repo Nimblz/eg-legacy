@@ -1,3 +1,6 @@
+-- cheats that can be run in the command bar, why let the script kiddies
+-- write the scripts when I can have all the fun myself :P
+
 -- consume coin --
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
@@ -30,19 +33,3 @@ while #coinBin:GetChildren() > 0 and _G.coinGrabbing do
     RunService.RenderStepped:Wait() -- only wait 1 frame
 end
 _G.coinGrabbing = false
-
--- Rainbow --
-
-local RunService = game:GetService("RunService")
-
--- in case you wanna stop it, set this to false
-_G.rainbowing = true
-
-local s = 0.8 -- saturation
-local v = 1 -- value/brightness
-local speed = 1/3 -- cycles per sec
-while _G.rainbowing do
-    local tickVal = (tick()*speed)%1 -- hue
-    game.ReplicatedStorage.remote.RequestColor:FireServer(Color3.fromHSV(tickVal,s,v))
-    RunService.RenderStepped:Wait()
-end
