@@ -1,3 +1,5 @@
+local allHats = {}
+
 local Hats = {}
 
 
