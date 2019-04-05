@@ -72,16 +72,17 @@ local InventoryApp = (function(props)
 }) end)
 
 function Customizer:init()
-	local Handle = Roact.mount(InventoryApp(Props), PlayerGui)
+	-- local Handle = Roact.mount(InventoryApp(Props), PlayerGui)
 
-	ToggleHatSelector = function(name,state)
-		if state == Enum.UserInputState.Begin then
-			Props.Enabled = not Props.Enabled
+	-- ToggleHatSelector = function(name,state)
+	-- 	if state == Enum.UserInputState.Begin then
+	-- 		Props.Enabled = not Props.Enabled
 
-			Roact.reconcile(Handle, InventoryApp(Props))
-		end
-	end
+	-- 		Roact.reconcile(Handle, InventoryApp(Props))
+	-- 	end
+	-- end
 
-	CAS:BindAction("togglehats",ToggleHatSelector,false,Enum.KeyCode.X, Enum.KeyCode.E, Enum.KeyCode.ButtonX)
+	-- CAS:BindAction("togglehats",ToggleHatSelector,false,Enum.KeyCode.X, Enum.KeyCode.E, Enum.KeyCode.ButtonX)
 end
+
 return Customizer
