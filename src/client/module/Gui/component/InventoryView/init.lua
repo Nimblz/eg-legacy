@@ -7,6 +7,8 @@ local common_util = common:WaitForChild("util")
 
 local getTextSize = require(common_util:WaitForChild("getTextSize"))
 
+local Assets = require(common:WaitForChild("Assets"))
+local AssetCatagories = require(common:WaitForChild("AssetCatagories"))
 local Actions = require(common:WaitForChild("Actions"))
 local ShadowedTextLabel = require(component:WaitForChild("ShadowedTextLabel"))
 
@@ -16,6 +18,20 @@ local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 local InventoryView = Roact.Component:extend("VersionLabel")
 
 function InventoryView:render()
+
+    local children = {}
+
+    for _,asset in pairs(Assets.getAll()[AssetCatagories.getCatagory("hat")]) do
+        children[asset.id] = Roact.createElement("TextLabel", {
+            Text = asset.id
+        })
+    end
+
+    children.layout = Roact.createElement("UIGridLayout", {
+        CellSize = UDim2.new(0,92,0,92),
+        CellPadding = UDim2.new(0,12,0,12),
+    })
+
     if self.props.view == "inventory" then
         return Roact.createElement("Frame", {
             AnchorPoint = Vector2.new(0.5,0.5),
@@ -25,19 +41,7 @@ function InventoryView:render()
             BackgroundTransparency = 0.5,
             BorderSizePixel = 0,
             BackgroundColor3 = Color3.fromRGB(255,255,255),
-        }, {
-            Roact.createElement(ShadowedTextLabel, {
-                Font = Enum.Font.Gotham,
-                TextSize = 48,
-                Text = "Inventory WIP",
-                TextStrokeColor3 = Color3.fromRGB(0,0,0),
-                TextStrokeTransparency = 0,
-
-                Size = UDim2.new(1,0,1,0),
-
-                BackgroundTransparency = 1,
-            })
-        })
+        }, children)
     end
 end
 
