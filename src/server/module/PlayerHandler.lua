@@ -4,7 +4,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local source = script.Parent.Parent
 local lib = ReplicatedStorage:WaitForChild("lib")
 
-local Thunks = require(source:WaitForChild("thunks"))
+local Thunks = require(source:WaitForChild("Thunks"))
 
 local Signal = require(lib:WaitForChild("Signal"))
 
