@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- scaling constants
 local PIXEL_WIDTH = 175
-local TARGET_WIDTH_SCALE = 0.2
+local TARGET_WIDTH_SCALE = 0.15
 
 local PADDING = 16
 
