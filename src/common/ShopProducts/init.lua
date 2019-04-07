@@ -13,7 +13,7 @@ end
 
 local function compileAllProducts()
     -- initialize catagory tables
-    for _, catagory in pairs(AssetCatagories.getCatagories()) do
+    for _, catagory in pairs(AssetCatagories.getAll()) do
         products[catagory] = {}
     end
 
@@ -28,7 +28,7 @@ local function compileAllProducts()
                     product.id,
                     productModule:GetFullName())
             )
-            local catagory = AssetCatagories.getCatagory(asset.type)
+            local catagory = AssetCatagories.get(asset.type)
             assert(
                 catagory,
                 ("invalid type %s in asset %s"):format(

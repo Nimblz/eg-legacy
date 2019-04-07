@@ -1,36 +1,49 @@
 local AssetCatagories = {}
+local byId = {}
 
 local catagories = {
-    hat = {
+    {
         id = "hat",
         image = "rbxassetid://0", -- image used to represent this catagory
         name = "Hat"
     },
-    face = {
+    {
         id = "face",
         image = "rbxassetid://0",
         name = "Face"
     },
-    material = {
+    {
+        id = "material",
         image = "rbxassetid://0",
         name = "Material"
     },
-    tool = {
+    {
+        id = "tool",
         image = "rbxassetid://0",
         name = "Tool"
     },
-    ability = {
+    {
+        id = "ability",
         image = "rbxassetid://0",
         name = "Ability"
     },
 }
 
-function AssetCatagories.getCatagory(id)
-    return catagories[id]
+-- index by id
+for _,catagory in pairs(catagories) do
+    byId[catagory.id] = catagory
 end
 
-function AssetCatagories.getCatagories()
+function AssetCatagories.get(id)
+    return byId[id]
+end
+
+function AssetCatagories.getAll()
     return catagories
+end
+
+function AssetCatagories.getAllbyId()
+    return byId
 end
 
 return AssetCatagories

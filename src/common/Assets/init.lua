@@ -1,3 +1,7 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local models = ReplicatedStorage:WaitForChild("assetmodels")
+
 local AssetCatagories = require(script.Parent:WaitForChild("AssetCatagories"))
 
 local Assets = {}
@@ -12,7 +16,7 @@ end
 
 local function compileAssets()
     -- initialize catagory tables
-    for _, catagory in pairs(AssetCatagories.getCatagories()) do
+    for _, catagory in pairs(AssetCatagories.getAll()) do
         allAssets[catagory] = {}
     end
 
@@ -20,7 +24,7 @@ local function compileAssets()
     for _,assetModule in pairs(script:GetDescendants()) do
         if assetModule:IsA("ModuleScript") then
             local asset = require(assetModule)
-            local catagory = AssetCatagories.getCatagory(asset.type)
+            local catagory = AssetCatagories.get(asset.type)
             assert(
                 catagory,
                 ("invalid type %s in asset %s"):format(
@@ -44,6 +48,10 @@ end
 
 function Assets.getAll()
     return allAssets
+end
+
+function Assets.getModel(id)
+    return models:FindFirstChild(id,true)
 end
 
 compileAssets()
