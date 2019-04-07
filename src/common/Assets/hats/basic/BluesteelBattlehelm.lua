@@ -6,4 +6,5 @@ return {
         "clan wore these headpieces into battle.",
     type = "hat",
     rarity = 2,
+    hidden = false,
 }

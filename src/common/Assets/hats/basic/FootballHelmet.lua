@@ -4,4 +4,5 @@ return {
     description = "Sportsball!",
     type = "hat",
     rarity = 1,
+    hidden = false,
 }

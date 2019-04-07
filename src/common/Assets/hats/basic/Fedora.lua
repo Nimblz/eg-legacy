@@ -4,4 +4,5 @@ return {
     description = "m'eggy.",
     type = "hat",
     rarity = 1,
+    hidden = false,
 }
