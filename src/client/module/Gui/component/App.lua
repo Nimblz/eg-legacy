@@ -27,6 +27,14 @@ function App:didMount()
 end
 
 function App:render()
+
+    local views = {
+        changelog = Roact.createElement(ChangelogView, self.props),
+        settings = Roact.createElement(SettingsView, self.props),
+        inventory = Roact.createElement(InventoryView, self.props),
+        shop = Roact.createElement(ShopView, self.props),
+    }
+
     return Roact.createElement("ScreenGui", {
         Name = "gameGui",
         ResetOnSpawn = false,
@@ -34,10 +42,7 @@ function App:render()
     }, {
         statframe = StatsFrame(self.props.playerState.stats),
 
-        changelogView = Roact.createElement(ChangelogView, self.props),
-        settingsView = Roact.createElement(SettingsView, self.props),
-        inventoryView = Roact.createElement(InventoryView, self.props),
-        shopView = Roact.createElement(ShopView, self.props),
+        currentView = views[self.props.view],
 
         sideMenu = Roact.createElement(SideMenu, self.props),
 
