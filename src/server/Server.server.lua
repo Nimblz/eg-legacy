@@ -27,7 +27,7 @@ Server.modules = {
 	Coins = require(moduleBin:WaitForChild("Coins")),
 	AchievementAwarder = require(moduleBin:WaitForChild("AchievementAwarder")),
 	PortalsListener = require(moduleBin:WaitForChild("PortalsListener")),
-	LegacyCustomization = require(moduleBin:WaitForChild("LegacyCustomization")),
+	--LegacyCustomization = require(moduleBin:WaitForChild("LegacyCustomization")),
 }
 
 -- From Lucien Greathouses RDC 2018 project
