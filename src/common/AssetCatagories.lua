@@ -4,27 +4,32 @@ local byId = {}
 local catagories = {
     {
         id = "hat",
-        image = "rbxassetid://0", -- image used to represent this catagory
+        image = "rbxassetid://3046056467", -- image used to represent this catagory
         name = "Hat"
     },
     {
         id = "face",
-        image = "rbxassetid://0",
+        image = "rbxassetid://3046056467",
         name = "Face"
     },
     {
         id = "material",
-        image = "rbxassetid://0",
+        image = "rbxassetid://3046056467",
         name = "Material"
     },
     {
+        id = "effect",
+        image = "rbxassetid://3046056467",
+        name = "Effect"
+    },
+    {
         id = "tool",
-        image = "rbxassetid://0",
+        image = "rbxassetid://3046056467",
         name = "Tool"
     },
     {
         id = "ability",
-        image = "rbxassetid://0",
+        image = "rbxassetid://3046056467",
         name = "Ability"
     },
 }

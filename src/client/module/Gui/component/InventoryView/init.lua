@@ -37,9 +37,12 @@ function InventoryView:render()
             BackgroundColor3 = Color3.fromRGB(0, 145, 255),
             width = 64,
             navButtons = cataButtons,
+            ZIndex = 2,
         }),
         contentframe = Roact.createElement("Frame", {
-            BackgroundColor3 = Color3.fromRGB(255,255,255)
+            BackgroundColor3 = Color3.fromRGB(255,255,255),
+            BorderSizePixel = 0,
+            Size = UDim2.new(1, -64, 1, 0),
         })
     })
 end
