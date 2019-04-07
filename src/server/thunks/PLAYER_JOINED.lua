@@ -11,8 +11,17 @@ local PLAYER_ADD = Actions.PLAYER_ADD
 return function(player,api)
     return function(store)
         local playerSaveTable = { -- test save
+            portals = {
+                AutumnPortal = true,
+                ForestPortal = true,
+                MountainPortal = true,
+                OceanPortal = true,
+                SkyPortal = true,
+                TundraPortal = true,
+                UndergroundPortal = true,
+            },
             stats = {
-                coins = 250,
+                coins = 5000,
             }
         }
         if game.PlaceId ~= 0 then
