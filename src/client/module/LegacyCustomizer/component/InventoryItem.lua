@@ -17,7 +17,7 @@ end
 
 function InvItem:init(props)
 	self.state = {
-		hatCopy = getCopy(self.props.Hat),
+		hatCopy = getCopy(props.Hat),
 		hatExtent = props.Hat.Size.Magnitude/2,
 		thumbCamRef = Roact.createRef(),
 		viewPortRef = Roact.createRef(),
