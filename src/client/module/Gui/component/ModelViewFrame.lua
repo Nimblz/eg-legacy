@@ -41,25 +41,16 @@ function ModelViewFrame:render()
 		FieldOfView = 45,
 		[Roact.Ref] = self.state.thumbCamRef,
     })
-    return Roact.createElement("ImageLabel", {
-        Image = "rbxassetid://3039276724",
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(15, 15, 17, 17),
-        ImageColor3 = self.props.ImageColor3,
-		LayoutOrder = self.props.LayoutOrder or 0,
-        Size = self.props.Size or UDim2.new(0,64,0,64),
-        Position = self.props.Position,
-        AnchorPoint = self.props.AnchorPoint,
-
+    return Roact.createElement("ViewportFrame", {
 		BackgroundTransparency = 1,
+		ImageColor3 = self.props.ImageColor3,
+		LayoutOrder = self.props.LayoutOrder or 0,
+		Size = self.props.Size or UDim2.new(0,64,0,64),
+		Position = self.props.Position,
+		AnchorPoint = self.props.AnchorPoint,
+		[Roact.Ref] = self.state.viewportRef
 	}, {
-		Roact.createElement("ViewportFrame", {
-			Size = UDim2.new(1,0,1,0),
-			BackgroundTransparency = 1,
-			[Roact.Ref] = self.state.viewportRef
-		}, {
-			thumbCamElement,
-		})
+		thumbCamElement,
 	})
 end
 
