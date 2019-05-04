@@ -16,7 +16,7 @@
       "lib": {
         "$className": "Folder",
         "Roact": {
-          "$path": "lib/roact/lib"
+          "$path": "lib/roact/src"
         },
         "Rodux": {
           "$path": "lib/rodux/lib"
@@ -28,7 +28,7 @@
           "$path": "lib/otter/lib"
         },
         "t": {
-          "$path": "lib/t/lib/t.lua"
+          "$path": "lib/t/lib"
         },
         "PlayerDataStore": {
           "$path": "lib/playerdatastore/lib/PlayerDataStore.lua"
