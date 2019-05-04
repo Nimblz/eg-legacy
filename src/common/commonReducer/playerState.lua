@@ -1,9 +1,10 @@
 local stats = require(script.Parent:WaitForChild("stats"))
 local portals = require(script.Parent:WaitForChild("portals"))
+local inventory = require(script.Parent:WaitForChild("inventory"))
+--local equipped = require(script.Parent:WaitForChild("equipped"))
 
 return (function(state,action)
     state = state or {}
-    local newState = {}
 
     -- server TODO: break this into two reducers?
     if action.type == "PLAYER_ADD" then -- load save data
@@ -14,9 +15,10 @@ return (function(state,action)
         return nil
     end
 
-    -- actual common stuff
-    newState.stats = stats(state.stats,action)
-    newState.portals = portals(state.portals,action)
-
-    return newState
+    return {
+        inventory = inventory(state.inventory, action),
+        --equipped = equipped(state.equipped, state.inventory, action),
+        stats = stats(state.stats, action),
+        portals = portals(state.portals, action),
+    }
 end)

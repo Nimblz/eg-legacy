@@ -14,7 +14,7 @@ local Dictionary = require(common.Dictionary)
 local Actions = require(common:WaitForChild("Actions"))
 
 local callOnAll = require(commonUtil:WaitForChild("callOnAll"))
-local serverReducer = require(ServerScriptService:WaitForChild("serverReducer"))
+local reducer = require(common:WaitForChild("commonReducer"))
 local networkMiddleware = require(middleware:WaitForChild("networkMiddleware"))
 local dataSaveMiddleware = require(middleware:WaitForChild("dataSaveMiddleware"))
 
@@ -68,7 +68,7 @@ function Server:load()
 	-- init all modules
 	callOnAll(Server.modules,"init")
 
-	Server.store = Rodux.Store.new(serverReducer, nil, {
+	Server.store = Rodux.Store.new(reducer, nil, {
 		Rodux.thunkMiddleware,
 		networkMiddleware(replicate),
 		dataSaveMiddleware,

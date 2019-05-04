@@ -1,5 +1,4 @@
-local AssetCatagories = {}
-local byId = {}
+local by = require(script.Parent:WaitForChild("by"))
 
 local catagories = {
     {
@@ -34,21 +33,7 @@ local catagories = {
     },
 }
 
--- index by id
-for _,catagory in pairs(catagories) do
-    byId[catagory.id] = catagory
-end
-
-function AssetCatagories.get(id)
-    return byId[id]
-end
-
-function AssetCatagories.getAll()
-    return catagories
-end
-
-function AssetCatagories.getAllbyId()
-    return byId
-end
-
-return AssetCatagories
+return {
+    all = catagories,
+    byId = by("id", catagories),
+}

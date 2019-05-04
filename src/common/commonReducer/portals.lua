@@ -1,5 +1,3 @@
-local reducerRoot = script.Parent
-
 return function(state,action)
     state = state or {}
     local newState = {}

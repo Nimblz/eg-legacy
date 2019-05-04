@@ -1,45 +1,49 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local lib = ReplicatedStorage:WaitForChild("lib")
 local component = script.Parent
+local common = ReplicatedStorage:WaitForChild("common")
+local lib = ReplicatedStorage:WaitForChild("lib")
 
+local Assets = require(common:WaitForChild("Assets"))
+local Dictionary = require(common:WaitForChild("Dictionary"))
 local Roact = require(lib:WaitForChild("Roact"))
 
 local AssetButton = require(component:WaitForChild("AssetButton"))
-
 local AssetGrid = Roact.Component:extend("AssetGrid")
 
 function AssetGrid:render()
-    local assetButtons = {}
+    local containerType = self.props.containerType or "Frame"
+    local containerProps = self.props.containerProps
+    local layoutProps = self.props.layoutProps
+    local paddingProps = self.props.paddingProps
+    local assets = self.props.assets or {}
+    local assetElementType = self.props.assetElementType or AssetButton
+    local assetElementProps = self.props.assetElementProps
 
-    for idx,asset in pairs(self.props.assets or {}) do
-
-        print(asset.id,idx,asset.rarity)
-        assetButtons[asset.id] = Roact.createElement(AssetButton, {
-            LayoutOrder = idx,
-            asset = asset,
-        })
+    local padding
+    if paddingProps then
+        padding = Roact.createElement("UIPadding", paddingProps)
     end
 
-    assetButtons.layout = Roact.createElement("UIGridLayout", {
-        CellSize = UDim2.new(0,self.props.CellSize.X,0,self.props.CellSize.Y),
-        CellPadding = UDim2.new(0,self.props.CellPadding.X,0,self.props.CellPadding.Y),
-        SortOrder = Enum.SortOrder.LayoutOrder,
-    })
+    local assetElements = {}
 
-    local width =
-        self.props.widthInCells *
-        (self.props.CellSize.X + self.props.CellPadding.X)
-    local height =
-        math.ceil(#self.props.assets/self.props.widthInCells) *
-        (self.props.CellSize.Y + self.props.CellPadding.Y)
+    for idx,assetId in pairs(assets) do
+        local asset = Assets.byId[assetId] or Assets.byId["fedora"]
+        assetElements[assetId] = Roact.createElement(assetElementType, Dictionary.merge({
+            asset = asset,
+            LayoutOrder = idx,
+        }, assetElementProps))
+    end
 
-    return Roact.createElement("Frame", {
-        Size = UDim2.new(0,width,0,height),
-        Position = self.props.Position,
-        AnchorPoint = self.props.AnchorPoint,
-        BackgroundTransparency = 1,
-    },assetButtons)
+    local children = Dictionary.merge(self.props[Roact.Children], {
+        layout = Roact.createElement("UIGridLayout", Dictionary.merge({
+            SortOrder = Enum.SortOrder.LayoutOrder,
+        }, layoutProps)),
+
+        padding = padding,
+    }, assetElements)
+
+    return Roact.createElement(containerType, containerProps, children)
 end
 
 return AssetGrid

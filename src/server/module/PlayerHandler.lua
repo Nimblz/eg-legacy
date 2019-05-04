@@ -3,8 +3,14 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local source = script.Parent.Parent
 local lib = ReplicatedStorage:WaitForChild("lib")
+local common = ReplicatedStorage:WaitForChild("common")
 
-local Thunks = require(source:WaitForChild("Thunks"))
+local Selectors = require(common:WaitForChild("Selectors"))
+
+local Assets = require(common:WaitForChild("Assets"))
+local AssetCatagories = require(common:WaitForChild("AssetCatagories"))
+local Actions = require(common:WaitForChild("Actions"))
+local Thunks = require(common:WaitForChild("Thunks"))
 
 local Signal = require(lib:WaitForChild("Signal"))
 
@@ -15,6 +21,13 @@ local function playerAdded(player,store,api)
     print("Loading data for: ", player)
     store:dispatch(Thunks.PLAYER_JOINED(player,api))
     PlayerHandler.playerLoaded:fire(player)
+
+    spawn(function()
+        for _,hatAsset in pairs(Assets.all) do
+            print(("Giving %s asset %s"):format(player.Name,hatAsset.id))
+            store:dispatch(Actions.ASSET_GIVE(player, hatAsset.id))
+        end
+    end)
 end
 
 local function playerLeaving(player,store)
@@ -41,10 +54,12 @@ end
 function PlayerHandler:getLoadedPlayers(store)
     local loadedPlayers = {}
 
-    local playerStates = store:getState().players or {}
 
-    for player,state in pairs(playerStates) do
-        table.insert(loadedPlayers,player)
+    for _,player in pairs(Players:GetPlayers()) do
+        local playerState = Selectors.getPlayerState(store:getState(), player)
+        if playerState then
+            table.insert(loadedPlayers,player)
+        end
     end
 
     return loadedPlayers

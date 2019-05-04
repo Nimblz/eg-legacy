@@ -2,8 +2,11 @@
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
+
+local Dictionary = require(common:WaitForChild("Dictionary"))
 local Roact = require(lib:WaitForChild("Roact"))
 
 local ModelViewFrame = Roact.Component:extend("ModelViewFrame")
@@ -49,9 +52,11 @@ function ModelViewFrame:render()
 		Position = self.props.Position,
 		AnchorPoint = self.props.AnchorPoint,
 		[Roact.Ref] = self.state.viewportRef
-	}, {
-		thumbCamElement,
-	})
+	},
+		Dictionary.merge(self.props[Roact.Children], {
+			thumbCamElement,
+		})
+	)
 end
 
 return ModelViewFrame

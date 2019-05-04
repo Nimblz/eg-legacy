@@ -31,7 +31,6 @@ return function(player,api)
         end
 
         store:dispatch(PLAYER_ADD(player,playerSaveTable))
-
-        api:initialPlayerState(player,playerSaveTable)
+        api:initialPlayerState(player,store:getState())
     end
 end

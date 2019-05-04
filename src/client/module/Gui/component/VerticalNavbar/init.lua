@@ -20,7 +20,7 @@ function VerticalNavbar:render()
         FillDirection = Enum.FillDirection.Vertical,
         HorizontalAlignment = Enum.HorizontalAlignment.Center,
         SortOrder = Enum.SortOrder.LayoutOrder,
-        Padding = UDim.new(0,4),
+        Padding = UDim.new(0,0),
     })
 
     children.head = Roact.createElement("Frame", {
@@ -40,7 +40,7 @@ function VerticalNavbar:render()
         })
     })
 
-    for idx, catagory in pairs(AssetCatagories.getAll()) do
+    for idx, catagory in pairs(AssetCatagories.all) do
         children["cata_"..catagory.id] = Roact.createElement(VerticalNavbarButton, {
             BackgroundColor3 = self.props.BackgroundColor3,
             LayoutOrder = idx,
@@ -48,6 +48,10 @@ function VerticalNavbar:render()
             hoveredColor3 = Color3.fromRGB(75, 183, 255),
             image = catagory.image,
             width = self.props.width,
+            onClick = (function()
+                self.props.onCatagorySelect(catagory)
+            end),
+            selected = self.props.selectedCatagory == catagory
         })
     end
 

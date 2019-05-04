@@ -1,13 +1,13 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local common = ReplicatedStorage:WaitForChild("common")
-local commonReducers = common:WaitForChild("commonReducers")
+local commonReducer = common:WaitForChild("commonReducer")
 
-local playerState = require(commonReducers:WaitForChild("playerState"))
+local gameState = require(commonReducer)
 local uiState = require(script:WaitForChild("uiState"))
 
 return function(state,action)
     return {
-        playerState = playerState(state.playerState,action),
+        gameState = gameState(state.gameState,action),
         uiState = uiState(state.uiState,action),
     }
 end

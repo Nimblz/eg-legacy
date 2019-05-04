@@ -1,10 +1,13 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = game:GetService("Players").LocalPlayer
 
 local lib = ReplicatedStorage:WaitForChild("lib")
 local common = ReplicatedStorage:WaitForChild("common")
 
 local Roact = require(lib:WaitForChild("Roact"))
 local RoactRodux = require(lib:WaitForChild("RoactRodux"))
+
+local Selectors = require(common:WaitForChild("Selectors"))
 
 local component = script.Parent
 
@@ -31,7 +34,7 @@ function App:render()
     local views = {
         changelog = Roact.createElement(ChangelogView, self.props),
         settings = Roact.createElement(SettingsView, self.props),
-        inventory = Roact.createElement(InventoryView, self.props),
+        inventory = Roact.createElement(InventoryView, {inventory = self.props.playerState.inventory}),
         shop = Roact.createElement(ShopView, self.props),
     }
 
@@ -52,7 +55,8 @@ end
 
 local function mapStateToProps(state,props)
     return {
-        playerState = state.playerState,
+        gameState = state.gameState,
+        playerState = Selectors.getPlayerState(state.gameState,LocalPlayer),
         settings = state.settings or {}, -- not implemented yet
 
         view = state.uiState.view,

@@ -18,6 +18,7 @@ end
 function VerticalNavbarButton:render()
 
     local children = {}
+    local active = (self.state.hovered or self.props.selected)
 
     children.thumb = Roact.createElement("ImageLabel", {
         Size = UDim2.new(0, 24, 0, 24),
@@ -26,12 +27,12 @@ function VerticalNavbarButton:render()
 
         Image = self.props.image,
 
-        BackgroundColor3 = (self.state.hovered and self.props.hoveredColor3) or self.props.BackgroundColor3,
+        BackgroundColor3 = (active and self.props.hoveredColor3) or self.props.BackgroundColor3,
         BorderColor3 = Color3.fromRGB(255, 255, 255),
         BorderSizePixel = 0,
     })
 
-    if self.state.hovered then
+    if active then
         children.tooltip = Roact.createElement("ImageLabel", {
             Size = UDim2.new(0, 112, 0, 32),
             Position = UDim2.new(0, -8, 0.5, 0),
@@ -53,8 +54,8 @@ function VerticalNavbarButton:render()
     end
 
     return Roact.createElement("ImageButton", {
-        Size = UDim2.new(1, (self.state.hovered and 8 or 0), 0, self.props.width),
-        BackgroundColor3 = (self.state.hovered and self.props.hoveredColor3) or self.props.BackgroundColor3,
+        Size = UDim2.new(1, (active and 8 or 0), 0, self.props.width),
+        BackgroundColor3 = (active and self.props.hoveredColor3) or self.props.BackgroundColor3,
         BorderSizePixel = 0,
         AutoButtonColor = false,
         Modal = true,
@@ -69,6 +70,12 @@ function VerticalNavbarButton:render()
             self:setState({
                 hovered = false,
             })
+        end,
+
+        [Roact.Event.MouseButton1Click] = function()
+            if self.props.onClick then
+                self.props.onClick()
+            end
         end,
 
         LayoutOrder = self.props.LayoutOrder,

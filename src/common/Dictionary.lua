@@ -11,8 +11,6 @@
 
 local None = require(script.Parent.None)
 
-local Dictionary = {}
-
 --[[
 	Combine a number of dictionary-like tables into a new table.
 	Keys specified in later tables will overwrite keys in previous tables.
@@ -20,17 +18,19 @@ local Dictionary = {}
 	Lua does not distinguish between a value not being present in a table and a
 	value being `nil`.
 ]]
-function Dictionary.join(...)
+local function join(...)
 	local new = {}
 
 	for i = 1, select("#", ...) do
 		local source = select(i, ...)
 
-		for key, value in pairs(source) do
-			if value == None then
-				new[key] = nil
-			else
-				new[key] = value
+		if source ~= nil then
+			for key, value in pairs(source) do
+				if value == None then
+					new[key] = nil
+				else
+					new[key] = value
+				end
 			end
 		end
 	end
@@ -38,4 +38,8 @@ function Dictionary.join(...)
 	return new
 end
 
-return Dictionary
+return {
+	None = None,
+	merge = join,
+	join = join,
+}

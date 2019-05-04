@@ -1,59 +1,86 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local component = script.Parent
 local lib = ReplicatedStorage:WaitForChild("lib")
 local common = ReplicatedStorage:WaitForChild("common")
-local component = script.Parent
-local common_util = common:WaitForChild("util")
 
+local getAssetModel = require(common:WaitForChild("getAssetModel"))
 local Roact = require(lib:WaitForChild("Roact"))
-local Assets = require(common:WaitForChild("Assets"))
 
 local ModelViewFrame = require(component:WaitForChild("ModelViewFrame"))
-
 local AssetButton = Roact.Component:extend("AssetButton")
 
+function AssetButton:init(initialProps)
+    self:setState( function() return {
+        hovered = false,
+    } end)
+end
+
 function AssetButton:render()
-    local asset = self.props.asset
+    local hovered = self.state.hovered
+    local equipped = self.props.equipped
     local children = {}
 
-    local model = Assets.getModel(asset.id)
-    if model then
-        children.modelView = Roact.createElement(ModelViewFrame, {
-            model = model,
-            Size = UDim2.new(1,-16,1,-16),
-            AnchorPoint = Vector2.new(0.5,0),
-            Position = UDim2.new(0.5,0,0,8),
-        })
-    end
-    if asset.thumbnailImage then
-        children.thumbnail = Roact.createElement("ImageLabel", {
-            Image = asset.thumbnailImage,
-            Size = UDim2.new(1,0,1,0),
-            AnchorPoint = Vector2.new(0.5,0.5),
-            Position = UDim2.new(0.5,0,0.5,0),
-            BackgroundTransparency = 1,
-            model = model
-        })
-    end
-    if self.props.equipped then
-        children.checkMark = Roact.createElement("ImageLabel", {
-            Image = "rbxassetid://3039494338",
-            BackgroundTransparency = 1,
-            ImageColor3 = Color3.fromRGB(56, 206, 39),
+    local checkmark
+    if not equipped then
+        checkmark = Roact.createElement("ImageLabel", {
+            Size = UDim2.new(0,24,0,24),
+
             AnchorPoint = Vector2.new(1,1),
-            Position = UDim2.new(1,4,1,4),
-            Size = UDim2.new(0,32,0,32),
+            Position = UDim2.new(1,-4,1,-4),
+
+            Image = "rbxassetid://2637717600",
+            ImageColor3 = Color3.fromRGB(2, 183, 87),
+            
+            BackgroundColor3 = Color3.fromRGB(255,255,255),
+            BorderSizePixel = 0,
         })
     end
 
-    return Roact.createElement("ImageButton", {
-        Image = "rbxassetid://3039276724",
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(15, 15, 17, 17),
-        ImageColor3 = self.props.ImageColor3 or Color3.fromRGB(245,245,245),
-		LayoutOrder = self.props.LayoutOrder or 0,
-		Size = UDim2.new(0,64,0,64),
-        BackgroundTransparency = 1,
+    children.padding = Roact.createElement("UIPadding", {
+        PaddingLeft = UDim.new(0,8),
+        PaddingTop = UDim.new(0,8),
+        PaddingRight = UDim.new(0,8),
+        PaddingBottom = UDim.new(0,8),
+    })
+
+    children.gamutGrid = Roact.createElement("ImageLabel", {
+        Size = UDim2.new(1,0,1,0),
+        Image = "rbxassetid://711821509",
+        ScaleType = Enum.ScaleType.Tile,
+        TileSize = UDim2.new(0,256,0,256),
+        BorderColor3 = hovered and Color3.fromRGB(204, 204, 204) or Color3.fromRGB(230, 230, 230),
+        ImageColor3 = Color3.fromRGB(223, 223, 223),
+        BackgroundColor3 = Color3.fromRGB(255,255,255),
+    }, {
+        viewport = Roact.createElement(ModelViewFrame, {
+            model = getAssetModel(self.props.asset.id),
+            Size = UDim2.new(1,0,1,0),
+        }, {
+            equipped = checkmark
+        })
+    })
+    return Roact.createElement("TextButton", {
+        BackgroundColor3 = hovered and Color3.fromRGB(223, 223, 223) or Color3.fromRGB(255,255,255),
+        BorderColor3 = hovered and Color3.fromRGB(204, 204, 204) or Color3.fromRGB(230, 230, 230),
+        AutoButtonColor = false,
+        LayoutOrder = self.props.LayoutOrder or 0,
+        Text = "",
+        [Roact.Event.MouseButton1Click] = function()
+            self.props.onClick(self.props.asset)
+        end,
+
+        [Roact.Event.MouseEnter] = function()
+            self:setState( function() return {
+                hovered = true,
+            } end)
+        end,
+
+        [Roact.Event.MouseLeave] = function()
+            self:setState( function() return {
+                hovered = false,
+            } end)
+        end,
     }, children)
 end
 
