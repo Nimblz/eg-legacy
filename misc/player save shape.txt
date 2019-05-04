@@ -7,27 +7,30 @@
             ...
         }
 
-        inventory = { -- [catagory][itemid] = isObtained
-            hat = {
-                dimmadome = true
-                baseballcap = true
-                bighead = false
-                ...
+        inventory = { -- [itemid] = isObtained
+            dimmadome = true
+            baseballcap = true
+            bighead = false
+            ...
+            gun = true
+            whisk = false
+            ...
+            highJump = true
+            waterWalk = true
+            fly = false
+            ...
+        }
+
+        equipped = {
+            hat = { -- array of 3 hat ids
+
             }
+            face = "default" -- id
+            tool = { -- array of 3 tools to put on bottombar
 
-            tool = {
-                gun = true
-                whisk = false
-                ...
             }
+            ability = { -- array of active abilities, no limit
 
-            face = {...}
-
-            ability = { -- [ability] = isObtained
-                highJump = true
-                waterWalk = true
-                fly = false
-                ...
             }
         }
         
