@@ -22,9 +22,9 @@ local function playerAdded(player,store,api)
     store:dispatch(Thunks.PLAYER_JOINED(player,api))
     PlayerHandler.playerLoaded:fire(player)
 
+    -- give all assets
     spawn(function()
         for _,hatAsset in pairs(Assets.all) do
-            print(("Giving %s asset %s"):format(player.Name,hatAsset.id))
             store:dispatch(Actions.ASSET_GIVE(player, hatAsset.id))
         end
     end)
