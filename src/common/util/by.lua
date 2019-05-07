@@ -8,7 +8,7 @@ return function(keyName, tbl)
         if v[keyName] ~= nil then
             new[v[keyName]] = v
         else
-            warn(("item %s at %d has no key %s"):format(tostring(v), idx, tostring(keyName)))
+            warn(("item %s at [%d] has no key %s"):format(tostring(v), idx, tostring(keyName)))
         end
     end
 
