@@ -90,6 +90,6 @@ function Server:load()
 	-- start all modules
 	callOnAll(Server.modules,"start",Server)
 end
-wait(3)
+
 -- Load modules
 Server:load()
