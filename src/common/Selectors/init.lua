@@ -1,1 +1,1 @@
-return require(script.Parent:WaitForChild("compileSubmodules"))(script)
+return require(script.Parent.util:WaitForChild("compileSubmodules"))(script)

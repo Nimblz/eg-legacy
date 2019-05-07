@@ -4,7 +4,7 @@ local component = script.Parent
 local lib = ReplicatedStorage:WaitForChild("lib")
 local common = ReplicatedStorage:WaitForChild("common")
 
-local getAssetModel = require(common:WaitForChild("getAssetModel"))
+local getAssetModel = require(common.util:WaitForChild("getAssetModel"))
 local Roact = require(lib:WaitForChild("Roact"))
 
 local ModelViewFrame = require(component:WaitForChild("ModelViewFrame"))

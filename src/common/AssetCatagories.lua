@@ -1,4 +1,4 @@
-local by = require(script.Parent:WaitForChild("by"))
+local by = require(script.Parent.util:WaitForChild("by"))
 
 local catagories = {
     {
