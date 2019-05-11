@@ -73,8 +73,12 @@ function InventoryView:render()
             },
             assets = catagoryAssets or {},
             assetElementProps = {
-                onClick = function(assetId)
-                    self.props.clientApi:equipAsset(assetId)
+                onClick = function(assetId,isEquipped)
+                    if isEquipped then
+                        self.props.clientApi:unequipAsset(assetId)
+                    else
+                        self.props.clientApi:equipAsset(assetId)
+                    end
                 end
             }
         })

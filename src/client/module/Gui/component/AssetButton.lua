@@ -61,8 +61,9 @@ function AssetButton:render()
         viewport = Roact.createElement(ModelViewFrame, {
             model = getAssetModel(self.props.asset.id),
             Size = UDim2.new(1,0,1,0),
+            ImageColor3 = self.props.blackout and Color3.new(0,0,0) or Color3.new(1,1,1)
         }, {
-            equipped = checkmark
+            isEquipped = checkmark
         })
     })
     return Roact.createElement("TextButton", {
@@ -72,7 +73,7 @@ function AssetButton:render()
         LayoutOrder = self.props.LayoutOrder or 0,
         Text = "",
         [Roact.Event.MouseButton1Click] = function()
-            self.props.onClick(self.props.asset.id)
+            self.props.onClick(self.props.asset.id,self.props.equipped)
         end,
 
         [Roact.Event.MouseEnter] = function()
