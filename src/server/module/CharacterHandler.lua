@@ -19,6 +19,7 @@ function bindRespawn(player)
     player.CharacterAdded:Connect(function(rig)
         local humanoid = rig:WaitForChild("Humanoid")
         if humanoid then
+            humanoid.CameraOffset = Vector3.new(0,-1.6,0)
             humanoid:BuildRigFromAttachments()
             local connection
             connection = humanoid.Died:Connect(function()
