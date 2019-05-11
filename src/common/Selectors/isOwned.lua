@@ -1,3 +1,5 @@
+local getInventory = require(script.Parent.getInventory)
+
 return function(state,player,assetId)
-    return state.players[player].inventory[assetId] == true
+    return getInventory(state,player)[assetId] == true
 end
