@@ -10,7 +10,7 @@ local PLAYER_ADD = Actions.PLAYER_ADD
 
 return function(player,api)
     return function(store)
-        local playerSaveTable = { -- test save
+        local playerSaveTable = {} --[[{ -- test save
             portals = {
                 AutumnPortal = true,
                 ForestPortal = true,
@@ -23,7 +23,7 @@ return function(player,api)
             stats = {
                 coins = 5000,
             }
-        }
+        }]]
         if game.PlaceId ~= 0 then
             local PlayerDataStore = require(lib:WaitForChild("PlayerDataStore"))
             local saveData = PlayerDataStore:GetSaveData(player)
