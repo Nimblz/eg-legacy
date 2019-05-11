@@ -8,7 +8,7 @@ return (function(state,action)
 
     -- server TODO: break this into two reducers?
     if action.type == "PLAYER_ADD" then -- load save data
-        return action.saveData
+        state = action.saveData
     end
 
     if action.type == "PLAYER_REMOVE" then -- bye bye
