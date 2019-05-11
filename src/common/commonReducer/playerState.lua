@@ -1,7 +1,7 @@
 local stats = require(script.Parent:WaitForChild("stats"))
 local portals = require(script.Parent:WaitForChild("portals"))
 local inventory = require(script.Parent:WaitForChild("inventory"))
---local equipped = require(script.Parent:WaitForChild("equipped"))
+local equipped = require(script.Parent:WaitForChild("equipped"))
 
 return (function(state,action)
     state = state or {}
@@ -17,7 +17,7 @@ return (function(state,action)
 
     return {
         inventory = inventory(state.inventory, action),
-        --equipped = equipped(state.equipped, state.inventory, action),
+        equipped = equipped(state.equipped, action),
         stats = stats(state.stats, action),
         portals = portals(state.portals, action),
     }

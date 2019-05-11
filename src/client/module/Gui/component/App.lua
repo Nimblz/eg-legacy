@@ -34,7 +34,7 @@ function App:render()
     local views = {
         changelog = Roact.createElement(ChangelogView, self.props),
         settings = Roact.createElement(SettingsView, self.props),
-        inventory = Roact.createElement(InventoryView, {inventory = self.props.playerState.inventory}),
+        inventory = Roact.createElement(InventoryView, {clientApi = self.props.clientApi}),
         shop = Roact.createElement(ShopView, self.props),
     }
 
@@ -43,7 +43,7 @@ function App:render()
         ResetOnSpawn = false,
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
     }, {
-        statframe = StatsFrame(self.props.playerState.stats),
+        statframe = Roact.createElement(StatsFrame),
 
         currentView = views[self.props.view],
 
@@ -55,12 +55,7 @@ end
 
 local function mapStateToProps(state,props)
     return {
-        gameState = state.gameState,
-        playerState = Selectors.getPlayerState(state.gameState,LocalPlayer),
-        settings = state.settings or {}, -- not implemented yet
-
         view = state.uiState.view,
-        catagory = state.uiState.catagory,
     }
 end
 

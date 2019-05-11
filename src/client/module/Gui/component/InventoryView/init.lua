@@ -1,4 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
 local lib = ReplicatedStorage:WaitForChild("lib")
 local common = ReplicatedStorage:WaitForChild("common")
@@ -7,6 +9,7 @@ local component = script.Parent
 local Assets = require(common:WaitForChild("Assets"))
 local AssetCatagories = require(common:WaitForChild("AssetCatagories"))
 local Actions = require(common:WaitForChild("Actions"))
+local Selectors = require(common:WaitForChild("Selectors"))
 local Roact = require(lib:WaitForChild("Roact"))
 local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 
@@ -70,8 +73,8 @@ function InventoryView:render()
             },
             assets = catagoryAssets or {},
             assetElementProps = {
-                onClick = function()
-                    print("HOOH")
+                onClick = function(assetId)
+                    self.props.clientApi:equipAsset(assetId)
                 end
             }
         })
@@ -117,6 +120,12 @@ local function mapDispatchToProps(dispatch)
     }
 end
 
-InventoryView = RoactRodux.connect(nil,mapDispatchToProps)(InventoryView)
+local function mapStateToProps(state,props)
+    return {
+        inventory = Selectors.getInventory(state,LocalPlayer)
+    }
+end
+
+InventoryView = RoactRodux.connect(mapStateToProps,mapDispatchToProps)(InventoryView)
 
 return InventoryView

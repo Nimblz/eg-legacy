@@ -3,5 +3,6 @@ return function(player, saveData)
         type = script.Name,
         player = player,
         saveData = saveData,
+        replicateBroadcast = true,
     }
 end

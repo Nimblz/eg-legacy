@@ -33,7 +33,17 @@ return {
             arguments = t.tuple(
                 t.string
             )
-        }
+		},
+		equipAsset = {
+			arguments = t.tuple(
+				t.string
+			)
+		},
+		unequipAsset = {
+			arguments = t.tuple(
+				t.string
+			)
+		}
 	},
 	fromServer = {
 		initialPlayerState = {

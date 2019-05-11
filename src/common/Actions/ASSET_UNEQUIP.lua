@@ -3,6 +3,6 @@ return function(player, assetId)
         type = script.Name,
         player = player,
         assetId = assetId,
-        replicateTo = player,
+        replicateBroadcast = true,
     }
 end

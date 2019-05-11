@@ -1,11 +1,16 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
 local component = script.Parent
 local lib = ReplicatedStorage:WaitForChild("lib")
 local common = ReplicatedStorage:WaitForChild("common")
 
+local Selectors = require(common:WaitForChild("Selectors"))
+
 local getAssetModel = require(common.util:WaitForChild("getAssetModel"))
 local Roact = require(lib:WaitForChild("Roact"))
+local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 
 local ModelViewFrame = require(component:WaitForChild("ModelViewFrame"))
 local AssetButton = Roact.Component:extend("AssetButton")
@@ -22,7 +27,7 @@ function AssetButton:render()
     local children = {}
 
     local checkmark
-    if not equipped then
+    if equipped then
         checkmark = Roact.createElement("ImageLabel", {
             Size = UDim2.new(0,24,0,24),
 
@@ -67,7 +72,7 @@ function AssetButton:render()
         LayoutOrder = self.props.LayoutOrder or 0,
         Text = "",
         [Roact.Event.MouseButton1Click] = function()
-            self.props.onClick(self.props.asset)
+            self.props.onClick(self.props.asset.id)
         end,
 
         [Roact.Event.MouseEnter] = function()
@@ -84,4 +89,11 @@ function AssetButton:render()
     }, children)
 end
 
+local function mapStateToProps(state, props)
+    return {
+        equipped = Selectors.isEquipped(state.gameState, LocalPlayer, props.asset.id)
+    }
+end
+
+AssetButton = RoactRodux.connect(mapStateToProps,nil)(AssetButton)
 return AssetButton
