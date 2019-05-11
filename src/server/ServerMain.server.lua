@@ -27,6 +27,7 @@ Server.modules = {
 	Coins = require(moduleBin:WaitForChild("Coins")),
 	AchievementAwarder = require(moduleBin:WaitForChild("AchievementAwarder")),
 	PortalsListener = require(moduleBin:WaitForChild("PortalsListener")),
+	DayNight = require(moduleBin:WaitForChild("DayNight")),
 	--LegacyCustomization = require(moduleBin:WaitForChild("LegacyCustomization")),
 }
 
@@ -72,7 +73,7 @@ function Server:load()
 		Rodux.thunkMiddleware,
 		networkMiddleware(replicate),
 		dataSaveMiddleware,
-		--Rodux.loggerMiddleware,
+		Rodux.loggerMiddleware,
 	})
 
 	Server.api = ServerApi.create({
@@ -83,7 +84,15 @@ function Server:load()
 		portalActivate = function(player,portalName)
 			self.store:dispatch(Actions.PORTAL_ACTIVATE(player,portalName))
 			self:getModule("PortalsListener"):portalActivate(player,portalName)
-		end
+		end,
+
+		equipAsset = function(player,assetId)
+			self.store:dispatch(Actions.ASSET_EQUIP(player, assetId))
+		end,
+
+		unequipAsset = function(player,assetId)
+			self.store:dispatch(Actions.ASSET_UNEQUIP(player, assetId))
+		end,
 	})
 	Server.api:connect()
 
