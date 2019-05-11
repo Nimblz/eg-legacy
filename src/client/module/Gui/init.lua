@@ -23,7 +23,10 @@ local function makeElementTree(client)
     return Roact.createElement(RoactRodux.StoreProvider, {
         store = store,
     }, {
-        app = Roact.createElement(App, {viewportSize = viewportSize}),
+        app = Roact.createElement(App, {
+            viewportSize = viewportSize,
+            clientApi = client.api,
+        }),
     })
 end
 
@@ -38,7 +41,7 @@ function Gui:start(client)
     local handle = Roact.mount(makeElementTree(client), localPlayer:WaitForChild("PlayerGui"))
 
     currentCam:GetPropertyChangedSignal("ViewportSize"):connect(function()
-        Roact.reconcile(handle, makeElementTree(client))
+        Roact.update(handle, makeElementTree(client))
     end)
 end
 
