@@ -55,6 +55,7 @@ function InventoryView:render()
     content.assetScrollFrame = Roact.createElement("ScrollingFrame", {
         BorderSizePixel = 0,
         Size = UDim2.new(1,0,1,0),
+        CanvasSize = UDim2.new(1,0,0,math.ceil(#catagoryAssets/5)*(128+8) + 8),
         BackgroundColor3 = Color3.fromRGB(245,245,245),
     }, {
         assetGrid = Roact.createElement(AssetGrid, {
