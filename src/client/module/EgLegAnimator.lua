@@ -69,8 +69,16 @@ function EgLegAnimator:init()
 	Players.PlayerAdded:Connect(function(player)
 		bindAttacher(player)
 	end)
-
-	game:GetService("RunService"):BindToRenderStep("egleg",Enum.RenderPriority.Last.Value,function() self:renderStep() end)
+	local start = tick()
+	local elapsed = tick()-start
+	local now = tick()
+	local last = now
+	game:GetService("RunService"):BindToRenderStep("egleg",Enum.RenderPriority.Last.Value,function()
+		now = tick()
+		local dt = now - last
+		last = now
+		self:renderStep(elapsed,dt)
+	end)
 end
 
 return EgLegAnimator
