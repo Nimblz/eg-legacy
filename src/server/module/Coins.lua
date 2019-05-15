@@ -1,4 +1,4 @@
--- server side coins
+-- server side coin tracking
 
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
