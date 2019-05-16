@@ -73,7 +73,7 @@ function Server:load()
 		Rodux.thunkMiddleware,
 		networkMiddleware(replicate),
 		dataSaveMiddleware,
-		Rodux.loggerMiddleware,
+		--Rodux.loggerMiddleware,
 	})
 
 	Server.api = ServerApi.create({
@@ -92,6 +92,10 @@ function Server:load()
 
 		unequipAsset = function(player,assetId)
 			self.store:dispatch(Actions.ASSET_UNEQUIP(player, assetId))
+		end,
+
+		equippedAction = function(player, assetid, payload)
+			print(("%s used %s"):format(player.Name,assetid))
 		end,
 	})
 	Server.api:connect()

@@ -43,6 +43,12 @@ return {
 			arguments = t.tuple(
 				t.string
 			)
+		},
+		equippedAction = {
+			arguments = t.tuple(
+				t.string, -- assetid that is being used and should recieve the action (if its equipped)
+				t.payload -- action payload (action type, any arguments (target, options))
+			)
 		}
 	},
 	fromServer = {
@@ -60,6 +66,13 @@ return {
             arguments = t.tuple(
                 t.Instance
             )
-        }
+		},
+		equippedBroadcast = {
+			arguments = t.tuple(
+				t.Instance, -- player performing this action
+				t.string, -- assetid that is being used and should recieve the action (if its equipped)
+				t.payload -- action payload (action type, any arguments (target, options))
+			)
+		}
 	},
 }

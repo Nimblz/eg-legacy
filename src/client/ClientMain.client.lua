@@ -49,14 +49,20 @@ Client.api = ClientApi.new({
 
 		Client:load()
 	end,
+
 	storeAction = function(action)
 		if Client.store ~= nil then
 			Client.store:dispatch(action)
 		end
 	end,
+
 	coinRespawn = function(coinSpawn)
 		Client:getModule("Coins"):spawnCoin(coinSpawn)
-	end
+	end,
+
+	equippedBroadcast = function(player, assetid, payload)
+
+	end,
 })
 
 Client.api:connect()
