@@ -3,6 +3,6 @@ return {
     name = "Black Iron Ring",
     description = "Olympic!",
     type = "hat",
-    rarity = 2,
+    rarity = 1,
     hidden = false,
 }

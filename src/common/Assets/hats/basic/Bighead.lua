@@ -3,6 +3,6 @@ return {
     name = "Bighead",
     description = "oof",
     type = "hat",
-    rarity = 2,
+    rarity = 1,
     hidden = false,
 }

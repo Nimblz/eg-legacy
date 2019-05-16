@@ -3,6 +3,6 @@ return {
     name = "Fool of the Federation",
     description = "I can do anything!",
     type = "hat",
-    rarity = 2,
+    rarity = 1,
     hidden = false,
 }

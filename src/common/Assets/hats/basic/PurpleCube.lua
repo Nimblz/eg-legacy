@@ -3,6 +3,6 @@ return {
     name = "PurpleCube",
     description = "What could its purpose be?",
     type = "hat",
-    rarity = 3,
+    rarity = 1,
     hidden = false,
 }

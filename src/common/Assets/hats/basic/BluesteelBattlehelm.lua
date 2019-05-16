@@ -5,6 +5,6 @@ return {
         "Ancient egg wariors of the bluesteel "..
         "clan wore these headpieces into battle.",
     type = "hat",
-    rarity = 2,
+    rarity = 1,
     hidden = false,
 }

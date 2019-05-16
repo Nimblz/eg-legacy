@@ -3,6 +3,6 @@ return {
     name = "Princess Cone",
     description = "Why do princesses wear these?",
     type = "hat",
-    rarity = 2,
+    rarity = 1,
     hidden = false,
 }

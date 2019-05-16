@@ -25,7 +25,6 @@ function AssetButton:render()
     local hovered = self.state.hovered
     local equipped = self.props.equipped
     local children = {}
-
     local checkmark
     if equipped then
         checkmark = Roact.createElement("ImageLabel", {
