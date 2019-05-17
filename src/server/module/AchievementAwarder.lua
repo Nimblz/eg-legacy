@@ -6,6 +6,7 @@ local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
 local Actions = require(common:WaitForChild("Actions"))
+local Selectors = require(common:WaitForChild("Selectors"))
 local Signal = require(lib:WaitForChild("Signal"))
 
 local Achievements = require(common:WaitForChild("Achievements"))
@@ -17,24 +18,20 @@ AchievementAwarder.achievementGet = Signal.new()
 local function achievementAward(server, player,achievement)
 
     local state = server.store:getState()
-    local playerState = state.players[player]
-    if playerState then
-        local stats = (playerState.stats or {})
-        local playerAchievements = (stats.achievements or {})
+    local playerAchievements = Selectors.getAchievements(state,player)
 
-        if not playerAchievements[achievement.id] then
-            print("Achievement get! - "..player.Name.." : "..achievement.name)
-            server.store:dispatch(Actions.ACHIEVEMENT_GET(player,achievement.id))
-            if achievement.onAward then
-                achievement.onAward(server,player)
-            end
-            AchievementAwarder.achievementGet:fire(player,achievement)
+    if not playerAchievements[achievement.id] then
+        print("Achievement get! - "..player.Name.." : "..achievement.name)
+        server.store:dispatch(Actions.ACHIEVEMENT_GET(player,achievement.id))
+        if achievement.onAward then
+            achievement.onAward(server,player)
         end
-        if achievement.badgeId then
-            if not BadgeService:UserHasBadgeAsync(player.UserId, achievement.badgeId) then
-                print("Awarded",achievement.badgeId,"to",player)
-                BadgeService:AwardBadge(player.UserId,achievement.badgeId)
-            end
+        AchievementAwarder.achievementGet:fire(player,achievement)
+    end
+    if achievement.badgeId then
+        if not BadgeService:UserHasBadgeAsync(player.UserId, achievement.badgeId) then
+            print("Awarded",achievement.badgeId,"to",player)
+            BadgeService:AwardBadge(player.UserId,achievement.badgeId)
         end
     end
 end
@@ -69,10 +66,13 @@ end
 function AchievementAwarder:start(server)
 
     -- init cheevos
+    print("Initializing Achievements [[")
     for id, achievement in pairs(Achievements) do
+        print((" - %s"):format(id))
         initAchievement(achievement,server)
         AchievementAwarder.achievements[id] = achievement
     end
+    print("]]")
 
     server:getModule("PlayerHandler").playerLoaded:connect(function(player)
         playerJoined(server,player)
