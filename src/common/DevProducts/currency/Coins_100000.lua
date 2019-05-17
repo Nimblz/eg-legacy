@@ -7,6 +7,8 @@ local Actions = require(common:WaitForChild("Actions"))
 return {
     name = script.Name,
     productId = 538436032,
+    onSale = true,
+
 
     onProductPurchase = (function(player, server)
         local store = server.store
