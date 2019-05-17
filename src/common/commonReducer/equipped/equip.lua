@@ -8,7 +8,6 @@ local Assets = require(common:WaitForChild("Assets"))
 return function(equipped, action, cataId)
     equipped = equipped or {}
     if action.type == "ASSET_EQUIP" then
-
         local asset = Assets.byId[action.assetId]
         if asset then
             local catagory = AssetCatagories.byId[asset.type]

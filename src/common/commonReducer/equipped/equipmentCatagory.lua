@@ -3,6 +3,6 @@ local unequip = require(script.Parent:WaitForChild("unequip"))
 
 return function(equipment, action, cataId)
     equipment = equipment or {}
-    equipment = equip(equipment, action, cataId)
-    return unequip(equipment, action, cataId)
+    local newEquipment = equip(equipment, action, cataId)
+    return unequip(newEquipment, action, cataId)
 end
