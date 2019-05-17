@@ -1,4 +1,3 @@
-
 local HIP_HEIGHT = 2.7
 local WALK_SPEED = 16
 
@@ -27,7 +26,7 @@ local scalables = {
         },
         scaleFunc = (function(obj,prop,orig,newScale)
             if prop == "WalkSpeed" then
-                return orig
+                return orig*(newScale*0.2)
             end
             return orig*newScale
         end),
