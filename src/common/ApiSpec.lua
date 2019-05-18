@@ -26,22 +26,27 @@ return {
 	fromClient = {
 		requestCoinCollect = {
             arguments = t.tuple(
-                t.Instance
+                t.Instance -- spawn the coin you are collecting is tied to
             )
 		},
 		portalActivate = {
             arguments = t.tuple(
-                t.string
+                t.string -- id of portal you are activating
             )
+		},
+		buyAsset = {
+			arguments = t.tuple(
+				t.string -- asset id that you are trying to buy.
+			)
 		},
 		equipAsset = {
 			arguments = t.tuple(
-				t.string
+				t.string -- asset id that you are trying to equip
 			)
 		},
 		unequipAsset = {
 			arguments = t.tuple(
-				t.string
+				t.string -- asset id that you are trying to unequip
 			)
 		},
 		equippedAction = {
@@ -54,17 +59,17 @@ return {
 	fromServer = {
 		initialPlayerState = {
 			arguments = t.tuple(
-				t.any
+				t.any -- initial state for player store
 			)
 		},
 		storeAction = {
 			arguments = t.tuple(
-                t.table
+                t.table -- action to be dispatched to player
             )
         },
         coinRespawn = {
             arguments = t.tuple(
-                t.Instance
+                t.Instance -- spawn that is respawning its coin
             )
 		},
 		equippedBroadcast = {
