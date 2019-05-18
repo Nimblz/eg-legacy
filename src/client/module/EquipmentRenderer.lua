@@ -1,4 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
 
 local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
@@ -6,6 +7,7 @@ local object = common:WaitForChild("object")
 
 local Assets = require(common:WaitForChild("Assets"))
 local AssetCatagories = require(common:WaitForChild("AssetCatagories"))
+local EquipmentRenderers = require(common:WaitForChild("EquipmentRenderers"))
 
 local EquipmentReconciler = require(object:WaitForChild("EquipmentReconciler"))
 
@@ -19,16 +21,21 @@ function EquipmentRenderer:start(loader)
     equipmentReconciler.equippedAsset:connect(function(player, assetId, equipmentBehavior)
         -- create renderer for asset
         local asset = Assets.byId[assetId]
+        local rig = player.Character
         if asset then
-            local catagory = AssetCatagories.byId[asset.type]
-            if catagory then
-                local rig = player.Character
-                if rig then
-                    local newRenderer = catagory.defaultRenderer.new(assetId,rig)
-                    renderers[equipmentBehavior] = newRenderer
-                    print("Rendering "..assetId)
+            if asset.overrideRenderer then
+                local newRenderer = EquipmentRenderers[asset.overrideRenderer].new(assetId,rig)
+                renderers[equipmentBehavior] = newRenderer
+            else
+                local catagory = AssetCatagories.byId[asset.type]
+                if catagory then
+                    if rig then
+                        local newRenderer = catagory.defaultRenderer.new(assetId,rig)
+                        renderers[equipmentBehavior] = newRenderer
+                    end
                 end
             end
+            print("Rendering "..assetId)
         end
     end)
 
@@ -39,6 +46,12 @@ function EquipmentRenderer:start(loader)
             renderers[equipmentBehavior]:destroy()
         end
         renderers[equipmentBehavior] = nil
+    end)
+
+    RunService.RenderStepped:connect(function()
+        for _,renderer in pairs(renderers) do
+            renderer:update()
+        end
     end)
 end
 
