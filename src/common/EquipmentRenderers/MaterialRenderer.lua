@@ -33,6 +33,7 @@ end
 
 function MaterialRenderer:destroy()
     applyMaterialToRig(self.rig, nil, nil)
+    self.rig = nil
 end
 
 return MaterialRenderer
