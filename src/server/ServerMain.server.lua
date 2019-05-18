@@ -66,7 +66,7 @@ function Server:getModule(name)
 end
 
 function Server:load()
-
+	print("Starting server.")
 	self.store = Rodux.Store.new(reducer, nil, {
 		Rodux.thunkMiddleware,
 		networkMiddleware(replicate),
