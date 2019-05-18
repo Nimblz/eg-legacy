@@ -27,7 +27,7 @@ return function(player,api)
         if game.PlaceId ~= 0 then
             local PlayerDataStore = require(lib:WaitForChild("PlayerDataStore"))
             local saveData = PlayerDataStore:GetSaveData(player)
-            playerSaveTable = saveData:Get("playerSaveTable") or {}
+            playerSaveTable = saveData:Get("playerSaveTable") or { stats = { coins = 2500 } }
         end
 
         store:dispatch(PLAYER_ADD(player,playerSaveTable))
