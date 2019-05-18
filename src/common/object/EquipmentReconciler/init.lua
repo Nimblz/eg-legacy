@@ -89,8 +89,7 @@ end
 function EquipmentReconciler:playerCharacterSpawned(player, char, loader)
     self:clearEquipped(player) -- clear just in case equipment wasnt removed for some reason
     -- recreate and bind equipment for this player
-    local equipment = Selectors.getEquipped(loader.store:getState(), player)
-
+    local equipment = Selectors.getEquipped(loader.store:getState(), player) or {}
     for _, cataEquipped in pairs(equipment) do
         for _, assetId in pairs(cataEquipped) do
             self:equipAsset(player, loader, assetId)
@@ -151,8 +150,8 @@ function EquipmentReconciler.new(loader)
         for _, player in pairs(Players:GetPlayers()) do
             -- check each catagory for changes
             for cataId, _ in pairs(AssetCatagories.byId) do
-                local oldEquipped = Selectors.getEquipped(oldstate, player)[cataId] or {}
-                local newEquipped = Selectors.getEquipped(newstate, player)[cataId] or {}
+                local oldEquipped = (Selectors.getEquipped(oldstate, player) or {})[cataId] or {}
+                local newEquipped = (Selectors.getEquipped(newstate, player) or {})[cataId] or {}
                 local added,removed = getDiffs(oldEquipped, newEquipped)
 
                 for _,assetId in pairs(removed) do

@@ -1,5 +1,8 @@
 local getStats = require(script.Parent.getStats)
 
 return function(state, player)
-    return getStats(state,player).coins or 0
+    local pstats = getStats(state,player)
+    if pstats then
+        return getStats(state,player).coins
+    end
 end

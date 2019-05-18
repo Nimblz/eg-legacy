@@ -1,3 +1,3 @@
 return function(state)
-    return state.uiState.catagory
+    return state.catagory
 end

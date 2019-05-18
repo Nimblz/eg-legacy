@@ -1,4 +1,5 @@
 return function(state, player)
     local playerKey = "player_"..player.UserId
-    return state.players[playerKey] or {}
+    if not state.players then return end
+    return state.players[playerKey]
 end

@@ -1,5 +1,8 @@
 local getPlayerState = require(script.Parent.getPlayerState)
 
 return function(state,player)
-    return getPlayerState(state,player).portals
+    local pstate = getPlayerState(state,player)
+    if pstate then
+        return pstate.portals
+    end
 end
