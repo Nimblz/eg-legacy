@@ -10,3 +10,6 @@
 [submodule "lib/t"]
 	path = lib/t
 	url = https://github.com/osyrisrblx/t
+[submodule "lib/promise"]
+	path = lib/promise
+	url = https://github.com/LPGhatguy/roblox-lua-promise.git
