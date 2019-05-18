@@ -7,7 +7,7 @@ return {
     hidden = false,
 
     metadata = {
-        color = Color3.fromRGB(218, 133, 65),
+        color = Color3.fromRGB(255, 115, 0),
         material = Enum.Material.Neon,
     }
 }
