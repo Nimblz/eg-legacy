@@ -5,16 +5,20 @@ local common = ReplicatedStorage:WaitForChild("common")
 local by = require(common.util:WaitForChild("by"))
 local products = require(common.util:WaitForChild("compileSubmodulesToArray"))(script, true)
 
-local function isLessExpensive(asset1,asset2)
-    local asset1Info = MarketplaceService:GetProductInfo(asset1.productId, Enum.InfoType.Product)
-    local asset2Info = MarketplaceService:GetProductInfo(asset2.productId, Enum.InfoType.Product)
+for _,devproduct in pairs(products) do
+    local productInfo = MarketplaceService:GetProductInfo(devproduct.productId, Enum.InfoType.Product)
 
-    return asset1Info.PriceInRobux < asset2Info.PriceInRobux
+	devproduct.price = productInfo.PriceInRobux
 end
 
-table.sort(products,isLessExpensive)
+local function hasLowerOrder(asset1,asset2)
+    return asset1.order < asset2.order
+end
+
+table.sort(products,hasLowerOrder)
 
 return {
     all = products,
     byId = by("id", products),
+    byProductId = by("productId", products)
 }

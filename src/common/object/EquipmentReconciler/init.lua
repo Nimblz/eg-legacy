@@ -53,7 +53,7 @@ end
 
 function EquipmentReconciler:equipAsset(player, loader, assetId)
     local playerEquipmentBehaviors = self.equipmentBehaviors[player]
-
+    if not playerEquipmentBehaviors then return end
     local equipmentBehavior = EquipmentBehavior.new(loader, assetId)
     equipmentBehavior:equipped(player)
 
@@ -66,6 +66,7 @@ end
 
 function EquipmentReconciler:unequipAsset(player,loader,assetId)
     local playerEquipmentBehaviors = self.equipmentBehaviors[player]
+    if not playerEquipmentBehaviors then return end
     local equippedBehavior = playerEquipmentBehaviors[assetId]
 
     if equippedBehavior then

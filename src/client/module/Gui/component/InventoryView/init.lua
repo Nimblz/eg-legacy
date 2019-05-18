@@ -16,6 +16,9 @@ local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 local AssetGrid = require(component:WaitForChild("AssetGrid"))
 local VerticalNavbar = require(component:WaitForChild("VerticalNavbar"))
 
+local PIXEL_SIZE = 600
+local TARGET_AXIS_SCALE = 3/4
+
 local InventoryView = Roact.Component:extend("VersionLabel")
 
 function InventoryView:setCatagory(newCatagory)
@@ -39,8 +42,10 @@ function InventoryView:render()
     local catagoryAssets = {}
 
     for _, asset in pairs(Assets.all) do
-        if asset.type == self.state.catagory.id then
-            table.insert(catagoryAssets, asset.id)
+        if inventory[asset.id] then
+            if asset.type == self.state.catagory.id then
+                table.insert(catagoryAssets, asset.id)
+            end
         end
     end
 
@@ -93,6 +98,9 @@ function InventoryView:render()
         BorderSizePixel = 0,
         BackgroundColor3 = Color3.fromRGB(255,255,255)
     }, {
+        scale = Roact.createElement("UIScale", {
+            Scale = math.min(1,(self.props.viewportSize.Y * TARGET_AXIS_SCALE)/PIXEL_SIZE)
+        }),
         layout = Roact.createElement("UIListLayout", {
             SortOrder = Enum.SortOrder.LayoutOrder,
             FillDirection = Enum.FillDirection.Horizontal,
@@ -126,8 +134,12 @@ local function mapDispatchToProps(dispatch)
 end
 
 local function mapStateToProps(state,props)
+    local function isOwned(assetId)
+        return Selectors.isOwned(state,LocalPlayer,assetId)
+    end
     return {
-        inventory = Selectors.getInventory(state,LocalPlayer)
+        inventory = Selectors.getInventory(state,LocalPlayer),
+        isOwned = isOwned,
     }
 end
 

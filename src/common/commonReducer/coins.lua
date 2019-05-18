@@ -5,7 +5,7 @@ return (function(state,action)
         return state + action.coins
     end
 
-    if action.type == "COIN_REMOVE" then
+    if action.type == "COIN_SUBTRACT" then
         return state - action.coins
     end
 

@@ -1,6 +1,12 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
+
+local common = ReplicatedStorage:WaitForChild("common")
+local lib = ReplicatedStorage:WaitForChild("lib")
+
+local Selectors = require(common:WaitForChild("Selectors"))
 
 local TELE_OFFSET = 7
 local PORTAL_DEBOUNCE = 2.5
@@ -68,13 +74,8 @@ function Portals:start(client)
     for _,awayPortal in pairs(portals2:GetChildren()) do
         local homePortal = portals1:FindFirstChild(awayPortal.Name)
 
-
-		local state = client.store:getState().playerState or {}
-		local portalActive = false
-
-		if state and state.portals then
-			portalActive = state.portals[awayPortal.Name] or false
-		end
+		local state = client.store:getState() or {}
+		local portalActive = Selectors.isPortalActive(state, LocalPlayer, awayPortal.name) or false
 
         CreatePortal(homePortal,awayPortal,portalActive,client.api)
 	end

@@ -12,6 +12,7 @@ local Rodux = require(lib:WaitForChild("Rodux"))
 local ServerApi = require(ServerScriptService:WaitForChild("ServerApi"))
 local Dictionary = require(common.Dictionary)
 local Actions = require(common:WaitForChild("Actions"))
+local Thunks = require(common:WaitForChild("Thunks"))
 
 local callOnAll = require(commonUtil:WaitForChild("callOnAll"))
 local reducer = require(common:WaitForChild("commonReducer"))
@@ -66,14 +67,14 @@ end
 
 function Server:load()
 
-	Server.store = Rodux.Store.new(reducer, nil, {
+	self.store = Rodux.Store.new(reducer, nil, {
 		Rodux.thunkMiddleware,
 		networkMiddleware(replicate),
 		dataSaveMiddleware,
 		--Rodux.loggerMiddleware,
 	})
 
-	Server.api = ServerApi.create({
+	self.api = ServerApi.create({
 		requestCoinCollect = function(player,coinSpawn)
 			self:getModule("Coins"):requestCoinCollect(player,coinSpawn)
 		end,
@@ -83,8 +84,16 @@ function Server:load()
 			self:getModule("PortalsListener"):portalActivate(player,portalName)
 		end,
 
+		buyAsset = function(player,assetId)
+			self.store:dispatch(Thunks.ASSET_TRYBUY(player, assetId))
+		end,
+
+		buyDevproduct = function(player,devproductId)
+			self:getModule("Cashier"):PromptPurchase(player,devproductId)
+		end,
+
 		equipAsset = function(player,assetId)
-			self.store:dispatch(Actions.ASSET_EQUIP(player, assetId))
+			self.store:dispatch(Thunks.ASSET_TRYEQUIP(player, assetId))
 		end,
 
 		unequipAsset = function(player,assetId)
@@ -95,14 +104,15 @@ function Server:load()
 			print(("%s used %s"):format(player.Name,assetid))
 		end,
 	})
-	Server.api:connect()
+	self.api:connect()
 
 	-- init all modules
-	callOnAll(Server.modules,"init")
+	callOnAll(self.modules,"init")
 
 	-- start all modules
-	callOnAll(Server.modules,"start",Server)
+	callOnAll(self.modules,"start",Server)
 end
 
 -- Load modules
 Server:load()
+_G.server = Server

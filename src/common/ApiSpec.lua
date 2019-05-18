@@ -39,6 +39,11 @@ return {
 				t.string -- asset id that you are trying to buy.
 			)
 		},
+		buyDevproduct = {
+			arguments = t.tuple(
+				t.string -- devproduct id that you are trying to buy.
+			)
+		},
 		equipAsset = {
 			arguments = t.tuple(
 				t.string -- asset id that you are trying to equip

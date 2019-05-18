@@ -28,11 +28,12 @@ return function(props)
     textProps.TextColor3 = textProps.TextColor3 or Color3.fromRGB(255,255,255)
     textProps.ZIndex = 2
 
-    local shadowProps = shallowcopy(props) -- quick and dirty copy
+    local shadowProps = shallowcopy(textProps) -- quick and dirty copy
 
     shadowProps.TextColor3 = Color3.fromRGB(0,0,0)
     shadowProps.Position = UDim2.new(0,2,0,1)
     shadowProps.ZIndex = 1
+    shadowProps.AnchorPoint = Vector2.new(0,0)
 
     local textLabel = Roact.createElement("TextLabel", textProps)
     local shadowLabel = Roact.createElement("TextLabel", shadowProps)

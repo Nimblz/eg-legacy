@@ -5,16 +5,16 @@ local common = ReplicatedStorage:WaitForChild("common")
 local Actions = require(common:WaitForChild("Actions"))
 
 return {
-    id = "coins50000",
-    name = "50000 Coins",
-    productId = 538435748,
+    id = "coins500000",
+    name = "500k Coins",
+    productId = 538436531,
     onSale = true,
 
-    order = 4,
+    order = 6,
 
     onProductPurchase = (function(player, server)
         local store = server.store
-        store:dispatch(Actions.COIN_ADD(player,50000))
+        store:dispatch(Actions.COIN_ADD(player, 500000))
         return true -- Successful
     end)
 }

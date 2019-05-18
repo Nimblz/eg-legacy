@@ -5,9 +5,12 @@ local common = ReplicatedStorage:WaitForChild("common")
 local Actions = require(common:WaitForChild("Actions"))
 
 return {
-    name = script.Name,
+    id = "coins10000",
+    name = "10000 Coins",
     productId = 538435575,
     onSale = true,
+
+    order = 3,
 
     onProductPurchase = (function(player, server)
         local store = server.store

@@ -45,7 +45,7 @@ function VerticalNavbar:render()
             BackgroundColor3 = self.props.BackgroundColor3,
             LayoutOrder = idx,
             tooltip = catagory.name,
-            hoveredColor3 = Color3.fromRGB(75, 183, 255),
+            hoveredColor3 = self.props.hoveredColor3 or Color3.fromRGB(75, 183, 255),
             image = catagory.image,
             width = self.props.width,
             onClick = (function()

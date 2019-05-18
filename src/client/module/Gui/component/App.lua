@@ -15,6 +15,7 @@ local StatsFrame = require(component:WaitForChild("StatsFrame"))
 local ChangelogView = require(component:WaitForChild("ChangelogView"))
 local SettingsView = require(component:WaitForChild("SettingsView"))
 local InventoryView = require(component:WaitForChild("InventoryView"))
+local DevProductShopView = require(component:WaitForChild("DevProductShopView"))
 local ShopView = require(component:WaitForChild("ShopView"))
 local SideMenu = require(component:WaitForChild("SideMenu"))
 local VersionLabel = require(component:WaitForChild("VersionLabel"))
@@ -34,8 +35,9 @@ function App:render()
     local views = {
         changelog = Roact.createElement(ChangelogView, self.props),
         settings = Roact.createElement(SettingsView, self.props),
-        inventory = Roact.createElement(InventoryView, {clientApi = self.props.clientApi}),
-        shop = Roact.createElement(ShopView, self.props),
+        inventory = Roact.createElement(InventoryView, {clientApi = self.props.clientApi, viewportSize = self.props.viewportSize}),
+        devproducts = Roact.createElement(DevProductShopView, {clientApi = self.props.clientApi, viewportSize = self.props.viewportSize}),
+        shop = Roact.createElement(ShopView, {clientApi = self.props.clientApi, viewportSize = self.props.viewportSize}),
     }
 
     return Roact.createElement("ScreenGui", {
@@ -43,7 +45,7 @@ function App:render()
         ResetOnSpawn = false,
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
     }, {
-        statframe = Roact.createElement(StatsFrame),
+        statframe = Roact.createElement(StatsFrame, self.props),
 
         currentView = views[self.props.view],
 

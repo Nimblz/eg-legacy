@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- scaling constants
 local PIXEL_WIDTH = 175
-local TARGET_WIDTH_SCALE = 0.15
+local TARGET_WIDTH_SCALE = 0.2
 
 local PADDING = 16
 
@@ -21,16 +21,8 @@ local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 
 local SideMenu = Roact.Component:extend("VersionLabel")
 
-local function capitalize(str)
-    local firstLetter = str:sub(1,1)
-
-    local rest = str:sub(2)
-
-    return firstLetter:upper()..rest
-end
-
-local function newButton(name,props,layoutOrder)
-    local buttonText = capitalize(name)
+local function newButton(viewId, name, props, layoutOrder)
+    local buttonText = name
     return Roact.createElement("ImageButton", {
         Size = UDim2.new(
             0,getTextSize(buttonText,Enum.Font.GothamBlack,32).X + 2*PADDING,
@@ -44,7 +36,7 @@ local function newButton(name,props,layoutOrder)
         SliceCenter = Rect.new(75, 75, 76, 76),
         LayoutOrder = layoutOrder or 0,
         [Roact.Event.MouseButton1Click] = (function()
-            props.menuButtonPressed(name,props)
+            props.menuButtonPressed(viewId,props)
         end)
     }, {
         Roact.createElement(ShadowedTextLabel,{
@@ -66,13 +58,14 @@ function SideMenu:render()
     local touchEnabled = game:GetService("UserInputService").TouchEnabled
 
     local menuButtons = {
-        inventoryButton = newButton("inventory",self.props,1),
-        shopButton = newButton("shop",self.props,2),
-        settingsButton = newButton("settings",self.props,3),
+        inventoryButton = newButton("inventory", "Inventory",self.props,1),
+        shopButton = newButton("shop", "Shop",self.props,2),
+        devproductsButton = newButton("devproducts", "Buy Coins",self.props,3),
+        settingsButton = newButton("settings", "Settings",self.props,4),
     }
 
     menuButtons.scale = Roact.createElement("UIScale", {
-        Scale = (self.props.viewportSize.X * TARGET_WIDTH_SCALE)/PIXEL_WIDTH
+        Scale = math.min(1,(self.props.viewportSize.X * TARGET_WIDTH_SCALE)/PIXEL_WIDTH)
     })
 
     menuButtons.layout = Roact.createElement("UIListLayout", {
@@ -90,6 +83,7 @@ function SideMenu:render()
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
         BackgroundColor3 = Color3.fromRGB(255,255,255),
+        ZIndex = 3
     }, menuButtons)
 end
 
@@ -100,6 +94,7 @@ local function mapDispatchToProps(dispatch)
                 dispatch(Actions.UI_VIEW_SET(nil))
                 return
             end
+            print("hoo",viewName)
             dispatch(Actions.UI_VIEW_SET(viewName))
         end
     }

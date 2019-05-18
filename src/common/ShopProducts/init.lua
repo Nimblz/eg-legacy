@@ -5,7 +5,7 @@ local Assets = require(common:WaitForChild("Assets"))
 
 local by = require(common.util:WaitForChild("by"))
 local products = require(common.util:WaitForChild("compileSubmodulesToArray"))(script, true)
-
+local rawProductsById = by("id", products)
 -- Compile basic assets based on rarity
 local basicAssets = Assets.basic
 
@@ -19,13 +19,15 @@ local priceTable = {
     [6] = 30000,
 }
 
-for id, asset in pairs(Assets.basic) do
+for id, asset in pairs(basicAssets) do
     local newProduct = {
         id = id,
         price = priceTable[asset.rarity or 1],
         onSale = true,
     }
-    table.insert(products,newProduct)
+    if not rawProductsById[id] then
+        table.insert(products,newProduct)
+    end
 end
 
 local function isLessExpensive(asset1,asset2)

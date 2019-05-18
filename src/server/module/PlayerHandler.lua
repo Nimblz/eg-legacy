@@ -21,13 +21,6 @@ local function playerAdded(player,store,api)
     print("Loading data for: ", player)
     store:dispatch(Thunks.PLAYER_JOINED(player,api))
     PlayerHandler.playerLoaded:fire(player)
-
-    -- give all assets
-    spawn(function()
-        for _,hatAsset in pairs(Assets.all) do
-            store:dispatch(Actions.ASSET_GIVE(player, hatAsset.id))
-        end
-    end)
 end
 
 local function playerLeaving(player,store)

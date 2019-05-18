@@ -31,7 +31,7 @@ function bindRespawn(player)
     end)
 end
 
-function CharacterHandler:start()
+function CharacterHandler:init()
     Players.PlayerAdded:Connect(function(player)
         bindRespawn(player)
         player:LoadCharacter()
