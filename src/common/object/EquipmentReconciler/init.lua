@@ -52,7 +52,6 @@ local function getDiffs(t1,t2)
 end
 
 function EquipmentReconciler:equipAsset(player, loader, assetId)
-    print("equipping:",assetId)
     local playerEquipmentBehaviors = self.equipmentBehaviors[player]
 
     local equipmentBehavior = EquipmentBehavior.new(loader, assetId)
@@ -66,7 +65,6 @@ function EquipmentReconciler:equipAsset(player, loader, assetId)
 end
 
 function EquipmentReconciler:unequipAsset(player,loader,assetId)
-    print("unequipping:",assetId)
     local playerEquipmentBehaviors = self.equipmentBehaviors[player]
     local equippedBehavior = playerEquipmentBehaviors[assetId]
 
@@ -81,7 +79,6 @@ function EquipmentReconciler:unequipAsset(player,loader,assetId)
 end
 
 function EquipmentReconciler:clearEquipped(player, loader)
-    print("clearing equipment")
     for assetId,_ in pairs(self.equipmentBehaviors[player] or {}) do
         self:unequipAsset(player,loader,assetId)
     end
@@ -102,7 +99,7 @@ end
 
 function EquipmentReconciler:playerAdded(player, loader)
     self.equipmentBehaviors[player] = {}
-    print(self.characterEvents,self.characterEvents[player])
+
     self.characterEvents[player].adding = player.CharacterAdded:connect(function(char)
         self:playerCharacterSpawned(player, char, loader)
     end)
