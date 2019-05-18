@@ -28,7 +28,7 @@ Server.modules = {
 	AchievementAwarder = require(moduleBin:WaitForChild("AchievementAwarder")),
 	PortalsListener = require(moduleBin:WaitForChild("PortalsListener")),
 	DayNight = require(moduleBin:WaitForChild("DayNight")),
-	--LegacyCustomization = require(moduleBin:WaitForChild("LegacyCustomization")),
+	PlayerEquipment = require(moduleBin:WaitForChild("PlayerEquipment")),
 }
 
 -- From Lucien Greathouses RDC 2018 project
@@ -66,9 +66,6 @@ end
 
 function Server:load()
 
-	-- init all modules
-	callOnAll(Server.modules,"init")
-
 	Server.store = Rodux.Store.new(reducer, nil, {
 		Rodux.thunkMiddleware,
 		networkMiddleware(replicate),
@@ -99,6 +96,9 @@ function Server:load()
 		end,
 	})
 	Server.api:connect()
+
+	-- init all modules
+	callOnAll(Server.modules,"init")
 
 	-- start all modules
 	callOnAll(Server.modules,"start",Server)

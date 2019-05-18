@@ -1,8 +1,13 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local common = ReplicatedStorage:WaitForChild("common")
 
+local Assets = require(common:WaitForChild("Assets"))
+
 local by = require(common.util:WaitForChild("by"))
 local products = require(common.util:WaitForChild("compileSubmodulesToArray"))(script, true)
+
+-- Compile basic assets
+
 
 local function isLessExpensive(asset1,asset2)
     return asset1.price < asset2.price

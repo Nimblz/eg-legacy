@@ -8,7 +8,11 @@ return (function(state,action)
         local newPlayerState = {}
         for _,player in pairs(Players:GetPlayers()) do
             local playerKey = "player_"..player.UserId
-            newPlayerState[playerKey] = playerState(state[playerKey], action)
+            if player == action.player then
+                newPlayerState[playerKey] = playerState(state[playerKey], action)
+            else
+                newPlayerState[playerKey] = state[playerKey]
+            end
         end
         return newPlayerState
     end

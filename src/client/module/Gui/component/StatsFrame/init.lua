@@ -37,7 +37,7 @@ function StatFrame:render()
 end
 
 local function mapStateToProps(state,props)
-    local stats = Selectors.getStats(state.gameState, LocalPlayer)
+    local stats = Selectors.getStats(state, LocalPlayer)
     return {
         coins = stats.coins
     }

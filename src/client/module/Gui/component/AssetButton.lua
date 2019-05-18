@@ -91,7 +91,7 @@ end
 
 local function mapStateToProps(state, props)
     return {
-        equipped = Selectors.isEquipped(state.gameState, LocalPlayer, props.asset.id)
+        equipped = Selectors.isEquipped(state, LocalPlayer, props.asset.id)
     }
 end
 

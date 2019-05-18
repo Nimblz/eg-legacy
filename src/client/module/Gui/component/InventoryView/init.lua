@@ -127,7 +127,7 @@ end
 
 local function mapStateToProps(state,props)
     return {
-        inventory = Selectors.getInventory(state.gameState,LocalPlayer)
+        inventory = Selectors.getInventory(state,LocalPlayer)
     }
 end
 

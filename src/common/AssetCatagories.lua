@@ -1,3 +1,8 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local common = ReplicatedStorage:WaitForChild("common")
+local EquipmentRenderers = require(common:WaitForChild("EquipmentRenderers"))
+
 local by = require(script.Parent.util:WaitForChild("by"))
 
 local catagories = {
@@ -6,6 +11,7 @@ local catagories = {
         image = "rbxassetid://3185662736", -- image used to represent this catagory
         name = "Hat",
         maxEquipped = 3,
+        defaultRenderer = EquipmentRenderers.HatRenderer
     },
     {
         id = "face",

@@ -55,7 +55,7 @@ end
 
 local function mapStateToProps(state,props)
     return {
-        view = state.uiState.view,
+        view = state.view,
     }
 end
 

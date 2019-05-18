@@ -21,8 +21,8 @@ Client.modules = {
 	Cannons = require(moduleBin:WaitForChild("Cannons")),
 	Coins = require(moduleBin:WaitForChild("Coins")),
 	Sound = require(moduleBin:WaitForChild("Sound")),
-	--LegacyCustomizer = require(moduleBin:WaitForChild("LegacyCustomizer")),
 	Gui = require(moduleBin:WaitForChild("Gui")),
+	EquipmentRenderer = require(moduleBin:WaitForChild("EquipmentRenderer")),
 }
 
 function Client:getModule(name)
@@ -40,9 +40,7 @@ end
 
 Client.api = ClientApi.new({
 	initialPlayerState = function(gameState)
-		Client.store = Rodux.Store.new(require(PlayerScripts:WaitForChild("clientReducer")), {
-			gameState = gameState
-		}, {
+		Client.store = Rodux.Store.new(require(PlayerScripts:WaitForChild("clientReducer")), gameState, {
 			Rodux.thunkMiddleware,
 			--Rodux.loggerMiddleware,
 		})
