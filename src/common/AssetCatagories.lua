@@ -24,6 +24,7 @@ local catagories = {
         image = "rbxassetid://3185662381",
         name = "Material",
         maxEquipped = 1,
+        defaultRenderer = EquipmentRenderers.MaterialRenderer
     },
     {
         id = "effect",
