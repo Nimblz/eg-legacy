@@ -19,6 +19,7 @@ local function achievementAward(server, player,achievement)
 
     local state = server.store:getState()
     local playerAchievements = Selectors.getAchievements(state,player)
+    if not playerAchievements then return end
 
     if not playerAchievements[achievement.id] then
         print("Achievement get! - "..player.Name.." : "..achievement.name)
