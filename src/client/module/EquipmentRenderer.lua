@@ -41,7 +41,6 @@ function EquipmentRenderer:start(loader)
 
     equipmentReconciler.unequippingAsset:connect(function(player, assetId, equipmentBehavior)
         -- destroy renderer for asset
-        print(equipmentBehavior)
         if renderers[equipmentBehavior] then
             renderers[equipmentBehavior]:destroy()
         end
