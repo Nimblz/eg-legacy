@@ -3,7 +3,7 @@ return {
     type = "material",
     name = "Solar Egg",
     description = "BLINDING",
-    rarity = 10,
+    rarity = 110,
     hidden = false,
 
     metadata = {

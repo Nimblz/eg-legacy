@@ -1,5 +1,5 @@
 return {
     id = "solarsheriff",
-    price = 100000,
+    price = 99999,
     onSale = true,
 }

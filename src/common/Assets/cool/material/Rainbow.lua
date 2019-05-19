@@ -3,7 +3,7 @@ return {
     type = "material",
     name = "Rainbow Egg",
     description = "Astounding",
-    rarity = 12,
+    rarity = 112,
     hidden = false,
 
     overrideRenderer = "RainbowMaterialRenderer",

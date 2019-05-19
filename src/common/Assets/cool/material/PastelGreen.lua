@@ -7,7 +7,7 @@ return {
     hidden = false,
 
     metadata = {
-        color = Color3.fromRGB(164, 189, 71),
+        color = Color3.fromRGB(115, 255, 99),
         material = Enum.Material.SmoothPlastic,
     }
 }

@@ -3,7 +3,7 @@ return {
     type = "material",
     name = "Lunar Egg",
     description = "Maddening",
-    rarity = 11,
+    rarity = 111,
     hidden = false,
 
     metadata = {
