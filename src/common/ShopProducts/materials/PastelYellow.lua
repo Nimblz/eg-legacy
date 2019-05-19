@@ -1,5 +1,5 @@
 return {
     id = "material_pastelyellow",
-    price = 300,
+    price = 150,
     onSale = true,
 }

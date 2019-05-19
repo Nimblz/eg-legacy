@@ -1,5 +1,5 @@
 return {
     id = "material_lunar",
-    price = 10000,
+    price = 5000,
     onSale = true,
 }
