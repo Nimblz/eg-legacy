@@ -5,6 +5,5 @@ return {
     changelog = {
         "Fixed data loss bug",
         "Fixed billboard names for artists",
-        "Free starter hats and materials on join",
     }
 }
