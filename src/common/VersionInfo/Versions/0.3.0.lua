@@ -1,12 +1,13 @@
 return {
     id = 4,
     version = "0.3.0",
-    date = "INDEV",
+    date = "05/18/2019",
     changelog = {
-        "New hats!",
-        "Changelog browser added!",
+        "Many new hats!",
+        "Desert!",
         "New UI!",
         "Inventory!",
         "Shop!",
+        "Materials!",
     }
 }
