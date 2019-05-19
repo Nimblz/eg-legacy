@@ -30,6 +30,19 @@ Server.modules = {
 	PortalsListener = require(moduleBin:WaitForChild("PortalsListener")),
 	DayNight = require(moduleBin:WaitForChild("DayNight")),
 	PlayerEquipment = require(moduleBin:WaitForChild("PlayerEquipment")),
+	LoginBonus = require(moduleBin:WaitForChild("LoginBonus")),
+}
+
+Server.toLoad = {
+	Server.modules.Cashier,
+	Server.modules.PlayerEquipment,
+	Server.modules.DayNight,
+	Server.modules.PortalsListener,
+	Server.modules.AchievementAwarder,
+	Server.modules.Coins,
+	Server.modules.CharacterHandler,
+	Server.modules.LoginBonus,
+	Server.modules.PlayerHandler,
 }
 
 -- From Lucien Greathouses RDC 2018 project
@@ -107,10 +120,10 @@ function Server:load()
 	self.api:connect()
 
 	-- init all modules
-	callOnAll(self.modules,"init")
+	callOnAll(self.toLoad,"init")
 
 	-- start all modules
-	callOnAll(self.modules,"start",Server)
+	callOnAll(self.toLoad,"start",Server)
 end
 
 -- Load modules

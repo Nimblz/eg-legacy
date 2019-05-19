@@ -4,9 +4,8 @@ return function (tbl,funcName,...)
     assert(type(tbl) == "table", "expected table in arg 1")
     assert(type(funcName) == "string", "expected function in arg 2")
 
-    for name,module in pairs(tbl) do
+    for _,module in pairs(tbl) do
         if isFunc(module[funcName]) then
-            print(name,"-",funcName)
             module[funcName](module,...)
         end
     end
