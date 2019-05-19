@@ -19,15 +19,32 @@ return function(player,api)
                 SkyPortal = true,
                 TundraPortal = true,
                 UndergroundPortal = true,
+                DesertPortal = true,
+                AbyssPortal = true,
+            },
+            inventory = {
+                ["invaliditem"] = true,
             },
             stats = {
-                coins = 15000,
+                coins = 250000,
+            }
+        }
+        local defaultSave = {
+            portals = {
+            },
+            inventory = {
+                -- default items should be given each time a player joins
+                -- if they're just defined here then returning players
+                -- will not retroactively get them.
+            },
+            stats = {
+                coins = 2500,
             }
         }
         if game.PlaceId ~= 0 then
             local PlayerDataStore = require(lib:WaitForChild("PlayerDataStore"))
             local saveData = PlayerDataStore:GetSaveData(player)
-            playerSaveTable = saveData:Get("playerSaveTable") or { stats = { coins = 2500 } }
+            playerSaveTable = saveData:Get("playerSaveTable") or defaultSave
         end
 
         store:dispatch(PLAYER_ADD(player,playerSaveTable))
