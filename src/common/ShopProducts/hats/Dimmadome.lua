@@ -1,5 +1,5 @@
 return {
     id = "tallcowboy",
-    price = 50000,
+    price = 25000,
     onSale = true,
 }
