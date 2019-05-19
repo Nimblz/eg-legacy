@@ -101,12 +101,10 @@ function EquipmentReconciler:playerAdded(player, loader)
     self.equipmentBehaviors[player] = {}
 
     self.characterEvents[player].adding = player.CharacterAdded:connect(function(char)
-        print("sppoo")
         char:WaitForChild("Humanoid")
         char:WaitForChild("Torso")
         char:WaitForChild("Head")
         char:WaitForChild("HumanoidRootPart")
-        print("sppoo")
         self:playerCharacterSpawned(player, char, loader)
     end)
     self.characterEvents[player].removing = player.CharacterRemoving:connect(function()
