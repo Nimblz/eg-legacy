@@ -1,15 +1,15 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local common = ReplicatedStorage:WaitForChild("common")
+
+local Selectors = require(common:WaitForChild("Selectors"))
+
 -- function that returns true if a player has completed this objective
 local function queryComplete(server,player,quantity)
     local state = server.store:getState()
-    local playerState = state.players[player]
-    if playerState then
-        local coinCount = (playerState.stats or {}).coins or 0
+    local coinCount = Selectors.getCoins(state,player) or 0
 
-        if coinCount >= quantity then
-            return true
-        end
-    end
-    return false
+    return coinCount > quantity
 end
 
 return function(quantity,badgeId)
