@@ -38,7 +38,7 @@ return function(player,api)
                 -- will not retroactively get them.
             },
             stats = {
-                coins = 2500,
+                coins = 0,
             }
         }
         if game.PlaceId ~= 0 then
