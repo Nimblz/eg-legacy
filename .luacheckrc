@@ -508,7 +508,7 @@ stds.roblox = {
                     "Sand", "Fabric", "SmoothPlastic", "Metal", "WoodPlanks", "Cobblestone", "Air",
                     "Water", "Rock", "Glacier", "Snow", "Sandstone", "Mud", "Basalt", "Ground",
                     "CrackedLava", "Neon", "Glass", "Asphalt", "LeafyGrass", "Salt", "Limestone",
-                    "Pavement"}),
+                    "Pavement", "ForceField"}),
                 MembershipType = def_enum({"None", "BuildersClub", "TurboBuildersClub",
                     "OutrageousBuildersClub"}),
                 MeshType = def_enum({"Head", "Torso", "Wedge", "Prism", "Pyramid", "ParallelRamp",
