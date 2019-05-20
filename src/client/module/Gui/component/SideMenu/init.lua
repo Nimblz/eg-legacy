@@ -94,7 +94,6 @@ local function mapDispatchToProps(dispatch)
                 dispatch(Actions.UI_VIEW_SET(nil))
                 return
             end
-            print("hoo",viewName)
             dispatch(Actions.UI_VIEW_SET(viewName))
         end
     }
