@@ -6,6 +6,8 @@ local lib = ReplicatedStorage:WaitForChild("lib")
 local Selectors = require(common:WaitForChild("Selectors"))
 local Actions = require(common:WaitForChild("Actions"))
 
+local DAILY_LOGIN_BONUS = 1500
+
 local LoginBonus = {}
 
 local function shouldAwardBonus(state,player)
@@ -26,7 +28,7 @@ function LoginBonus:start(loader)
         local state = store:getState()
         local shouldAward = shouldAwardBonus(state,player)
         if shouldAward then
-            store:dispatch(Actions.COIN_ADD(player,2500))
+            store:dispatch(Actions.COIN_ADD(player,DAILY_LOGIN_BONUS))
             print(("%s logged in for the first time today!"):format(tostring(player)))
             -- TODO: thank the player for joining with a notification
         end
