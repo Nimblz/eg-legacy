@@ -8,6 +8,7 @@ local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
 local Actions = require(common:WaitForChild("Actions"))
+local Selectors = require(common:WaitForChild("Selectors"))
 local Signal = require(lib:WaitForChild("Signal"))
 
 local RESPAWN_TIME = 120 -- secs it takes for a coin to reappear
@@ -20,6 +21,7 @@ local Coins = {}
 
 local coinCollections = {}
 local coinSpawns = {}
+local coinsInLast5Secs = {}
 
 local function onPlayerJoin(player)
     coinCollections[player] = {}
@@ -47,12 +49,11 @@ function Coins:requestCoinCollect(player,coinPart)
 
         store:dispatch(Actions.COIN_ADD(player,1))
         local state = store:getState()
-        local playerState = state.players[player]
-        if playerState then
-            local coinCount = (playerState.stats or {}).coins
-            Coins.coinCollected:fire(player,coinCount)
+        Coins.coinCollected:fire(player,Selectors.getCoins(state,player))
+        coinsInLast5Secs[player] = (coinsInLast5Secs[player] or 0) + 1
+        if coinsInLast5Secs[player] > 50 then
+            player:Kick("Collecting coins too fast :( The server might be lagging. Or are you cheating?")
         end
-
         bindCoinRespawn(player,coinPart)
     end
 end
@@ -70,6 +71,14 @@ function Coins:init()
 
     Players.PlayerAdded:Connect(onPlayerJoin)
     Players.PlayerAdded:Connect(onPlayerRemoving)
+
+    -- every 5 secs clear the coin collected table
+    spawn(function()
+        while true do
+            coinsInLast5Secs = {}
+            wait(5)
+        end
+    end)
 end
 
 function Coins:start(server)
