@@ -16,6 +16,7 @@ local ChangelogView = require(component:WaitForChild("ChangelogView"))
 local SettingsView = require(component:WaitForChild("SettingsView"))
 local InventoryView = require(component:WaitForChild("InventoryView"))
 local DevProductShopView = require(component:WaitForChild("DevProductShopView"))
+local ShadowedTextLabel = require(component:WaitForChild("ShadowedTextLabel"))
 local ShopView = require(component:WaitForChild("ShopView"))
 local SideMenu = require(component:WaitForChild("SideMenu"))
 local VersionLabel = require(component:WaitForChild("VersionLabel"))
@@ -52,6 +53,19 @@ function App:render()
         sideMenu = Roact.createElement(SideMenu, self.props),
 
         versionLabel = Roact.createElement(VersionLabel, self.props),
+
+        likesLabel = Roact.createElement(ShadowedTextLabel, {
+            AnchorPoint = Vector2.new(1,1),
+            Position = UDim2.new(1,-16,1,-16),
+            Size = UDim2.new(2/3,0,1/20,0),
+            BackgroundTransparency = 1,
+            TextStrokeTransparency = 0,
+            Text = "Enjoying the game? Leave a like 👍 ! It helps a lot",
+            Font = Enum.Font.GothamBlack,
+            TextScaled = true,
+            TextXAlignment = Enum.TextXAlignment.Right,
+            TextYAlignment = Enum.TextYAlignment.Bottom,
+        })
     })
 end
 
