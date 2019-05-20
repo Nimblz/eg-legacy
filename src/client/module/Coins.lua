@@ -9,7 +9,7 @@ local model = ReplicatedStorage:WaitForChild("model")
 
 local localPlayer = Players.LocalPlayer
 
-local ANIM_DIST = 256
+local ANIM_DIST = 180
 local COIN_SOUND_ID = 1453122289
 
 local Sound
