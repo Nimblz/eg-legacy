@@ -86,10 +86,13 @@ function EquipmentReconciler:clearEquipped(player, loader)
     self.equipmentBehaviors[player] = {}
 end
 
+
 function EquipmentReconciler:playerCharacterSpawned(player, char, loader)
     self:clearEquipped(player) -- clear just in case equipment wasnt removed for some reason
     -- recreate and bind equipment for this player
+
     local equipment = Selectors.getEquipped(loader.store:getState(), player) or {}
+
     for _, cataEquipped in pairs(equipment) do
         for _, assetId in pairs(cataEquipped) do
             self:equipAsset(player, loader, assetId)
