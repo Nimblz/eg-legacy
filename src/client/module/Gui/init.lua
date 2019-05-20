@@ -1,5 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
+local ContextActionService = game:GetService("ContextActionService")
 
 local localPlayer = Players.LocalPlayer
 local common = ReplicatedStorage:WaitForChild("common")
@@ -28,6 +29,10 @@ local function makeElementTree(client)
             clientApi = client.api,
         }),
     })
+end
+
+local function ShowView()
+    return Enum.ContextActionResult.Pass
 end
 
 function Gui:init()
