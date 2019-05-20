@@ -61,7 +61,8 @@ function ShopView:render()
     content.assetScrollFrame = Roact.createElement("ScrollingFrame", {
         BorderSizePixel = 0,
         Size = UDim2.new(1,0,1,0),
-        CanvasSize = UDim2.new(1,0,0,math.ceil(#catagoryProducts/5)*(160+8) + 8),
+        CanvasSize = UDim2.new(1,-32,0,math.ceil(#catagoryProducts/5)*(160+8) + 8),
+        ScrollingDirection = Enum.ScrollingDirection.Y,
         BackgroundColor3 = Color3.fromRGB(245,245,245),
     }, {
         assetGrid = Roact.createElement(AssetGrid, {
