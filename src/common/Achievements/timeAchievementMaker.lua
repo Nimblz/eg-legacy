@@ -33,10 +33,11 @@ return function(timeRequirement,name,desc,badgeId)
             spawn(function()
                 while true do
                     for _,player in pairs(Players:GetPlayers()) do
+                        if not joinTimes[player] then
+                            joinTimes[player] = tick()
+                        end
                         if queryComplete(server,player) then
                             awardBadge(player)
-                        else
-                            joinTimes[player] = tick()
                         end
                     end
 

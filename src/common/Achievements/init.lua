@@ -28,6 +28,9 @@ local Achievements = {
         2124454470
     ),
     All_Portals = require(script:WaitForChild("All_Portals")),
+
+    Coins_5000 = require(script:WaitForChild("coinAchievementMaker"))(5000,2124456119),
+    Coins_100000 = require(script:WaitForChild("coinAchievementMaker"))(100000,2124456120),
 }
 --[[ times
     [1] = 2124454471,
@@ -35,16 +38,5 @@ local Achievements = {
     [60*30] = 2124454468,
     [60*60] = 2124454470,
 ]]
-
--- coin achievements 100 to 1,000,000 by power of 10
-local coinBadges = {
-    [10^2] = 2124456119,
-    [10^3] = 2124456120,
-}
-for magnitude = 2,6 do
-    local quantity = math.pow(10,magnitude)
-    local newCoinAchievement = require(script:WaitForChild("coinAchievementMaker"))(quantity,coinBadges[quantity])
-    Achievements["Coins_"..quantity] = newCoinAchievement
-end
 
 return Achievements
