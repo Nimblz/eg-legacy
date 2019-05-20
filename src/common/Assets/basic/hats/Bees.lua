@@ -3,6 +3,6 @@ return {
     name = "BEES",
     description = "Not the bees!",
     type = "hat",
-    rarity = 2,
+    rarity = 1,
     hidden = false,
 }
