@@ -8,12 +8,17 @@ local lib = ReplicatedStorage:WaitForChild("lib")
 local Actions = require(common:WaitForChild("Actions"))
 local Selectors = require(common:WaitForChild("Selectors"))
 local Signal = require(lib:WaitForChild("Signal"))
+--local Promise = require(lib:WaitForChild("Promise"))
 
 local Achievements = require(common:WaitForChild("Achievements"))
 
 local AchievementAwarder = {}
 AchievementAwarder.achievements = {}
 AchievementAwarder.achievementGet = Signal.new()
+
+local function queryPlayerHasBadge(playerid,badgeid)
+    
+end
 
 local function achievementAward(server, player,achievement)
 
