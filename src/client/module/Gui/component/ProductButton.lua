@@ -92,7 +92,7 @@ function ProductButton:render()
         isEquipped = checkmark,
         price = Roact.createElement(ShadowedTextLabel, {
             Font = Enum.Font.GothamBlack,
-            Text = "$"..tostring(product.price or "N/A"),
+            Text = "$"..tostring(product.price or "PRICE N/A"),
             TextSize = 24,
             TextStrokeTransparency = 0,
             BackgroundTransparency = 1,
