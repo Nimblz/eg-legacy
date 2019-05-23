@@ -12,5 +12,14 @@ return (function(state,action)
         achievements = achievements(state.achievements,action),
         coinCollectionRange = 5,
         lastlogin = lastlogin(state.lastlogin,action),
+        walkspeed = 16;
+        sprintModifier = 1.5;
+        airJumps = 0;
+        dashes = 0;
+        canFly = false;
+        canSwim = false;
+        canWaterWalk = false;
+        canRoll = false;
+        noSlip = false;
     }
 end)

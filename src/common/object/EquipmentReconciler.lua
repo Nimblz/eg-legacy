@@ -14,14 +14,15 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
 local common = ReplicatedStorage:WaitForChild("common")
-local object = common:WaitForChild("object")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
 local Signal = require(lib:WaitForChild("Signal"))
 
-local EquipmentBehavior = require(object:WaitForChild("EquipmentBehavior"))
+local EquipmentBehaviors = require(common:WaitForChild("EquipmentBehaviors"))
 local AssetCatagories = require(common:WaitForChild("AssetCatagories"))
 local Selectors = require(common:WaitForChild("Selectors"))
+
+local EquipmentBehavior = EquipmentBehaviors.EquipmentBehavior
 
 local EquipmentReconciler = {}
 
@@ -86,6 +87,10 @@ function EquipmentReconciler:clearEquipped(player, loader)
         self:unequipAsset(player,loader,assetId)
     end
     self.equipmentBehaviors[player] = {}
+end
+
+function EquipmentReconciler:getBehaviors(player)
+    return self.equipmentBehaviors[player]
 end
 
 
