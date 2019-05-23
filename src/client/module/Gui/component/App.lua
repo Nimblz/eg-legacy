@@ -8,6 +8,7 @@ local Roact = require(lib:WaitForChild("Roact"))
 local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 
 local Selectors = require(common:WaitForChild("Selectors"))
+local Dictionary = require(common:WaitForChild("Dictionary"))
 
 local component = script.Parent
 
@@ -37,7 +38,7 @@ function App:render()
         changelog = Roact.createElement(ChangelogView, self.props),
         settings = Roact.createElement(SettingsView, self.props),
         inventory = Roact.createElement(InventoryView, {clientApi = self.props.clientApi, viewportSize = self.props.viewportSize}),
-        devproducts = Roact.createElement(DevProductShopView, {clientApi = self.props.clientApi, viewportSize = self.props.viewportSize}),
+        devproducts = Roact.createElement(DevProductShopView, {clientApi = self.props.clientApi, viewportSize = self.props.viewportSize, view = self.props.view}),
         shop = Roact.createElement(ShopView, {clientApi = self.props.clientApi, viewportSize = self.props.viewportSize}),
     }
 
@@ -45,33 +46,32 @@ function App:render()
         Name = "gameGui",
         ResetOnSpawn = false,
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
-    }, {
-        statframe = Roact.createElement(StatsFrame, self.props),
+    }, Dictionary.join({
+            statframe = Roact.createElement(StatsFrame, self.props),
 
-        currentView = views[self.props.view],
+            sideMenu = Roact.createElement(SideMenu, self.props),
 
-        sideMenu = Roact.createElement(SideMenu, self.props),
+            versionLabel = Roact.createElement(VersionLabel, self.props),
 
-        versionLabel = Roact.createElement(VersionLabel, self.props),
-
-        likesLabel = Roact.createElement(ShadowedTextLabel, {
-            AnchorPoint = Vector2.new(1,1),
-            Position = UDim2.new(1,-16,1,-16),
-            Size = UDim2.new(1/2,0,1/10,0),
-            BackgroundTransparency = 1,
-            TextStrokeTransparency = 0,
-            Text = "Enjoying the game? Leave a like 👍 ! It helps a lot! Something special will happen once we reach 50k 👍! ",
-            Font = Enum.Font.GothamBlack,
-            TextScaled = true,
-            TextXAlignment = Enum.TextXAlignment.Right,
-            TextYAlignment = Enum.TextYAlignment.Bottom,
-        })
-    })
+            likesLabel = Roact.createElement(ShadowedTextLabel, {
+                AnchorPoint = Vector2.new(1,1),
+                Position = UDim2.new(1,-16,1,-16),
+                Size = UDim2.new(1/2,0,1/10,0),
+                BackgroundTransparency = 1,
+                TextStrokeTransparency = 0,
+                Text = "Enjoying the game? Leave a like 👍 ! It helps a lot! Something special will happen once we reach 50k 👍! ",
+                Font = Enum.Font.GothamBlack,
+                TextScaled = true,
+                TextXAlignment = Enum.TextXAlignment.Right,
+                TextYAlignment = Enum.TextYAlignment.Bottom,
+            })
+        }, views)
+    )
 end
 
 local function mapStateToProps(state,props)
     return {
-        view = state.view,
+        view = Selectors.getUIView(state),
     }
 end
 

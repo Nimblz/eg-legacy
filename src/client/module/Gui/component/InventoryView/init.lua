@@ -97,7 +97,9 @@ function InventoryView:render()
         AnchorPoint = Vector2.new(0.5,0.5),
 
         BorderSizePixel = 0,
-        BackgroundColor3 = Color3.fromRGB(255,255,255)
+        BackgroundColor3 = Color3.fromRGB(255,255,255),
+
+        Visible = self.props.view == "inventory"
     }, {
         scale = Roact.createElement("UIScale", {
             Scale = math.min(1,(self.props.viewportSize.Y * TARGET_AXIS_SCALE)/PIXEL_SIZE)
@@ -141,6 +143,7 @@ local function mapStateToProps(state,props)
     return {
         inventory = Selectors.getInventory(state,LocalPlayer),
         isOwned = isOwned,
+        view = Selectors.getUIView(state)
     }
 end
 

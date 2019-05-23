@@ -85,7 +85,9 @@ function DevProductShopView:render()
         AnchorPoint = Vector2.new(0.5,0.5),
 
         BorderSizePixel = 0,
-        BackgroundColor3 = Color3.fromRGB(255,255,255)
+        BackgroundColor3 = Color3.fromRGB(255,255,255),
+
+        Visible = self.props.view == "devproducts"
     }, content)
 end
 
