@@ -2,7 +2,7 @@ return {
     id = "face_man",
     type = "face",
     name = "Manly Face",
-    description = ":)",
+    description = ":  )",
     rarity = 1,
     hidden = false,
 
