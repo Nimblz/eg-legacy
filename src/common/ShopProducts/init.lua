@@ -11,12 +11,12 @@ local basicAssets = Assets.basic
 
 -- generic price table for basic assets
 local priceTable = {
-    [1] = 50,
-    [2] = 150,
-    [3] = 500,
-    [4] = 5000,
+    [1] = 75,
+    [2] = 250,
+    [3] = 750,
+    [4] = 3000,
     [5] = 10000,
-    [6] = 20000,
+    [6] = 25000,
 }
 
 for id, asset in pairs(basicAssets) do
