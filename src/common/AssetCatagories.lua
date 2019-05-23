@@ -15,7 +15,7 @@ local catagories = {
     },
     {
         id = "face",
-        image = "rbxassetid://3185662253",
+        image = "rbxassetid://3206646591",
         name = "Face",
         maxEquipped = 1,
         defaultRenderer = EquipmentRenderers.FaceRenderer
