@@ -13,6 +13,9 @@ local AssetGrid = Roact.Component:extend("AssetGrid")
 
 function AssetGrid:shouldUpdate(nextProps)
     local newAssets = nextProps.assets
+    if #newAssets == 0 then
+        return true
+    end
 
     local function find(assetId)
         for _,v in pairs(self.props.assets) do
