@@ -13,7 +13,7 @@ local Roact = require(lib:WaitForChild("Roact"))
 local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 
 local ModelViewFrame = require(component:WaitForChild("ModelViewFrame"))
-local AssetButton = Roact.Component:extend("AssetButton")
+local AssetButton = Roact.PureComponent:extend("AssetButton")
 
 function AssetButton:init(initialProps)
     self:setState( function() return {

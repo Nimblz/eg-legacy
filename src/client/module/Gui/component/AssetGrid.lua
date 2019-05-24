@@ -11,6 +11,25 @@ local Roact = require(lib:WaitForChild("Roact"))
 local AssetButton = require(component:WaitForChild("AssetButton"))
 local AssetGrid = Roact.Component:extend("AssetGrid")
 
+function AssetGrid:shouldUpdate(nextProps)
+    local newAssets = nextProps.assets
+
+    local function find(assetId)
+        for _,v in pairs(self.props.assets) do
+            if v == assetId then
+                return true
+            end
+        end
+        return false
+    end
+
+    for _,assetId in pairs(newAssets) do
+        if not find(assetId) then return true end
+    end
+
+    return false
+end
+
 function AssetGrid:render()
     local containerType = self.props.containerType or "Frame"
     local containerProps = self.props.containerProps
