@@ -29,6 +29,8 @@ local function playerAdded(player,store,api)
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"material_pasteldeepgreen"))
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"material_pastelcyan"))
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"material_pastelyellow"))
+    store:dispatch(Thunks.ASSET_TRYGIVE(player,"sixmil"))
+    store:dispatch(Thunks.ASSET_TRYGIVE(player,"pet_rainbowsquid"))
     PlayerHandler.playerLoaded:fire(player)
 end
 
