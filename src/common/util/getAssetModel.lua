@@ -25,7 +25,10 @@ local cataFuncs = {
         materialSample.Transparency = asset.metadata.transparency or 0
 
         return materialSample
-    end
+    end,
+    pet = function(id, asset)
+        return models:WaitForChild("pets"):FindFirstChild(id)
+    end,
 }
 
 return function(id)
