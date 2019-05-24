@@ -23,7 +23,7 @@ Client.modules = {
 	Sound = require(moduleBin:WaitForChild("Sound")),
 	Gui = require(moduleBin:WaitForChild("Gui")),
 	EquipmentRenderer = require(moduleBin:WaitForChild("EquipmentRenderer")),
-	CharacterMovement = require(moduleBin:WaitForChild("CharacterMovement")),
+	--CharacterMovement = require(moduleBin:WaitForChild("CharacterMovement")),
 }
 
 function Client:getModule(name)
