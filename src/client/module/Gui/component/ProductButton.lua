@@ -28,7 +28,13 @@ function ProductButton:render()
     local owned = self.props.owned
     local children = {}
     local checkmark
-    local product = ShopProducts.byId[self.props.asset.id]
+    local asset = self.props.asset
+    if not asset then error("Asset not supplied to AssetButton element!") end
+
+    local product = ShopProducts.byId[asset.id]
+    local assetModel = getAssetModel(asset.id)
+    if not assetModel then warn(("Asset [%s] has no model."):format(self.props.asset.id)) end
+
     if owned then
         checkmark = Roact.createElement("ImageLabel", {
             Size = UDim2.new(0,24,0,24),
@@ -41,8 +47,32 @@ function ProductButton:render()
 
             BackgroundColor3 = Color3.fromRGB(255,255,255),
             BorderSizePixel = 0,
+            ZIndex = 3,
         })
     end
+
+    local modifiers = {}
+
+    modifiers.listLayout = Roact.createElement("UIListLayout", {
+        FillDirection = Enum.FillDirection.Horizontal,
+        HorizontalAlignment = Enum.HorizontalAlignment.Right,
+        Padding = UDim.new(0,4),
+    })
+
+    if (asset.metadata or {}).isRainbow then
+        modifiers.rainbow = Roact.createElement("ImageLabel", {
+            BackgroundTransparency = 1,
+            Image = "rbxassetid://3213669223",
+            Size = UDim2.new(0,16,0,16),
+        })
+    end
+
+    local modifiersFrame = Roact.createElement("Frame",{
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1,-8,0,16),
+        Position = UDim2.new(1,-4,0,4),
+        AnchorPoint = Vector2.new(1,0),
+    }, modifiers)
 
     children.layout = Roact.createElement("UIListLayout", {
         SortOrder = Enum.SortOrder.LayoutOrder,
@@ -85,11 +115,12 @@ function ProductButton:render()
             AspectType = Enum.AspectType.FitWithinMaxSize,
         }),
         viewport = Roact.createElement(ModelViewFrame, {
-            model = getAssetModel(self.props.asset.id),
+            model = assetModel,
             Size = UDim2.new(1,0,1,0),
             ImageColor3 = self.props.blackout and Color3.new(0,0,0) or Color3.new(1,1,1)
         }),
         isEquipped = checkmark,
+        modifiers = modifiersFrame,
         price = Roact.createElement(ShadowedTextLabel, {
             Font = Enum.Font.GothamBlack,
             Text = "$"..tostring(product.price or "PRICE N/A"),

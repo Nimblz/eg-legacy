@@ -12,6 +12,7 @@ local Roact = require(lib:WaitForChild("Roact"))
 local ModelViewFrame = Roact.Component:extend("ModelViewFrame")
 
 local function getCopy(model)
+	if not model then return end
 	local newCopy = model:Clone()
 	newCopy.CFrame = CFrame.new(0,0,0)
 	return newCopy
@@ -32,6 +33,7 @@ function ModelViewFrame:didMount()
 
 	viewport.CurrentCamera = thumbCam
 
+	if not self.state.modelCopy then return end
 	self.state.modelCopy.Parent = viewport
 end
 

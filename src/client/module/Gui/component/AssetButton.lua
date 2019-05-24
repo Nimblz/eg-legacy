@@ -24,6 +24,10 @@ end
 function AssetButton:render()
     local hovered = self.state.hovered
     local equipped = self.props.equipped
+    local asset = self.props.asset
+
+    if not asset then error("Asset not supplied to AssetButton element!") end
+
     local children = {}
     local checkmark
     if equipped then
@@ -40,6 +44,29 @@ function AssetButton:render()
             BorderSizePixel = 0,
         })
     end
+
+    local modifiers = {}
+
+    modifiers.listLayout = Roact.createElement("UIListLayout", {
+        FillDirection = Enum.FillDirection.Horizontal,
+        HorizontalAlignment = Enum.HorizontalAlignment.Right,
+        Padding = UDim.new(0,4),
+    })
+
+    if (asset.metadata or {}).isRainbow then
+        modifiers.rainbow = Roact.createElement("ImageLabel", {
+            BackgroundTransparency = 1,
+            Image = "rbxassetid://3213669223",
+            Size = UDim2.new(0,16,0,16),
+        })
+    end
+
+    local modifiersFrame = Roact.createElement("Frame",{
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1,-8,0,16),
+        Position = UDim2.new(1,-4,0,4),
+        AnchorPoint = Vector2.new(1,0),
+    }, modifiers)
 
     children.padding = Roact.createElement("UIPadding", {
         PaddingLeft = UDim.new(0,8),
@@ -62,7 +89,8 @@ function AssetButton:render()
             Size = UDim2.new(1,0,1,0),
             ImageColor3 = self.props.blackout and Color3.new(0,0,0) or Color3.new(1,1,1)
         }, {
-            isEquipped = checkmark
+            isEquipped = checkmark,
+            modifiers = modifiersFrame,
         })
     })
     return Roact.createElement("TextButton", {
