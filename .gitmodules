@@ -13,3 +13,6 @@
 [submodule "lib/promise"]
 	path = lib/promise
 	url = https://github.com/LPGhatguy/roblox-lua-promise.git
+[submodule "lib/recs"]
+	path = lib/recs
+	url = https://github.com/AmaranthineCodices/recs.git
