@@ -17,13 +17,13 @@ local EquipmentRenderer = {}
 local equipmentReconciler
 local renderers = {}
 
-local function makeRenderer(player,assetId,equipmentBehavior)
+local function makeRenderer(player,assetId,equipmentBehavior,client)
     -- create renderer for asset
     local asset = Assets.byId[assetId]
     local rig = player.Character
     if asset then
         if asset.overrideRenderer then
-            local newRenderer = EquipmentRenderers[asset.overrideRenderer].new(assetId,rig)
+            local newRenderer = EquipmentRenderers[asset.overrideRenderer].new(assetId,rig,client)
             renderers[equipmentBehavior] = newRenderer
         else
             local catagory = AssetCatagories.byId[asset.type]
@@ -42,7 +42,7 @@ function EquipmentRenderer:start(loader)
     equipmentReconciler = EquipmentReconciler.new(loader)
 
     equipmentReconciler.equippedAsset:connect(function(player, assetId, equipmentBehavior)
-        makeRenderer(player,assetId,equipmentBehavior)
+        makeRenderer(player,assetId,equipmentBehavior,loader)
     end)
 
     equipmentReconciler.unequippingAsset:connect(function(player, assetId, equipmentBehavior)
@@ -56,14 +56,14 @@ function EquipmentRenderer:start(loader)
     for _,player in pairs(Players:GetPlayers()) do
         local playerEquipment = equipmentReconciler.equipmentBehaviors[player] or {}
         for assetid,behavior in pairs(playerEquipment) do
-            makeRenderer(player,assetid,behavior)
+            makeRenderer(player,assetid,behavior,loader)
         end
     end
 
     RunService.RenderStepped:connect(function()
         for _,renderer in pairs(renderers) do
             if renderer.update then
-                renderer:update()
+                renderer:update(loader)
             end
         end
     end)
