@@ -45,6 +45,13 @@ local catagories = {
         name = "Ability",
         maxEquipped = 99,
     },
+    {
+        id = "pet",
+        image = "rbxassetid://3210207976",
+        name = "Pets",
+        maxEquipped = 1,
+        defaultRenderer = EquipmentRenderers.PetRenderer
+    },
 }
 
 return {
