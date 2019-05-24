@@ -1,0 +1,38 @@
+newmtl Partysombrero1Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.0705882 0.0705882 0.0705882 
+
+d 1
+
+Ns 22
+
+map_Ka Partysombrero1Tex.png
+map_Kd Partysombrero1Tex.png
+map_d Partysombrero1Tex.png
+
+newmtl Child2Mtl
+Material Color
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.4 0.4 0.4 
+
+d 1
+
+Ns 9
+
+map_Ka Child2Tex.png
+map_Kd Child2Tex.png
+map_d Child2Tex.png
+
+newmtl Child1Mtl
+Material Color
+Ka 0.891262 0.899385 0.899385
+Kd 0.891262 0.899385 0.899385
+Ks 0.356505 0.359754 0.359754 
+
+d 1
+
+Ns 9
+
