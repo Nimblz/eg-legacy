@@ -2,6 +2,7 @@ local Lighting = game:GetService("Lighting")
 local RunService = game:GetService("RunService")
 
 local MinsInDay = 15
+local MinsInNight = 5
 
 local DayNight = {}
 
