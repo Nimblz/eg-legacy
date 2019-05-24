@@ -1,5 +1,5 @@
 return {
     id = "face_chill",
-    price = 300,
+    price = 50,
     onSale = true,
 }
