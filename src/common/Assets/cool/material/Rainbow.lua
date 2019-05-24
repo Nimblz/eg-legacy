@@ -11,5 +11,6 @@ return {
     metadata = {
         color = Color3.fromRGB(255,255,255),
         material = Enum.Material.Neon,
+        isRainbow = true,
     }
 }
