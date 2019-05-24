@@ -16,6 +16,20 @@ local WHITELIST = {
 	Workspace:WaitForChild("staticworld")
 }
 
+local QUALITY_DISTS = {
+	[0] = 150,
+	[1] = 100,
+	[2] = 100,
+	[3] = 100,
+	[4] = 200,
+	[5] = 200,
+	[6] = 200,
+	[7] = 300,
+	[8] = 300,
+	[9] = 1000,
+	[10] = 1000,
+}
+
 local LegAnimator = {}
 
 -- TODO: Move this somewhere else.
@@ -123,10 +137,18 @@ function LegAnimator:step(et,dt)
 	local RightLeg = self.Legs.Right
 
 	local Rig = self.Rig
+	if not Rig then return end -- gross
 	local Root = self.Root
 	local Torso = Rig:FindFirstChild("Torso")
-
+	if not Root then return end
 	if not Torso then return end
+
+	local quality = UserSettings():GetService("UserGameSettings").SavedQualityLevel.Value
+	local thresholdDist = QUALITY_DISTS[quality] or 100
+	local dist = (Root.Position - Workspace.CurrentCamera.CFrame.p).Magnitude
+	if dist > thresholdDist then
+		return
+	end
 
 	local Humanoid = self.Humanoid
 
