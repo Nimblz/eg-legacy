@@ -3,6 +3,6 @@ return {
     name = "The Domino Crown",
     description = "Your kingdom topples.",
     type = "hat",
-    rarity = 3,
+    rarity = 4,
     hidden = false,
 }
