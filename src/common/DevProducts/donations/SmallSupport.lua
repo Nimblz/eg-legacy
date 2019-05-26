@@ -1,6 +1,6 @@
 return {
     id = "smallsupport",
-    name = "Support (30R)",
+    name = "Support",
     productId = 467030266,
     onSale = true,
 

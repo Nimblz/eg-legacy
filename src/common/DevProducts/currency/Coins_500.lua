@@ -10,11 +10,11 @@ return {
     productId = 538434691,
     onSale = true,
 
-    order = 1,
-    
+    order = 11,
+
     onProductPurchase = (function(player, server)
         local store = server.store
         store:dispatch(Actions.COIN_ADD(player,500))
         return true -- Successful
     end)
-} 
+}

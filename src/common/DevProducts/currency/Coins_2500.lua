@@ -10,7 +10,7 @@ return {
     productId = 538435372,
     onSale = true,
 
-    order = 2,
+    order = 12,
 
     onProductPurchase = (function(player, server)
         local store = server.store
