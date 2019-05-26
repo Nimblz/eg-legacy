@@ -1,13 +1,15 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
+local MarketplaceService = game:GetService("MarketplaceService")
 local LocalPlayer = Players.LocalPlayer
 
 local lib = ReplicatedStorage:WaitForChild("lib")
 local common = ReplicatedStorage:WaitForChild("common")
 local component = script.Parent
 
+local ShadowedTextLabel = require(component:WaitForChild("ShadowedTextLabel"))
+
 local DevProducts = require(common:WaitForChild("DevProducts"))
-local Actions = require(common:WaitForChild("Actions"))
 local Roact = require(lib:WaitForChild("Roact"))
 
 local PIXEL_SIZE = 600
@@ -33,6 +35,15 @@ function DevProductShopView:render()
             [Roact.Event.MouseButton1Click] = function()
                 self.props.clientApi:buyDevproduct(product.id)
             end,
+        }, {
+            flavortext = Roact.createElement(ShadowedTextLabel, {
+                Text = product.flavorText or "",
+                Size = UDim2.new(0,100,0,30),
+                Position = UDim2.new(0,-4,1,8),
+                AnchorPoint = Vector2.new(1,1),
+                BackgroundTransparency = 1,
+                TextStrokeTransparency = 0,
+            }),
         })
     end
 
