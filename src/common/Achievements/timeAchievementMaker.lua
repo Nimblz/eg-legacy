@@ -1,5 +1,5 @@
 local Players = game:GetService("Players")
-
+local RunService = game:GetService("RunService")
 local joinTimes = {}
 
 Players.PlayerAdded:Connect(function(player)
@@ -29,19 +29,14 @@ return function(timeRequirement,name,desc,badgeId)
         badgeId = badgeId,
         startListening = (function(server, awardBadge)
             print("Listening for",name)
-
-            spawn(function()
-                while true do
-                    for _,player in pairs(Players:GetPlayers()) do
-                        if not joinTimes[player] then
-                            joinTimes[player] = tick()
-                        end
-                        if queryComplete(server,player) then
-                            awardBadge(player)
-                        end
+            RunService.Heartbeat:Connect(function()
+                for _,player in pairs(Players:GetPlayers()) do
+                    if not joinTimes[player] then
+                        joinTimes[player] = tick()
                     end
-
-                    wait(1)
+                    if queryComplete(server,player) then
+                        awardBadge(player)
+                    end
                 end
             end)
         end),
