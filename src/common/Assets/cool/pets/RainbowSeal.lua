@@ -1,6 +1,6 @@
 return {
-    id = "pet_rainbowsquid",
-    name = "Rainbow Squid",
+    id = "pet_rainbowseal",
+    name = "Rainbow Seal",
     description = "Cosmic friend",
     type = "pet",
     rarity = 6,

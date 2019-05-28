@@ -1,9 +1,9 @@
 return {
-    id = "pet_rainbowsquid",
-    name = "Rainbow Squid",
+    id = "pet_rainbowscoob",
+    name = "Rainbow Scoobis",
     description = "Cosmic friend",
     type = "pet",
-    rarity = 6,
+    rarity = 7,
     hidden = false,
     overrideRenderer = "RainbowPetRenderer",
 
