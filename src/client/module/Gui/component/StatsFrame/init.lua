@@ -5,6 +5,9 @@ local LocalPlayer = Players.LocalPlayer
 
 local lib = ReplicatedStorage:WaitForChild("lib")
 local common = ReplicatedStorage:WaitForChild("common")
+local util = common:WaitForChild("util")
+
+local beautifyNumber = require(util:WaitForChild("beautifyNumber"))
 
 local component = script
 
@@ -37,7 +40,7 @@ function StatFrame:render()
         coinCounter = Roact.createElement(StatCounter,{
             iconImage = "rbxassetid://1025945542",
             statName = "Coins: ",
-            value = self.props.coins
+            value = beautifyNumber(self.props.coins,true)
         }),
     })
 end

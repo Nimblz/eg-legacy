@@ -5,11 +5,13 @@ local LocalPlayer = Players.LocalPlayer
 local component = script.Parent
 local lib = ReplicatedStorage:WaitForChild("lib")
 local common = ReplicatedStorage:WaitForChild("common")
+local util = common:WaitForChild("util")
 
 local Selectors = require(common:WaitForChild("Selectors"))
 local ShopProducts = require(common:WaitForChild("ShopProducts"))
 
-local getAssetModel = require(common.util:WaitForChild("getAssetModel"))
+local getAssetModel = require(util:WaitForChild("getAssetModel"))
+local beautifyNumber = require(util:WaitForChild("beautifyNumber"))
 local Roact = require(lib:WaitForChild("Roact"))
 local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 
@@ -123,7 +125,7 @@ function ProductButton:render()
         modifiers = modifiersFrame,
         price = Roact.createElement(ShadowedTextLabel, {
             Font = Enum.Font.GothamBlack,
-            Text = "$"..tostring(product.price or "PRICE N/A"),
+            Text = "$"..beautifyNumber(product.price),
             TextSize = 24,
             TextStrokeTransparency = 0,
             BackgroundTransparency = 1,
