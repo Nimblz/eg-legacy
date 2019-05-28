@@ -30,7 +30,7 @@
         "t": {
           "$path": "lib/t/lib"
         },
-        "recs": {
+        "RECS": {
           "$path": "lib/recs/src"
         },
         "Promise": {
