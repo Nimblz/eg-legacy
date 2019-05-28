@@ -23,10 +23,9 @@ return function(player,api)
                 AbyssPortal = true,
             },
             inventory = {
-                ["invaliditem"] = true,
             },
             stats = {
-                coins = 250000,
+                coins = 0,
             }
         }
         local defaultSave = {
