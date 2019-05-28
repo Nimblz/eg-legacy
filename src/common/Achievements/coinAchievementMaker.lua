@@ -7,9 +7,9 @@ local Selectors = require(common:WaitForChild("Selectors"))
 -- function that returns true if a player has completed this objective
 local function queryComplete(server,player,quantity)
     local state = server.store:getState()
-    local coinCount = Selectors.getCoins(state,player) or 0
+    local totalCoinsCollected = Selectors.getTotalCoinsCollected(state,player) or 0
 
-    return coinCount > quantity
+    return totalCoinsCollected > quantity
 end
 
 return function(quantity,badgeId)
@@ -21,7 +21,7 @@ return function(quantity,badgeId)
         startListening = (function(server, awardBadge)
             local coins = server:getModule("Coins")
 
-            coins.coinCollected:connect(function(player,newCount)
+            coins.coinCollected:connect(function(player)
                 if queryComplete(server, player, quantity) then
                     awardBadge(player)
                 end
