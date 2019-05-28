@@ -11,7 +11,7 @@ local Actions = require(common:WaitForChild("Actions"))
 local Selectors = require(common:WaitForChild("Selectors"))
 local Signal = require(lib:WaitForChild("Signal"))
 
-local RESPAWN_TIME = 120 -- secs it takes for a coin to reappear
+local RESPAWN_TIME = 60*5 -- secs it takes for a coin to reappear
 local COLLECTION_RANGE_PADDING = 3 -- padding for collection range
 
 local store
@@ -47,7 +47,16 @@ function Coins:requestCoinCollect(player,coinPart)
     if not coinCollections[player][coinPart] then
         coinCollections[player][coinPart] = true
 
-        store:dispatch(Actions.COIN_ADD(player,1))
+        local spawnConfig = coinPart:FindFirstChild("spawnConfig")
+        if spawnConfig then
+            spawnConfig = require(spawnConfig)
+        else
+            spawnConfig = {
+                value = 1;
+            }
+        end
+
+        store:dispatch(Actions.COIN_ADD(player,spawnConfig.value or 1))
         local state = store:getState()
         Coins.coinCollected:fire(player,Selectors.getCoins(state,player))
         coinsInLast5Secs[player] = (coinsInLast5Secs[player] or 0) + 1
