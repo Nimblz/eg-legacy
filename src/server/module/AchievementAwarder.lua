@@ -57,6 +57,7 @@ local function achievementAward(server, player,achievement)
             if not hasBadge then
                 print("Awarded",achievement.badgeId,"to",player)
                 BadgeService:AwardBadge(player.UserId,achievement.badgeId)
+                badgeAwardedCache[player][achievement.badgeId] = true
             else
                 badgeAwardedCache[player][achievement.badgeId] = true
             end
