@@ -19,13 +19,25 @@ Client.modules = {
 	EgLegAnimator = require(moduleBin:WaitForChild("EgLegAnimator")),
 	Portals = require(moduleBin:WaitForChild("Portals")),
 	Cannons = require(moduleBin:WaitForChild("Cannons")),
-	Coins = require(moduleBin:WaitForChild("Coins")),
+	CoinSpawner = require(moduleBin:WaitForChild("CoinSpawner")),
 	Sound = require(moduleBin:WaitForChild("Sound")),
 	Gui = require(moduleBin:WaitForChild("Gui")),
 	EquipmentRenderer = require(moduleBin:WaitForChild("EquipmentRenderer")),
+	RecsCoreContainer = require(moduleBin:WaitForChild("RecsCoreContainer")),
 	--CharacterMovement = require(moduleBin:WaitForChild("CharacterMovement")),
 }
 
+Client.toLoad = {
+	Client.modules.Sound,
+	Client.modules.RecsCoreContainer,
+	Client.modules.EgLegAnimator,
+	Client.modules.Portals,
+	Client.modules.Cannons,
+	Client.modules.Gui,
+	Client.modules.EquipmentRenderer,
+	Client.modules.CharacterMovement,
+	Client.modules.CoinSpawner,
+}
 function Client:getModule(name)
 	assert(self.modules[name],"No such module: "..name)
 	return self.modules[name]
@@ -33,10 +45,10 @@ end
 
 function Client:load()
 	-- init all modules
-	callOnAll(Client.modules,"init")
+	callOnAll(Client.toLoad,"init")
 
 	-- player is ready, start all modules
-	callOnAll(Client.modules,"start",self)
+	callOnAll(Client.toLoad,"start",self)
 end
 
 Client.api = ClientApi.new({
@@ -56,7 +68,7 @@ Client.api = ClientApi.new({
 	end,
 
 	coinRespawn = function(coinSpawn)
-		Client:getModule("Coins"):spawnCoin(coinSpawn)
+		Client:getModule("CoinSpawner"):spawnCoin(coinSpawn)
 	end,
 
 	equippedBroadcast = function(player, assetid, payload)
