@@ -38,6 +38,11 @@ function PetRenderer.new(assetId,rig, client)
     self.cframe = CFrame.new(0,0,0)
     self.offset = Vector3.new(0,0,0)
 
+    self.followDist = (self.viewModel.Size.Magnitude/2) + 3
+
+    self.hoverTimeOffset = math.random()*2*math.pi
+    self.cycleTime = 0.3 + math.random()*0.2
+
     local petAsset = Assets.byId[assetId]
     self.metadata = petAsset.metadata or {}
     self.nextSound = tick()+1
@@ -51,10 +56,10 @@ function PetRenderer:update(client)
     if not self.viewModel then return end
 
     local diffVector = self.cframe.p-root.Position
-    local separationVector = diffVector.Unit * 4
+    local separationVector = diffVector.Unit * self.followDist
     local targetPos = root.Position + separationVector
     local targetCFrame = CFrame.new(targetPos) * (self.cframe - self.cframe.p)
-    local heightOffset = math.sin((tick()*3)%(math.pi*2))*0.5
+    local heightOffset = math.sin(((tick() + self.hoverTimeOffset)*math.pi*2*self.cycleTime)%(math.pi*2))*0.5
 
     if (targetPos-self.lastCF.p).Magnitude > 0.3 then -- moving, need to turn
         targetCFrame = CFrame.new(targetPos,targetPos + (targetPos-self.lastCF.p))
