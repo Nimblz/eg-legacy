@@ -24,6 +24,7 @@ Client.modules = {
 	Gui = require(moduleBin:WaitForChild("Gui")),
 	EquipmentRenderer = require(moduleBin:WaitForChild("EquipmentRenderer")),
 	RecsCoreContainer = require(moduleBin:WaitForChild("RecsCoreContainer")),
+	AreaLighting = require(moduleBin:WaitForChild("AreaLighting")),
 	--CharacterMovement = require(moduleBin:WaitForChild("CharacterMovement")),
 }
 
@@ -37,6 +38,7 @@ Client.toLoad = {
 	Client.modules.EquipmentRenderer,
 	Client.modules.CharacterMovement,
 	Client.modules.CoinSpawner,
+	Client.modules.AreaLighting,
 }
 function Client:getModule(name)
 	assert(self.modules[name],"No such module: "..name)

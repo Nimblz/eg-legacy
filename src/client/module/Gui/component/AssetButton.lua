@@ -45,6 +45,15 @@ function AssetButton:render()
         })
     end
 
+    local thumbnailImage
+    if asset.thumbnailImage then
+        thumbnailImage = Roact.createElement("ImageLabel", {
+            Image = asset.thumbnailImage,
+            Size = UDim2.new(1,0,1,0),
+            BackgroundTransparency = 1,
+        })
+    end
+
     local modifiers = {}
 
     modifiers.listLayout = Roact.createElement("UIListLayout", {
@@ -91,6 +100,7 @@ function AssetButton:render()
         }, {
             isEquipped = checkmark,
             modifiers = modifiersFrame,
+            thumbnailImage = thumbnailImage,
         })
     })
     return Roact.createElement("TextButton", {

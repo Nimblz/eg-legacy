@@ -10,6 +10,51 @@ local Components = require(client:WaitForChild("Components"))
 
 local CoinSpawner = {}
 
+local coinTypes = {
+    default = {
+        coinModel = "coin",
+    },
+    redcoin = {
+        coinModel = "redcoin",
+    },
+    bluecoin = {
+        coinModel = "bluecoin",
+    },
+    purplecoin = {
+        coinModel = "purplecoin",
+    },
+    greencoin = {
+        coinModel = "greencoin",
+    },
+    silvercoin = {
+        coinModel = "silvercoin",
+    },
+    crystalcoin = {
+        coinModel = "crystalcoin",
+    },
+    cosmiccoin = {
+        coinModel = "cosmiccoin",
+    },
+}
+
+local tagCoinTypes = {
+    coin_spawn = "default",
+    redcoin_spawn = "redcoin",
+    bluecoin_spawn = "bluecoin",
+    greencoin_spawn = "greencoin",
+    purplecoin_spawn = "purplecoin",
+}
+
+local function getSpawnerType(instance)
+    local tags = CollectionService:GetTags(instance)
+
+    for _,tag in pairs(tags) do
+        if tagCoinTypes[tag] then
+            return tagCoinTypes[tag]
+        end
+    end
+end
+
 local function getCoinModel(name)
     return gameStuff:FindFirstChild(name or "coin") or gameStuff:FindFirstChild("coin")
 end
@@ -19,9 +64,9 @@ function CoinSpawner:spawnCoin(spawnPart)
     if spawnConfig then
         spawnConfig = require(spawnConfig)
     else
-        spawnConfig = {
-            coinModel = "coin",
-        }
+        local spawnTag = getSpawnerType(spawnPart)
+        if not spawnTag then return end
+        spawnConfig = coinTypes[spawnTag or "default"]
     end
 
     local newCoinModel = getCoinModel(spawnConfig.coinModel):Clone()
@@ -36,9 +81,12 @@ function CoinSpawner:spawnCoin(spawnPart)
 end
 
 function CoinSpawner:spawnAllCoins()
-    for _, instance in pairs(CollectionService:GetTagged("coin_spawn")) do
-        self:spawnCoin(instance)
+    for tagname,_ in pairs(tagCoinTypes) do
+        for _, instance in pairs(CollectionService:GetTagged(tagname)) do
+            self:spawnCoin(instance)
+        end
     end
+
 end
 
 function CoinSpawner:init()

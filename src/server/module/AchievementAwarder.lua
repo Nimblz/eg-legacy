@@ -18,22 +18,25 @@ AchievementAwarder.achievementGet = Signal.new()
 
 local badgeAwardedCache = {}
 
-local function queryPlayerHasBadge(player,badgeId)
-    return Promise.new(function(resolve,reject)
-        spawn(function()
-            local hasBadge = nil
-            while hasBadge == nil do
-                pcall(function()
-                    hasBadge = BadgeService:UserHasBadgeAsync(player.UserId, badgeId)
-                end)
-                if hasBadge == nil then
-                    wait(1+math.random()*3)
-                end
-            end
-
-            resolve(hasBadge)
+local function userHasBadge(player,id)
+    badgeAwardedCache[player] = badgeAwardedCache[player] or {}
+    if badgeAwardedCache[player][id] then return true end
+    local hasBadge
+    local success, msg = false, ""
+    local tries = 0
+    while not success and tries < 10 do
+        success, msg = pcall(function()
+            tries = tries+1
+            hasBadge = BadgeService:UserHasBadgeAsync(player.UserId,id)
         end)
-    end)
+        wait(0.5)
+    end
+    if not success then
+        warn("unable to retrieve badge ownership status for:",player.Name)
+        warn("returning as if they dont have the badge.")
+        return false
+    end
+    return hasBadge
 end
 
 local function achievementAward(server, player,achievement)
@@ -51,17 +54,12 @@ local function achievementAward(server, player,achievement)
         AchievementAwarder.achievementGet:fire(player,achievement)
     end
 
-    badgeAwardedCache[player] = badgeAwardedCache[player] or {}
-    if achievement.badgeId and not badgeAwardedCache[player][achievement.badgeId] then
-        queryPlayerHasBadge(player,achievement.badgeId):andThen(function(hasBadge)
-            if not hasBadge then
-                print("Awarded",achievement.badgeId,"to",player)
-                BadgeService:AwardBadge(player.UserId,achievement.badgeId)
-                badgeAwardedCache[player][achievement.badgeId] = true
-            else
-                badgeAwardedCache[player][achievement.badgeId] = true
-            end
-        end)
+    if achievement.badgeId then
+        if not userHasBadge(player,achievement.badgeId) then
+            print("Awarded",achievement.badgeId,"to",player)
+            BadgeService:AwardBadge(player.UserId,achievement.badgeId)
+            badgeAwardedCache[player][achievement.badgeId] = true
+        end
     end
 end
 
@@ -82,17 +80,13 @@ local function playerJoined(server,player)
         local playerAchievements = (stats.achievements or {})
 
         -- retroactive badge awarding
-        queryPlayerHasBadge(player,achievement.badgeId):andThen(function(hasBadge)
-            local missingBadge = (
-                achievement.badgeId and -- achievement has badge
-                playerAchievements[achievement.id] and -- player has earned in past
-                not hasBadge -- player has not been awarded badge
-            )
-            if achievement.queryComplete(server,player) or missingBadge then
-                print(("Loaded player %s meets requirements for: %s"):format(player.Name,achievement.name))
-                achievementAward(server,player,achievement)
-            end
-        end)
+        local missingBadge = not userHasBadge(player,achievement.badgeId) and playerAchievements[achievement.id]
+
+        if achievement.queryComplete(server,player) or missingBadge then
+            print(("Loaded player %s meets requirements for: %s"):format(player.Name,achievement.name))
+            achievementAward(server,player,achievement)
+            badgeAwardedCache[player][achievement.badgeId] = true
+        end
     end
 end
 

@@ -1,9 +1,9 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
 -- scaling constants
-local PIXEL_WIDTH = 175
-local TARGET_WIDTH_SCALE = 0.2
-
+local TARGET_SCALE = 0.55
 local PADDING = 16
 
 local lib = ReplicatedStorage:WaitForChild("lib")
@@ -21,7 +21,11 @@ local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 
 local SideMenu = Roact.Component:extend("VersionLabel")
 
-local function newButton(viewId, name, props, layoutOrder)
+function changeView(viewId,props)
+    props.menuButtonPressed(viewId,props)
+end
+
+local function newButton(viewId, name, props, layoutOrder, callback)
     local buttonText = name
     return Roact.createElement("ImageButton", {
         Size = UDim2.new(
@@ -35,9 +39,7 @@ local function newButton(viewId, name, props, layoutOrder)
         ScaleType = Enum.ScaleType.Slice,
         SliceCenter = Rect.new(75, 75, 76, 76),
         LayoutOrder = layoutOrder or 0,
-        [Roact.Event.MouseButton1Click] = (function()
-            props.menuButtonPressed(viewId,props)
-        end)
+        [Roact.Event.MouseButton1Click] = function() callback(viewId,props) end
     }, {
         Roact.createElement(ShadowedTextLabel,{
             Font = Enum.Font.GothamBlack,
@@ -53,19 +55,28 @@ local function newButton(viewId, name, props, layoutOrder)
     })
 end
 
+local function homeButton()
+
+end
+
 function SideMenu:render()
 
     local touchEnabled = game:GetService("UserInputService").TouchEnabled
 
     local menuButtons = {
-        inventoryButton = newButton("inventory", "Inventory",self.props,1),
-        shopButton = newButton("shop", "Shop",self.props,2),
-        devproductsButton = newButton("devproducts", "Buy Coins",self.props,3),
-        settingsButton = newButton("settings", "Settings",self.props,4),
+        inventoryButton = newButton("inventory", "Inventory",self.props,1,changeView),
+        shopButton = newButton("shop", "Shop",self.props,2,changeView),
+        devproductsButton = newButton("devproducts", "Buy Coins",self.props,3,changeView),
+        settingsButton = newButton("settings", "Settings",self.props,4,changeView),
+        homeButton = newButton("home", "Respawn",self.props,5,(function()
+            LocalPlayer.Character.PrimaryPart.CFrame = workspace:WaitForChild("homewarp").CFrame
+        end))
     }
 
+    local pixelSize = 5*(64+PADDING)
+
     menuButtons.scale = Roact.createElement("UIScale", {
-        Scale = math.min(1,(self.props.viewportSize.X * TARGET_WIDTH_SCALE)/PIXEL_WIDTH)
+        Scale = math.min(1,(self.props.viewportSize.Y * TARGET_SCALE)/pixelSize)
     })
 
     menuButtons.layout = Roact.createElement("UIListLayout", {
@@ -77,7 +88,7 @@ function SideMenu:render()
 
     return Roact.createElement("Frame", {
         AnchorPoint = Vector2.new(1,0.5),
-        Size = UDim2.new(0,PIXEL_WIDTH,1,0),
+        Size = UDim2.new(0,0,0,pixelSize),
         Position = UDim2.new(1,-PADDING,0.5,(touchEnabled and -32) or 0),
 
         BackgroundTransparency = 1,

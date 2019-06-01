@@ -1,5 +1,5 @@
 return {
     id = "face_hacked",
-    price = 999,
+    price = 9999,
     onSale = true,
 }

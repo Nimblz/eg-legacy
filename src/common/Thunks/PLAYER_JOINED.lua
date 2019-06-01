@@ -10,24 +10,7 @@ local PLAYER_ADD = Actions.PLAYER_ADD
 
 return function(player,api)
     return function(store)
-        local playerSaveTable = { -- test save
-            portals = {
-                AutumnPortal = true,
-                ForestPortal = true,
-                MountainPortal = true,
-                OceanPortal = true,
-                SkyPortal = true,
-                TundraPortal = true,
-                UndergroundPortal = true,
-                DesertPortal = true,
-                AbyssPortal = true,
-            },
-            inventory = {
-            },
-            stats = {
-                coins = 0,
-            }
-        }
+        local playerSaveTable = {}
         local defaultSave = {
             portals = {
             },
@@ -41,9 +24,25 @@ return function(player,api)
             }
         }
         if game.PlaceId ~= 0 then
-            local PlayerDataStore = require(lib:WaitForChild("PlayerDataStore"))
-            local saveData = PlayerDataStore:GetSaveData(player)
-            playerSaveTable = saveData:Get("playerSaveTable") or defaultSave
+            local DataStore2 = require(lib:WaitForChild("DataStore2"))
+
+            -- load from datastore2
+            local saveDataStore = DataStore2("saveData",player)
+            local dataStore2SaveTable = saveDataStore:Get(nil)
+
+            if not dataStore2SaveTable then
+                local PlayerDataStore = require(lib:WaitForChild("PlayerDataStore"))
+                local oldSaveStore = PlayerDataStore:GetSaveData(player)
+                local oldSave = oldSaveStore:Get("playerSaveTable")
+                if oldSave then
+                    print("loading old save.")
+                    playerSaveTable = oldSave
+                end
+            else
+                print("loading datastore2 save or default")
+                print("isDefault:",dataStore2SaveTable == nil)
+                playerSaveTable = dataStore2SaveTable or defaultSave
+            end
         end
 
         store:dispatch(PLAYER_ADD(player,playerSaveTable))

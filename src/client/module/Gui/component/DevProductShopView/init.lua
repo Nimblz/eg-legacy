@@ -22,29 +22,33 @@ function DevProductShopView:render()
     local productButtons = {}
 
     for _,product in pairs(DevProducts.all) do
-        productButtons[product.id] = Roact.createElement("TextButton", {
-            Text = product.name,
-            TextColor3 = Color3.new(1,1,1),
-            BackgroundColor3 = Color3.fromRGB(2, 183, 87),
-            BorderSizePixel = 0,
-            TextSize = 24,
-            Font = Enum.Font.GothamBlack,
-            TextWrapped = true,
-            LayoutOrder = product.order,
+        if product.onSale then
+            productButtons[product.id] = Roact.createElement("TextButton", {
+                Text = product.name,
+                TextColor3 = Color3.new(1,1,1),
+                BackgroundColor3 = Color3.fromRGB(2, 183, 87),
+                BorderSizePixel = 0,
+                TextSize = 24,
+                Font = Enum.Font.GothamBlack,
+                TextWrapped = true,
+                LayoutOrder = product.order,
 
-            [Roact.Event.MouseButton1Click] = function()
-                self.props.clientApi:buyDevproduct(product.id)
-            end,
-        }, {
-            flavortext = Roact.createElement(ShadowedTextLabel, {
-                Text = product.flavorText or "",
-                Size = UDim2.new(0,100,0,30),
-                Position = UDim2.new(0,-4,1,8),
-                AnchorPoint = Vector2.new(1,1),
-                BackgroundTransparency = 1,
-                TextStrokeTransparency = 0,
-            }),
-        })
+                [Roact.Event.MouseButton1Click] = function()
+                    self.props.clientApi:buyDevproduct(product.id)
+                end,
+            }, {
+                flavortext = Roact.createElement(ShadowedTextLabel, {
+                    Text = product.flavorText or "",
+                    Size = UDim2.new(0,60,0,18),
+                    Position = UDim2.new(1,-4,1,4),
+                    AnchorPoint = Vector2.new(1,1),
+                    BackgroundTransparency = 1,
+                    TextStrokeTransparency = 0,
+                    Font = Enum.Font.GothamBlack,
+                    TextSize = 18,
+                }),
+            })
+        end
     end
 
     productButtons.gridLayout = Roact.createElement("UIGridLayout", {

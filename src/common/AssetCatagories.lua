@@ -31,7 +31,8 @@ local catagories = {
         id = "effect",
         image = "rbxassetid://3185662510",
         name = "Effect",
-        maxEquipped = 2,
+        maxEquipped = 3,
+        defaultRenderer = EquipmentRenderers.EffectRenderer
     },
     {
         id = "tool",

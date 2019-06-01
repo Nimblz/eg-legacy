@@ -29,14 +29,17 @@ return function(timeRequirement,name,desc,badgeId)
         badgeId = badgeId,
         startListening = (function(server, awardBadge)
             print("Listening for",name)
-            RunService.Heartbeat:Connect(function()
-                for _,player in pairs(Players:GetPlayers()) do
-                    if not joinTimes[player] then
-                        joinTimes[player] = tick()
+            spawn(function()
+                while true do
+                    for _,player in pairs(Players:GetPlayers()) do
+                        if not joinTimes[player] then
+                            joinTimes[player] = tick()
+                        end
+                        if queryComplete(server,player) then
+                            awardBadge(player)
+                        end
                     end
-                    if queryComplete(server,player) then
-                        awardBadge(player)
-                    end
+                    wait(0.3)
                 end
             end)
         end),

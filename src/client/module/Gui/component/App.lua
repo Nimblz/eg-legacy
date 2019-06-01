@@ -56,10 +56,10 @@ function App:render()
             likesLabel = Roact.createElement(ShadowedTextLabel, {
                 AnchorPoint = Vector2.new(1,1),
                 Position = UDim2.new(1,-16,1,-16),
-                Size = UDim2.new(1/2,0,1/10,0),
+                Size = UDim2.new(1/2,0,1/15,0),
                 BackgroundTransparency = 1,
                 TextStrokeTransparency = 0,
-                Text = "Enjoying the game? Leave a like 👍 ! It helps a lot! Something special will happen once we reach 50k 👍! ",
+                Text = "Enjoying the game? Leave a like 👍!",
                 Font = Enum.Font.GothamBlack,
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Right,

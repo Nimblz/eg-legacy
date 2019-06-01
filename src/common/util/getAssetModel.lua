@@ -7,7 +7,12 @@ local Assets = require(common:WaitForChild("Assets"))
 
 local cataFuncs = {
     hat = function(id, asset)
-        return models:WaitForChild("hats"):FindFirstChild(id)
+        local hatModel = models:WaitForChild("hats"):FindFirstChild(id)
+        if not hatModel then 
+            warn("hatmodel "..id.." does not exist")
+            return models:WaitForChild("error"):Clone()
+        end
+        return models:WaitForChild("hats"):FindFirstChild(id):Clone()
     end,
     face = function(id, asset)
         local egbase = models:WaitForChild("materials").materialbase:Clone()
@@ -27,8 +32,11 @@ local cataFuncs = {
         return materialSample
     end,
     pet = function(id, asset)
-        return models:WaitForChild("pets"):FindFirstChild(id)
+        return models:WaitForChild("pets"):FindFirstChild(id):Clone()
     end,
+    effect = function(id,asset)
+        return models:WaitForChild("materials").materialbase:Clone()
+    end
 }
 
 return function(id)

@@ -4,9 +4,9 @@ local common = ReplicatedStorage:WaitForChild("common")
 
 local Selectors = require(common:WaitForChild("Selectors"))
 
-local PlayerDataStore
+local DataStore2
 if game.PlaceId ~= 0 then
-    PlayerDataStore = require(lib:WaitForChild("PlayerDataStore"))
+    DataStore2 = require(lib:WaitForChild("DataStore2"))
 end
 
 return function(nextDispatch,store)
@@ -21,8 +21,8 @@ return function(nextDispatch,store)
             if game.PlaceId ~= 0 then
                 -- if prev save table is nil then the player has just joined, no need to save.
                 if playerSaveTable and prevSaveTable then
-                    local saveData = PlayerDataStore:GetSaveData(player)
-                    saveData:Set("playerSaveTable", playerSaveTable)
+                    local saveStore = DataStore2("saveData",player)
+                    saveStore:Set(playerSaveTable)
                 end
             end
         end

@@ -8,6 +8,8 @@ local PetRenderer = require(script.Parent.PetRenderer)
 
 local getAssetModel = require(common.util:WaitForChild("getAssetModel"))
 
+local RAINBOW_INTENSITY = 4
+
 local RainbowPetRenderer = setmetatable({},{__index = PetRenderer})
 
 local function createModel(assetId)
@@ -40,7 +42,11 @@ function RainbowPetRenderer:update(client)
     viewModel.Color = newColor
 
     if mesh then
-        mesh.VertexColor = Vector3.new(newColor.R*2.5,newColor.G*2.5,newColor.B*2.5)
+        mesh.VertexColor = Vector3.new(
+            newColor.R*RAINBOW_INTENSITY,
+            newColor.G*RAINBOW_INTENSITY,
+            newColor.B*RAINBOW_INTENSITY
+        )
     end
 end
 

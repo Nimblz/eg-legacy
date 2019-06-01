@@ -8,7 +8,7 @@ return {
     id = "itempack_rainbow",
     name = "Rainbow Item Pack",
     productId = 545309170,
-    onSale = true,
+    onSale = false,
 
     order = 0,
     flavorText = "SALE!",

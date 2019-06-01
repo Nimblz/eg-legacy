@@ -53,6 +53,15 @@ function ProductButton:render()
         })
     end
 
+    local thumbnailImage
+    if asset.thumbnailImage then
+        thumbnailImage = Roact.createElement("ImageLabel", {
+            Image = asset.thumbnailImage,
+            Size = UDim2.new(1,0,1,0),
+            BackgroundTransparency = 1,
+        })
+    end
+
     local modifiers = {}
 
     modifiers.listLayout = Roact.createElement("UIListLayout", {
@@ -120,6 +129,8 @@ function ProductButton:render()
             model = assetModel,
             Size = UDim2.new(1,0,1,0),
             ImageColor3 = self.props.blackout and Color3.new(0,0,0) or Color3.new(1,1,1)
+        }, {
+            thumbnailImage = thumbnailImage,
         }),
         isEquipped = checkmark,
         modifiers = modifiersFrame,
