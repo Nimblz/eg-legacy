@@ -93,13 +93,10 @@ end
 function AchievementAwarder:start(server)
 
     -- init cheevos
-    print("Initializing Achievements [[")
     for id, achievement in pairs(Achievements) do
-        print((" - %s"):format(id))
         initAchievement(achievement,server)
         AchievementAwarder.achievements[id] = achievement
     end
-    print("]]")
 
     server:getModule("PlayerHandler").playerLoaded:connect(function(player)
         playerJoined(server,player)

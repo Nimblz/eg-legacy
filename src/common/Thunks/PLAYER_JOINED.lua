@@ -10,9 +10,10 @@ local PLAYER_ADD = Actions.PLAYER_ADD
 
 return function(player,api)
     return function(store)
-        local playerSaveTable = {}
+        local playerSaveTable
         local defaultSave = {
             portals = {
+                AbyssPortal = true
             },
             inventory = {
                 -- default items should be given each time a player joins
@@ -20,7 +21,7 @@ return function(player,api)
                 -- will not retroactively get them.
             },
             stats = {
-                coins = 0,
+                coins = 10^7,
             }
         }
         if game.PlaceId ~= 0 then
@@ -45,7 +46,7 @@ return function(player,api)
             end
         end
 
-        store:dispatch(PLAYER_ADD(player,playerSaveTable))
+        store:dispatch(PLAYER_ADD(player,playerSaveTable or defaultSave))
         api:initialPlayerState(player,store:getState())
     end
 end

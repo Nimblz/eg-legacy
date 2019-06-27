@@ -7,7 +7,7 @@ local Achievements = {
         0,
         "you played",
         "this is a badge of shame.",
-        2124454471
+        2124454471 -- badgeid
     ),
     SessionLength_5Min = require(script:WaitForChild("timeAchievementMaker"))(
         60*5,

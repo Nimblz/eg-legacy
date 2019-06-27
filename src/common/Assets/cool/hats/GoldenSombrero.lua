@@ -3,6 +3,6 @@ return {
     name = "Golden Sombrero",
     description = "You make me a LOT crazy",
     type = "hat",
-    rarity = 5,
+    rarity = 4,
     hidden = false,
 }

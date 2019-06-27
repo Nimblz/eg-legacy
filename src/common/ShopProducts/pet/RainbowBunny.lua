@@ -1,5 +1,5 @@
 return {
     id = "pet_rainbowbunny",
-    price = 75000,
+    price = 175000,
     onSale = true,
 }

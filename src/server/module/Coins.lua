@@ -33,7 +33,7 @@ local coinTypes = {
     },
     bluecoin = {
         value = 50,
-        respawnTime = 180,
+        respawnTime = 180, 
     },
     purplecoin = {
         value = 100,

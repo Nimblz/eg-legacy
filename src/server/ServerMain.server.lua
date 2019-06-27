@@ -119,13 +119,16 @@ function Server:load()
 	})
 	self.api:connect()
 
+	print("initializing modules")
 	-- init all modules
 	callOnAll(self.toLoad,"init")
 
+	print("starting modules")
 	-- start all modules
 	callOnAll(self.toLoad,"start",Server)
 end
 
 -- Load modules
 Server:load()
+print("server started!")
 _G.server = Server

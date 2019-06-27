@@ -4,5 +4,5 @@ return {
     description = "The best hat. ~Nimblz",
     type = "hat",
     rarity = 7,
-    hidden = true,
+    hidden = false,
 }

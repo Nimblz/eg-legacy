@@ -41,10 +41,10 @@ function ShopView:render()
 
     local catagoryProducts = {}
 
-    for _, product in pairs(ShopProducts.all) do
+    for _, product in ipairs(ShopProducts.all) do
         local productAsset = Assets.byId[product.id]
         if productAsset then
-            if productAsset.type == self.state.catagory.id and product.onSale then
+            if productAsset.type == self.state.catagory.id then
                 table.insert(catagoryProducts, product.id)
             end
         end

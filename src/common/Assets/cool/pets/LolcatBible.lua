@@ -3,7 +3,7 @@ return {
     name = "LOLcat Bible",
     description = "No description available.",
     type = "pet",
-    rarity = 2,
+    rarity = 3,
     hidden = false,
 
     metadata = {
