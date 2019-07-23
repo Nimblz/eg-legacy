@@ -16,3 +16,6 @@
 [submodule "lib/recs"]
 	path = lib/recs
 	url = https://github.com/AmaranthineCodices/recs.git
+[submodule "lib/pizzaalpaca"]
+	path = lib/pizzaalpaca
+	url = https://github.com/Nimblz/pizzaalpaca.git

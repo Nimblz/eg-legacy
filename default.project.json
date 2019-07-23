@@ -30,6 +30,9 @@
         "t": {
           "$path": "lib/t/lib"
         },
+        "PizzaAlpaca": {
+          "$path": "lib/pizzaalpaca/lib"
+        },
         "RECS": {
           "$path": "lib/recs/src"
         },
