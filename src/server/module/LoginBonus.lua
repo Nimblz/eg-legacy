@@ -3,12 +3,13 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 local Selectors = require(common:WaitForChild("Selectors"))
 local Actions = require(common:WaitForChild("Actions"))
 
 local DAILY_LOGIN_BONUS = 1500
 
-local LoginBonus = {}
+local LoginBonus = PizzaAlpaca.GameModule:extend("LoginBonus")
 
 local function shouldAwardBonus(state,player)
     local nowDate = os.date("!*t")
@@ -21,19 +22,22 @@ local function shouldAwardBonus(state,player)
     end
 end
 
-function LoginBonus:start(loader)
-    local playerHandler = loader:getModule("PlayerHandler")
-    local store = loader.store
-    playerHandler.playerLoaded:connect(function(player)
-        local state = store:getState()
-        local shouldAward = shouldAwardBonus(state,player)
-        if shouldAward then
-            store:dispatch(Actions.COIN_ADD(player,DAILY_LOGIN_BONUS))
-            print(("%s logged in for the first time today!"):format(tostring(player)))
-            -- TODO: thank the player for joining with a notification
-        end
+function LoginBonus:postInit()
+    local playerHandler = self.core:getModule("PlayerHandler")
+    local storeContainer = self.core:getModule("StoreContainer")
 
-        store:dispatch(Actions.LASTLOGIN_SET(player,os.time()))
+    storeContainer.storeInitialized:connect(function(store)
+        playerHandler.playerLoaded:connect(function(player)
+            local state = store:getState()
+            local shouldAward = shouldAwardBonus(state,player)
+            if shouldAward then
+                store:dispatch(Actions.COIN_ADD(player,DAILY_LOGIN_BONUS))
+                print(("%s logged in for the first time today!"):format(tostring(player)))
+                -- TODO: thank the player for joining with a notification
+            end
+
+            store:dispatch(Actions.LASTLOGIN_SET(player,os.time()))
+        end)
     end)
 end
 

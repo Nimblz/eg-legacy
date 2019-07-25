@@ -5,18 +5,19 @@ local Players = game:GetService("Players")
 local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 local DevProducts = require(common:WaitForChild("DevProducts"))
 
-local Cashier = {}
+local Cashier = PizzaAlpaca.GameModule:extend("Cashier")
 
-function Cashier:PromptPurchase(player,devproductId)
+function Cashier:promptPurchase(player,devproductId)
     local product = DevProducts.byId[devproductId]
     if product then
         MarketplaceService:PromptProductPurchase(player, product.productId)
     end
 end
 
-function Cashier:start(loader)
+function Cashier:init()
     MarketplaceService.ProcessReceipt = function(recieptInfo)
         local player = Players:GetPlayerByUserId(recieptInfo.PlayerId)
         if not player then
@@ -26,7 +27,7 @@ function Cashier:start(loader)
         local productAssetId = recieptInfo.ProductId
         local product = DevProducts.byProductId[productAssetId]
 
-        if product.onProductPurchase(player,loader) then
+        if product.onProductPurchase(player,self.core) then
             return Enum.ProductPurchaseDecision.PurchaseGranted
         end
     end
