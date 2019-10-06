@@ -36,9 +36,6 @@
         "RECS": {
           "$path": "lib/recs/src"
         },
-        "Promise": {
-          "$path": "lib/promise/lib"
-        },
         "PlayerDataStore": {
           "$path": "lib/playerdatastore/lib/PlayerDataStore.lua"
         },
