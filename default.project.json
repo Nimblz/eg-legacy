@@ -30,6 +30,9 @@
         "t": {
           "$path": "lib/t/lib"
         },
+        "promise": {
+          "$path": "lib/roblox-lua-promise/lib"
+        },
         "PizzaAlpaca": {
           "$path": "lib/pizzaalpaca/lib"
         },

@@ -16,3 +16,6 @@
 [submodule "lib/pizzaalpaca"]
 	path = lib/pizzaalpaca
 	url = https://github.com/Nimblz/pizzaalpaca.git
+[submodule "lib/roblox-lua-promise"]
+	path = lib/roblox-lua-promise
+	url = https://github.com/evaera/roblox-lua-promise.git
