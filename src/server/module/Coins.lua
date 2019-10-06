@@ -156,8 +156,12 @@ function Coins:init()
 end
 
 function Coins:postInit()
-    self.store = self.core:getModule("StoreContainer"):getStore()
-    self.api = self.core:getModule("ServerApi"):getApi()
+    self.core:getModule("StoreContainer"):getStore():andThen(function(store)
+        self.store = store
+    end)
+    self.core:getModule("ServerApi"):getApi():andThen(function(api)
+        self.api = api
+    end)
 end
 
 return Coins

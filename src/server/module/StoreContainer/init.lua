@@ -3,13 +3,14 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
-local middleware = ServerScriptService:WaitForChild("middleware")
+local middleware = script:WaitForChild("middleware")
 
 local Rodux = require(lib:WaitForChild("Rodux"))
 local Signal = require(lib:WaitForChild("Signal"))
 
 local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
-local Dictionary = require(common.Dictionary)
+local Dictionary = require(common:WaitForChild("Dictionary"))
+local Promise = require(lib:WaitForChild("Promise"))
 
 local reducer = require(common:WaitForChild("commonReducer"))
 local networkMiddleware = require(middleware:WaitForChild("networkMiddleware"))
@@ -17,20 +18,19 @@ local dataSaveMiddleware = require(middleware:WaitForChild("dataSaveMiddleware")
 
 local StoreContainer = PizzaAlpaca.GameModule:extend("StoreContainer")
 
-
-
 function StoreContainer:create()
-    self.storeInitialized = Signal.new()
+    self.storeCreated = Signal.new()
 end
 
 function StoreContainer:getStore()
-    return self.store
+    return Promise.async(function(resolve, reject)
+        if not self.store then self.storeCreated:wait() end
+        resolve(self.store)
+    end)
 end
 
-function StoreContainer:initializeStore(initialState)
+function StoreContainer:createStore(initialState)
 
-    -- From Lucien Greathouses RDC 2018 project
-    -- https://github.com/LPGhatguy/rdc-project/blob/master/src/server/main.lua
     local function replicate(action,beforeState,afterState)
         -- Create a version of each action that's explicitly flagged as
         -- replicated so that clients can handle them explicitly.
@@ -40,7 +40,6 @@ function StoreContainer:initializeStore(initialState)
 
         -- This is an action that everyone should see!
         if action.replicateBroadcast then
-            print(self.api.AllPlayers)
             return self.api:storeAction(self.api.AllPlayers, replicatedAction)
         end
 
@@ -58,13 +57,13 @@ function StoreContainer:initializeStore(initialState)
         return
     end
 
-    self.logger:log("Local store initialized.")
     self.store = Rodux.Store.new(reducer,initialState, {
         Rodux.thunkMiddleware,
         networkMiddleware(replicate),
         dataSaveMiddleware,
     })
-    self.storeInitialized:fire(self.store)
+    self.storeCreated:fire()
+    self.logger:log("Server store initialized.")
 end
 
 function StoreContainer:preInit()
@@ -72,8 +71,10 @@ function StoreContainer:preInit()
 end
 
 function StoreContainer:init()
-    self.api = self.core:getModule("ServerApi"):getApi()
-    self:initializeStore()
+    self.core:getModule("ServerApi"):getApi():andThen(function(api)
+        self.api = api
+        self:createStore()
+    end)
 end
 
 function StoreContainer:postInit()

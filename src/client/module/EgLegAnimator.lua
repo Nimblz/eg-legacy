@@ -4,11 +4,13 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
 local common = ReplicatedStorage:WaitForChild("common")
+local lib = ReplicatedStorage:WaitForChild("lib")
 local object = common:WaitForChild("object")
 
 local LegAnimator = require(object:WaitForChild("LegAnimatorObject"))
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 
-local EgLegAnimator = {}
+local EgLegAnimator = PizzaAlpaca.GameModule:extend("EgLegAnimator")
 
 local animators = {}
 

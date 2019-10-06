@@ -9,7 +9,7 @@ local client = script.Parent.Parent
 local util = common:WaitForChild("util")
 
 local RECS = require(lib:WaitForChild("RECS"))
-local Components = require(client:WaitForChild("Components"))
+local Components = require(common:WaitForChild("RecsComponents"))
 
 local hitIsYou = require(util:WaitForChild("hitIsYou"))
 

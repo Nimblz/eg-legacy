@@ -6,12 +6,13 @@ local LocalPlayer = Players.LocalPlayer
 local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 local Selectors = require(common:WaitForChild("Selectors"))
 
 local TELE_OFFSET = 7
 local PORTAL_DEBOUNCE = 2.5
 
-local Portals = {}
+local Portals = PizzaAlpaca.GameModule:extend("Portals")
 
 local portalsBin = Workspace:WaitForChild("portals")
 local portals1 = portalsBin:WaitForChild("portals1")

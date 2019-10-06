@@ -10,7 +10,8 @@ local lightingAreas = ReplicatedStorage:WaitForChild("lightingareas")
 
 local pointIsInPart = require(util:WaitForChild("pointIsInPart"))
 
-local AreaLighting = {}
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
+local AreaLighting = PizzaAlpaca.GameModule:extend("AreaLighting")
 
 local currentArea = nil
 local transitioningFrom = nil

@@ -10,14 +10,15 @@ local Selectors = require(common:WaitForChild("Selectors"))
 local Assets = require(common:WaitForChild("Assets"))
 local AssetCatagories = require(common:WaitForChild("AssetCatagories"))
 local EquipmentRenderers = require(common:WaitForChild("EquipmentRenderers"))
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 
 local EquipmentReconciler = require(object:WaitForChild("EquipmentReconciler"))
 
-local EquipmentRenderer = {}
-local equipmentReconciler
-local renderers = {}
+local EquipmentRenderer = PizzaAlpaca.GameModule:extend("EquipmentRenderer")
 
-local function makeRenderer(player,assetId,equipmentBehavior,client)
+function EquipmentRenderer:makeRenderer(player,assetId,equipmentBehavior)
+    local renderers = self.renderers
+
     -- create renderer for asset
     local asset = Assets.byId[assetId]
     local rig = player.Character
@@ -38,11 +39,14 @@ local function makeRenderer(player,assetId,equipmentBehavior,client)
     end
 end
 
-function EquipmentRenderer:start(loader)
-    equipmentReconciler = EquipmentReconciler.new(loader)
+function EquipmentRenderer:onStore(store)
+    self.equipmentReconciler = EquipmentReconciler.new(self.core,store)
+
+    local equipmentReconciler = self.equipmentReconciler
+    local renderers = self.renderers
 
     equipmentReconciler.equippedAsset:connect(function(player, assetId, equipmentBehavior)
-        makeRenderer(player,assetId,equipmentBehavior,loader)
+        self:makeRenderer(player,assetId,equipmentBehavior)
     end)
 
     equipmentReconciler.unequippingAsset:connect(function(player, assetId, equipmentBehavior)
@@ -56,16 +60,25 @@ function EquipmentRenderer:start(loader)
     for _,player in pairs(Players:GetPlayers()) do
         local playerEquipment = equipmentReconciler.equipmentBehaviors[player] or {}
         for assetid,behavior in pairs(playerEquipment) do
-            makeRenderer(player,assetid,behavior,loader)
+            self:makeRenderer(player,assetid,behavior)
         end
     end
 
     RunService.RenderStepped:connect(function()
         for _,renderer in pairs(renderers) do
             if renderer.update then
-                renderer:update(loader)
+                renderer:update(self.core)
             end
         end
+    end)
+end
+
+function EquipmentRenderer:init()
+    self.renderers = {}
+
+    local StoreContainer = self.core:getModule("StoreContainer")
+    StoreContainer:getStore():andThen(function(store)
+        self:onStore(store)
     end)
 end
 

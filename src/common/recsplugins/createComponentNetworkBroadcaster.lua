@@ -1,0 +1,1 @@
+-- broadcasts component changed events for replication

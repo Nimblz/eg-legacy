@@ -11,14 +11,15 @@ local EquipmentReconciler = require(object:WaitForChild("EquipmentReconciler"))
 
 local PlayerEquipment = PizzaAlpaca.GameModule:extend("PlayerEquipment")
 
+function PlayerEquipment:onStore(store)
+    self.equipmentReconciler = EquipmentReconciler.new(self.core,store)
+end
+
 function PlayerEquipment:postInit()
     local storeContainer = self.core:getModule("StoreContainer")
-    local store = storeContainer:getStore()
-
-    local coreHackStructure = setmetatable({
-        store = store
-    }, {__index = self.core})
-    self.equipmentReconciler = EquipmentReconciler.new(coreHackStructure)
+    storeContainer:getStore():andThen(function(newStore)
+        self:onStore(newStore)
+    end)
 end
 
 return PlayerEquipment

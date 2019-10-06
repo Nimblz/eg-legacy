@@ -22,22 +22,27 @@ local function shouldAwardBonus(state,player)
     end
 end
 
-function LoginBonus:postInit()
+function LoginBonus:onStore(store)
     local playerHandler = self.core:getModule("PlayerHandler")
+
+    playerHandler.playerLoaded:connect(function(player)
+        local state = store:getState()
+        local shouldAward = shouldAwardBonus(state,player)
+        if shouldAward then
+            store:dispatch(Actions.COIN_ADD(player,DAILY_LOGIN_BONUS))
+            print(("%s logged in for the first time today!"):format(tostring(player)))
+            -- TODO: thank the player for joining with a notification
+        end
+
+        store:dispatch(Actions.LASTLOGIN_SET(player,os.time()))
+    end)
+end
+
+function LoginBonus:postInit()
     local storeContainer = self.core:getModule("StoreContainer")
 
-    storeContainer.storeInitialized:connect(function(store)
-        playerHandler.playerLoaded:connect(function(player)
-            local state = store:getState()
-            local shouldAward = shouldAwardBonus(state,player)
-            if shouldAward then
-                store:dispatch(Actions.COIN_ADD(player,DAILY_LOGIN_BONUS))
-                print(("%s logged in for the first time today!"):format(tostring(player)))
-                -- TODO: thank the player for joining with a notification
-            end
-
-            store:dispatch(Actions.LASTLOGIN_SET(player,os.time()))
-        end)
+    storeContainer:getStore():andThen(function(newStore)
+        self:onStore(newStore)
     end)
 end
 
