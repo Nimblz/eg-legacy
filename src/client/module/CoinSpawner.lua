@@ -1,14 +1,17 @@
 local CollectionService = game:GetService("CollectionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local client = script.Parent.Parent
+local lib = ReplicatedStorage:WaitForChild("lib")
+local common = ReplicatedStorage:WaitForChild("common")
 local assetModels = ReplicatedStorage:WaitForChild("assetmodels")
 local gameStuff = assetModels:WaitForChild("gameStuff")
 local coinbin = workspace:WaitForChild("coinbin")
 
-local Components = require(client:WaitForChild("Components"))
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 
-local CoinSpawner = {}
+local Components = require(common:WaitForChild("RecsComponents"))
+
+local CoinSpawner = PizzaAlpaca.GameModule:extend("CoinSpawner")
 
 local coinTypes = {
     default = {
@@ -89,13 +92,12 @@ function CoinSpawner:spawnAllCoins()
 
 end
 
-function CoinSpawner:init()
 
-end
-
-function CoinSpawner:start(loader)
-    self.recsCore = loader:getModule("RecsCoreContainer").recsCore
-    self:spawnAllCoins()
+function CoinSpawner:postInit()
+    self.core:getModule("ClientRECSContainer"):getCore():andThen(function(recsCore)
+        self.recsCore = recsCore
+        self:spawnAllCoins()
+    end)
 end
 
 return CoinSpawner

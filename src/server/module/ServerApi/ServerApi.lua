@@ -6,10 +6,10 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ApiSpec = require(ReplicatedStorage.common.ApiSpec)
 
 local ServerApi = {}
-ServerApi.prototype = {}
+ServerApi.AllPlayers = newproxy(true)
+ServerApi.prototype = {AllPlayers = ServerApi.AllPlayers}
 ServerApi.__index = ServerApi.prototype
 
-ServerApi.AllPlayers = newproxy(true)
 
 function ServerApi.create(handlers)
 	assert(typeof(handlers) == "table")

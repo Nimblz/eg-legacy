@@ -52,12 +52,12 @@ local function getDiffs(t1,t2)
     return added,removed
 end
 
-function EquipmentReconciler:equipAsset(player, loader, assetId)
+function EquipmentReconciler:equipAsset(player, assetId)
     local playerEquipmentBehaviors = self.equipmentBehaviors[player]
     if not playerEquipmentBehaviors then return end
     local equippedBehavior = playerEquipmentBehaviors[assetId]
     if equippedBehavior then return end
-    local equipmentBehavior = EquipmentBehavior.new(loader, assetId)
+    local equipmentBehavior = EquipmentBehavior.new(self.pzCore, assetId)
     equipmentBehavior:equipped(player)
 
     playerEquipmentBehaviors[assetId] = equipmentBehavior
@@ -67,7 +67,7 @@ function EquipmentReconciler:equipAsset(player, loader, assetId)
     return equipmentBehavior
 end
 
-function EquipmentReconciler:unequipAsset(player,loader,assetId)
+function EquipmentReconciler:unequipAsset(player,assetId)
     local playerEquipmentBehaviors = self.equipmentBehaviors[player]
     if not playerEquipmentBehaviors then return end
     local equippedBehavior = playerEquipmentBehaviors[assetId]
@@ -82,9 +82,9 @@ function EquipmentReconciler:unequipAsset(player,loader,assetId)
     end
 end
 
-function EquipmentReconciler:clearEquipped(player, loader)
+function EquipmentReconciler:clearEquipped(player)
     for assetId,_ in pairs(self.equipmentBehaviors[player] or {}) do
-        self:unequipAsset(player,loader,assetId)
+        self:unequipAsset(player,assetId)
     end
     self.equipmentBehaviors[player] = {}
 end
@@ -94,20 +94,20 @@ function EquipmentReconciler:getBehaviors(player)
 end
 
 
-function EquipmentReconciler:playerCharacterSpawned(player, char, loader)
+function EquipmentReconciler:playerCharacterSpawned(player, char)
     self:clearEquipped(player) -- clear just in case equipment wasnt removed for some reason
     -- recreate and bind equipment for this player
 
-    local equipment = Selectors.getEquipped(loader.store:getState(), player) or {}
+    local equipment = Selectors.getEquipped(self.store:getState(), player) or {}
 
     for _, cataEquipped in pairs(equipment) do
         for _, assetId in pairs(cataEquipped) do
-            self:equipAsset(player, loader, assetId)
+            self:equipAsset(player, assetId)
         end
     end
 end
 
-function EquipmentReconciler:playerAdded(player, loader)
+function EquipmentReconciler:playerAdded(player)
     self.equipmentBehaviors[player] = {}
 
     self.characterEvents[player].adding = player.CharacterAdded:connect(function(char)
@@ -115,20 +115,21 @@ function EquipmentReconciler:playerAdded(player, loader)
         char:WaitForChild("Torso")
         char:WaitForChild("Head")
         char:WaitForChild("HumanoidRootPart")
-        self:playerCharacterSpawned(player, char, loader)
+        self:playerCharacterSpawned(player, char)
     end)
     self.characterEvents[player].removing = player.CharacterRemoving:connect(function()
-        self:clearEquipped(player, loader)
+        self:clearEquipped(player)
     end)
 
     if player.Character then
-        self:playerCharacterSpawned(player, player.Character, loader)
+        self:playerCharacterSpawned(player, player.Character)
     end
 end
 
-function EquipmentReconciler.new(loader)
+function EquipmentReconciler.new(pzCore,store)
     local self = setmetatable({},{__index = EquipmentReconciler})
-    self.store = loader.store
+    self.pzCore = pzCore
+    self.store = store
     self.equipmentBehaviors = {} -- table of behavior tables indexed by players
 
     self.equippedAsset = Signal.new()
@@ -137,7 +138,7 @@ function EquipmentReconciler.new(loader)
 
     Players.PlayerAdded:connect(function(player)
         self.characterEvents[player] = {adding = nil, removing = nil}
-        self:playerAdded(player,loader)
+        self:playerAdded(player)
     end)
     Players.PlayerRemoving:connect(function(player)
         for _,event in pairs(self.characterEvents[player]) do
@@ -150,7 +151,7 @@ function EquipmentReconciler.new(loader)
     -- equip everyone's initial equipment
     for _, player in pairs(Players:GetPlayers()) do
         self.characterEvents[player] = {adding = nil, removing = nil}
-        self:playerAdded(player,loader)
+        self:playerAdded(player)
     end
 
     self.store.changed:connect(function(newstate,oldstate)
@@ -163,10 +164,10 @@ function EquipmentReconciler.new(loader)
                 local added,removed = getDiffs(oldEquipped, newEquipped)
 
                 for _,assetId in pairs(removed) do
-                    self:unequipAsset(player,loader,assetId)
+                    self:unequipAsset(player,assetId)
                 end
                 for _,assetId in pairs(added) do
-                    self:equipAsset(player,loader,assetId)
+                    self:equipAsset(player,assetId)
                 end
             end
         end

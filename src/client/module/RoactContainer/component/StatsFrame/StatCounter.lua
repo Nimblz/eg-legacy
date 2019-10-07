@@ -6,9 +6,10 @@ local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
 local component = script.Parent.Parent
-local common_util = common:WaitForChild("util")
+local util = common:WaitForChild("util")
 
-local getTextSize = require(common_util:WaitForChild("getTextSize"))
+local beautifyNumber = require(util:WaitForChild("beautifyNumber"))
+local getTextSize = require(util:WaitForChild("getTextSize"))
 
 local ShadowedTextLabel = require(component:WaitForChild("ShadowedTextLabel"))
 
@@ -93,7 +94,7 @@ function StatCounter:render()
         }),
         valueLabel = ShadowedTextLabel({
             BackgroundTransparency = 1,
-            Text = props.value,
+            Text = beautifyNumber(props.value,true),
             Font = props.font,
             TextSize = props.fontSize + ((self.state.scale-1)*25),
             TextColor3 = Color3.fromRGB(255,255,255),

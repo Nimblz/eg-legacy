@@ -10,7 +10,8 @@ local lightingAreas = ReplicatedStorage:WaitForChild("lightingareas")
 
 local pointIsInPart = require(util:WaitForChild("pointIsInPart"))
 
-local AreaLighting = {}
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
+local AreaLighting = PizzaAlpaca.GameModule:extend("AreaLighting")
 
 local currentArea = nil
 local transitioningFrom = nil
@@ -111,6 +112,26 @@ local areas = {
             abyss = INSTANT,
             deepabyss = INSTANT,
         }
+    },
+
+    halloween = {
+        lightingProps = {
+            Ambient = Color3.fromRGB(118, 72, 72),
+            Brightness =0.4,
+            GlobalShadows = true,
+            ShadowSoftness = 1,
+            OutdoorAmbient = Color3.fromRGB(138, 102, 99),
+            ExposureCompensation = 0,
+            FogColor = Color3.fromRGB(85, 0, 0),
+            FogEnd = 1500,
+            FogStart = 0,
+        },
+        transitionToTypes = {
+            cave = SMOOTH,
+            ocean = INSTANT,
+            abyss = INSTANT,
+            deepabyss = INSTANT,
+        }
     }
 }
 
@@ -148,7 +169,7 @@ local function updateLighting()
     local camPos = camera.CFrame.p
 
     -- check against lighting areas
-    local newArea = "default"
+    local newArea = "halloween"
 
     for _,areaBounds in pairs(lightingAreas:GetDescendants()) do
         if areaBounds:IsA("BasePart") then
@@ -182,13 +203,7 @@ local function updateLighting()
 end
 
 function AreaLighting:init()
-    
-end
-
-function AreaLighting:start(loader)
-    print("arealighting startt")
-
-    changeArea("default")
+    changeArea("halloween")
     RunService.RenderStepped:Connect(function()
         updateLighting()
     end)

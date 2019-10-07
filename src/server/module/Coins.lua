@@ -7,20 +7,12 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 local Actions = require(common:WaitForChild("Actions"))
 local Selectors = require(common:WaitForChild("Selectors"))
 local Signal = require(lib:WaitForChild("Signal"))
 
-local COLLECTION_RANGE_PADDING = 3 -- padding for collection range
-
-local store
-local api
-
-local Coins = {}
-
-local coinCollections = {}
-local coinSpawns = {}
-local coinsInLast5Secs = {}
+local Coins = PizzaAlpaca.GameModule:extend("Coins")
 
 local coinTypes = {
     default = {
@@ -33,7 +25,7 @@ local coinTypes = {
     },
     bluecoin = {
         value = 50,
-        respawnTime = 180, 
+        respawnTime = 180,
     },
     purplecoin = {
         value = 100,
@@ -75,29 +67,35 @@ local function getSpawnerType(instance)
     end
 end
 
-local function onPlayerJoin(player)
-    coinCollections[player] = {}
+function Coins:create()
+    self.coinCollections = {}
+    self.coinSpawns = {}
+    self.coinsInLast5Secs = {}
 end
 
-local function onPlayerRemoving(player)
-    coinCollections[player] = nil
+function Coins:onPlayerJoin(player)
+    self.coinCollections[player] = {}
 end
 
-local function bindCoinRespawn(player,coinPart, coinType)
+function Coins:onPlayerRemoving(player)
+    self.coinCollections[player] = nil
+end
+
+function Coins:bindCoinRespawn(player,coinPart, coinType)
     spawn(function()
         wait(coinType.respawnTime or 0)
-        coinCollections[player][coinPart] = false
-        api:coinRespawn(player,coinPart)
+        self.coinCollections[player][coinPart] = false
+        self.api:coinRespawn(player,coinPart)
     end)
 end
 
 function Coins:requestCoinCollect(player,coinPart)
     assert(typeof(coinPart) == "Instance", "arg 2 must be a part, got:"..tostring(coinPart))
     assert(coinPart:IsA("BasePart"), "arg 2 must be a part, got:"..tostring(coinPart))
-    assert(coinSpawns[coinPart], "Invalid coin spawn")
+    assert(self.coinSpawns[coinPart], "Invalid coin spawn")
 
-    if not coinCollections[player][coinPart] then
-        coinCollections[player][coinPart] = true
+    if not self.coinCollections[player][coinPart] then
+        self.coinCollections[player][coinPart] = true
 
         local char = player.Character
         if not char then return end
@@ -119,16 +117,16 @@ function Coins:requestCoinCollect(player,coinPart)
             spawnConfig = coinTypes[spawnTag or "default"]
         end
 
-        store:dispatch(Actions.COIN_ADD(player,spawnConfig.value or 1))
-        local state = store:getState()
+        self.store:dispatch(Actions.COIN_ADD(player,spawnConfig.value or 1))
+        local state = self.store:getState()
         Coins.coinCollected:fire(player,Selectors.getCoins(state,player))
 
-        coinsInLast5Secs[player] = (coinsInLast5Secs[player] or 0) + 1
-        if coinsInLast5Secs[player] > 30 then
+        self.coinsInLast5Secs[player] = (self.coinsInLast5Secs[player] or 0) + 1
+        if self.coinsInLast5Secs[player] > 30 then
             player:Kick("Collecting coins too fast :( The server might be lagging. Or are you cheating?")
         end
 
-        bindCoinRespawn(player,coinPart,spawnConfig)
+        self:bindCoinRespawn(player,coinPart,spawnConfig)
     end
 end
 
@@ -137,29 +135,33 @@ function Coins:init()
 
     for tagname,_ in pairs(tagCoinTypes) do
         for _, instance in pairs(CollectionService:GetTagged(tagname)) do
-            coinSpawns[instance] = instance
+            self.coinSpawns[instance] = instance
         end
     end
 
     for _,player in pairs(Players:GetPlayers()) do
-		onPlayerJoin(player)
+		self:onPlayerJoin(player)
 	end
 
-    Players.PlayerAdded:Connect(onPlayerJoin)
-    Players.PlayerAdded:Connect(onPlayerRemoving)
+    Players.PlayerAdded:Connect(function(player) self:onPlayerJoin(player) end)
+    Players.PlayerRemoving:Connect(function(player) self:onPlayerRemoving(player) end)
 
     -- every 5 secs clear the coin collected table
     spawn(function()
         while true do
-            coinsInLast5Secs = {}
+            self.coinsInLast5Secs = {}
             wait(5)
         end
     end)
 end
 
-function Coins:start(server)
-    store = server.store
-    api = server.api
+function Coins:postInit()
+    self.core:getModule("StoreContainer"):getStore():andThen(function(store)
+        self.store = store
+    end)
+    self.core:getModule("ServerApi"):getApi():andThen(function(api)
+        self.api = api
+    end)
 end
 
 return Coins

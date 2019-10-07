@@ -1,14 +1,19 @@
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local lib = ReplicatedStorage:WaitForChild("lib")
 
 local LocalPlayer = Players.LocalPlayer
 local GrowTweenInfo = TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.Out)
 local WobbleTweenInfo = TweenInfo.new(0.5,Enum.EasingStyle.Elastic,Enum.EasingDirection.Out)
 
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
+
 local FLY_TIME = 2
 
-local Cannons = {}
+local Cannons = PizzaAlpaca.GameModule:extend("Cannons")
 
 local shooting = false
 
@@ -104,10 +109,6 @@ function Cannons:init()
     for _, cannon in pairs(cannonModels) do
         createCannon(cannon)
     end
-end
-
-function Cannons:start(client)
-
 end
 
 return Cannons

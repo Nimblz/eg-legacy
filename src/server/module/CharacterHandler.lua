@@ -1,21 +1,15 @@
 local Players = game:GetService("Players")
-local StarterPlayer = game:GetService("StarterPlayer")
-local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local egRig = StarterPlayer:WaitForChild("StarterCharacter")
+local lib = ReplicatedStorage:WaitForChild("lib")
 
-local ServerScriptService = game:GetService("ServerScriptService")
-local util = ServerScriptService:WaitForChild("util")
-
-local RigUtil = require(util:WaitForChild("RigUtil"))
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 
 local RESPAWN_TIME = 0.5
 
-local CharacterHandler = {}
+local CharacterHandler = PizzaAlpaca.GameModule:extend("CharacterHandler")
 
-local bindRespawn
-
-function bindRespawn(player)
+local function bindRespawn(player)
     player.CharacterAdded:Connect(function(rig)
         local humanoid = rig:WaitForChild("Humanoid")
         if humanoid then

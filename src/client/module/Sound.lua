@@ -1,8 +1,13 @@
 local SoundService = game:GetService("SoundService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local lib = ReplicatedStorage:WaitForChild("lib")
+
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 
 local soundBin -- workspace sound bin
 
-local Sound = {}
+local Sound = PizzaAlpaca.GameModule:extend("Sound")
 
 Sound.effectsGroup = nil
 Sound.musicGroup = nil

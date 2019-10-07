@@ -5,7 +5,7 @@ return {
     description = "n/a",
     rarity = 100,
     hidden = false,
-    thumbnailImage = "rbxassetid://3243264992",
+    thumbnailImage = "rbxassetid://4065594613",
 
     metadata = {
         effectType = "particle",

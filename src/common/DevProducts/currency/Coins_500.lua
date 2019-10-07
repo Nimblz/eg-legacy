@@ -13,8 +13,9 @@ return {
     order = 11,
 
     onProductPurchase = (function(player, server)
-        local store = server.store
-        store:dispatch(Actions.COIN_ADD(player,500))
+        server:getModule("StoreContainer"):getStore():andThen(function(store)
+            store:dispatch(Actions.COIN_ADD(player,500))
+        end)
         return true -- Successful
     end)
 }

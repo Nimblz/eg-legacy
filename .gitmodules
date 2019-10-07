@@ -10,12 +10,12 @@
 [submodule "lib/t"]
 	path = lib/t
 	url = https://github.com/osyrisrblx/t
-[submodule "lib/promise"]
-	path = lib/promise
-	url = https://github.com/LPGhatguy/roblox-lua-promise.git
 [submodule "lib/recs"]
 	path = lib/recs
 	url = https://github.com/AmaranthineCodices/recs.git
 [submodule "lib/pizzaalpaca"]
 	path = lib/pizzaalpaca
 	url = https://github.com/Nimblz/pizzaalpaca.git
+[submodule "lib/roblox-lua-promise"]
+	path = lib/roblox-lua-promise
+	url = https://github.com/evaera/roblox-lua-promise.git

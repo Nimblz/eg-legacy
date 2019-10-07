@@ -2,19 +2,19 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local common = ReplicatedStorage:WaitForChild("common")
 
-local Actions = require(common:WaitForChild("Actions"))
+local Thunks = require(common:WaitForChild("Thunks"))
 
 return {
-    id = "coins2500",
-    name = "2500 Coins",
-    productId = 538435372,
+    id = "itempack_rainbow",
+    name = "Rainbow Item Pack",
+    productId = 545309170,
     onSale = true,
 
-    order = 12,
+    order = 0,
+    flavorText = "SALE!",
 
     onProductPurchase = (function(player, server)
         server:getModule("StoreContainer"):getStore():andThen(function(store)
-            store:dispatch(Actions.COIN_ADD(player,2500))
         end)
         return true -- Successful
     end)

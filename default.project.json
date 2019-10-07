@@ -30,14 +30,14 @@
         "t": {
           "$path": "lib/t/lib"
         },
+        "Promise": {
+          "$path": "lib/roblox-lua-promise/lib"
+        },
         "PizzaAlpaca": {
           "$path": "lib/pizzaalpaca/lib"
         },
         "RECS": {
           "$path": "lib/recs/src"
-        },
-        "Promise": {
-          "$path": "lib/promise/lib"
         },
         "PlayerDataStore": {
           "$path": "lib/playerdatastore/lib/PlayerDataStore.lua"

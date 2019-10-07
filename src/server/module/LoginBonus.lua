@@ -3,12 +3,13 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
+local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 local Selectors = require(common:WaitForChild("Selectors"))
 local Actions = require(common:WaitForChild("Actions"))
 
-local DAILY_LOGIN_BONUS = 1500
+local DAILY_LOGIN_BONUS = 15000000
 
-local LoginBonus = {}
+local LoginBonus = PizzaAlpaca.GameModule:extend("LoginBonus")
 
 local function shouldAwardBonus(state,player)
     local nowDate = os.date("!*t")
@@ -21,9 +22,9 @@ local function shouldAwardBonus(state,player)
     end
 end
 
-function LoginBonus:start(loader)
-    local playerHandler = loader:getModule("PlayerHandler")
-    local store = loader.store
+function LoginBonus:onStore(store)
+    local playerHandler = self.core:getModule("PlayerHandler")
+
     playerHandler.playerLoaded:connect(function(player)
         local state = store:getState()
         local shouldAward = shouldAwardBonus(state,player)
@@ -34,6 +35,14 @@ function LoginBonus:start(loader)
         end
 
         store:dispatch(Actions.LASTLOGIN_SET(player,os.time()))
+    end)
+end
+
+function LoginBonus:postInit()
+    local storeContainer = self.core:getModule("StoreContainer")
+
+    storeContainer:getStore():andThen(function(newStore)
+        self:onStore(newStore)
     end)
 end
 
