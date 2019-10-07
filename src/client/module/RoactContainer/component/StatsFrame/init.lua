@@ -5,9 +5,6 @@ local LocalPlayer = Players.LocalPlayer
 
 local lib = ReplicatedStorage:WaitForChild("lib")
 local common = ReplicatedStorage:WaitForChild("common")
-local util = common:WaitForChild("util")
-
-local beautifyNumber = require(util:WaitForChild("beautifyNumber"))
 
 local component = script
 
@@ -36,11 +33,10 @@ function StatFrame:render()
             SortOrder = Enum.SortOrder.LayoutOrder,
             VerticalAlignment = Enum.VerticalAlignment.Center,
         }),
-
         coinCounter = Roact.createElement(StatCounter,{
             iconImage = "rbxassetid://1025945542",
             statName = "Coins: ",
-            value = beautifyNumber(self.props.coins,true)
+            value = self.props.coins,
         }),
     })
 end
@@ -48,7 +44,7 @@ end
 local function mapStateToProps(state,props)
     local stats = Selectors.getStats(state, LocalPlayer)
     return {
-        coins = stats.coins
+        coins = stats.coins or 0
     }
 end
 
