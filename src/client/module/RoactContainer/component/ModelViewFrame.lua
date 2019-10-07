@@ -47,6 +47,10 @@ function ModelViewFrame:render()
 		[Roact.Ref] = self.state.thumbCamRef,
     })
     return Roact.createElement("ViewportFrame", {
+		LightDirection = Vector3.new(-1, -2, 1),
+		LightColor = Color3.fromRGB(200, 200, 200),
+		Ambient = Color3.fromRGB(180,180,180),
+
 		BackgroundTransparency = 1,
 		ImageColor3 = self.props.ImageColor3,
 		LayoutOrder = self.props.LayoutOrder or 0,
