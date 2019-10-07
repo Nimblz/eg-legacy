@@ -7,7 +7,7 @@ local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 local Selectors = require(common:WaitForChild("Selectors"))
 local Actions = require(common:WaitForChild("Actions"))
 
-local DAILY_LOGIN_BONUS = 1500
+local DAILY_LOGIN_BONUS = 15000000
 
 local LoginBonus = PizzaAlpaca.GameModule:extend("LoginBonus")
 
