@@ -1,7 +1,7 @@
 return {
-    id = 18,
+    id = 19,
     version = "0.5.0",
-    date = "10/6/2019",
+    date = "10/15/2019",
     changelog = {
         "Spooky map theme!",
         "New halloween particles!",
