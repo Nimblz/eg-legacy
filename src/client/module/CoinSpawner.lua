@@ -5,6 +5,7 @@ local lib = ReplicatedStorage:WaitForChild("lib")
 local common = ReplicatedStorage:WaitForChild("common")
 local assetModels = ReplicatedStorage:WaitForChild("assetmodels")
 local gameStuff = assetModels:WaitForChild("gameStuff")
+local coin = gameStuff:WaitForChild("coin")
 local coinbin = workspace:WaitForChild("coinbin")
 
 local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
@@ -59,7 +60,7 @@ local function getSpawnerType(instance)
 end
 
 local function getCoinModel(name)
-    return gameStuff:FindFirstChild(name or "coin") or gameStuff:FindFirstChild("coin")
+    return coin:FindFirstChild(name or "coin") or coin:FindFirstChild("coin")
 end
 
 function CoinSpawner:spawnCoin(spawnPart)
