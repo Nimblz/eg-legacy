@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
 -- scaling constants
-local TARGET_SCALE = 0.55
+local TARGET_SCALE = 1/15
 local PADDING = 16
 
 local lib = ReplicatedStorage:WaitForChild("lib")
@@ -20,43 +20,21 @@ local Roact = require(lib:WaitForChild("Roact"))
 local RoactRodux = require(lib:WaitForChild("RoactRodux"))
 
 local SideMenu = Roact.Component:extend("VersionLabel")
+local MenuButton = require(script:WaitForChild("MenuButton"))
 
-function changeView(viewId,props)
+local function changeView(viewId,props)
     props.menuButtonPressed(viewId,props)
 end
 
-local function newButton(viewId, name, props, layoutOrder, callback)
-    local buttonText = name
-    return Roact.createElement("ImageButton", {
-        Size = UDim2.new(
-            0,getTextSize(buttonText,Enum.Font.GothamBlack,32).X + 2*PADDING,
-            0,64),
-        BorderSizePixel = 0,
-        BackgroundColor3 = Color3.fromRGB(255,255,255),
-        BackgroundTransparency = 1,
-        ImageTransparency = 1/3,
-        Image = "rbxassetid://2823570525",
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(75, 75, 76, 76),
-        LayoutOrder = layoutOrder or 0,
-        [Roact.Event.MouseButton1Click] = function() callback(viewId,props) end
-    }, {
-        Roact.createElement(ShadowedTextLabel,{
-            Font = Enum.Font.GothamBlack,
-            TextSize = 32,
-            Text = buttonText,
-            TextStrokeColor3 = Color3.fromRGB(0,0,0),
-            TextStrokeTransparency = 0,
-            TextXAlignment = Enum.TextXAlignment.Center,
-            Size = UDim2.new(1,0,1,0),
-            Position = UDim2.new(0,0,0,0),
-            BackgroundTransparency = 1,
-        })
+local function newButton(viewId, image, name, props, layoutOrder, callback)
+    return Roact.createElement(MenuButton,{
+        viewId = viewId,
+        image = image,
+        parentProps = props,
+        layoutOrder = layoutOrder,
+        callback = callback,
+        name = name
     })
-end
-
-local function homeButton()
-
 end
 
 function SideMenu:render()
@@ -64,16 +42,16 @@ function SideMenu:render()
     local touchEnabled = game:GetService("UserInputService").TouchEnabled
 
     local menuButtons = {
-        inventoryButton = newButton("inventory", "Inventory",self.props,1,changeView),
-        shopButton = newButton("shop", "Shop",self.props,2,changeView),
-        devproductsButton = newButton("devproducts", "Buy Coins",self.props,3,changeView),
-        settingsButton = newButton("settings", "Settings",self.props,4,changeView),
-        homeButton = newButton("home", "Respawn",self.props,5,(function()
+        inventoryButton = newButton("inventory", "rbxassetid://666448883", "Inventory",self.props,1,changeView),
+        shopButton = newButton("shop", "rbxassetid://4102976956", "Item Shop",self.props,2,changeView),
+        devproductsButton = newButton("devproducts", "rbxassetid://443085937", "Robux Shop",self.props,3,changeView),
+        settingsButton = newButton("settings", "rbxassetid://282366832", "Settings",self.props,4,changeView),
+        homeButton = newButton("home", "rbxassetid://414904019", "Respawn",self.props,5,(function()
             LocalPlayer.Character.PrimaryPart.CFrame = workspace:WaitForChild("homewarp").CFrame
         end))
     }
 
-    local pixelSize = 5*(64+PADDING)
+    local pixelSize = 64
 
     menuButtons.scale = Roact.createElement("UIScale", {
         Scale = math.min(1,(self.props.viewportSize.Y * TARGET_SCALE)/pixelSize)
@@ -82,14 +60,15 @@ function SideMenu:render()
     menuButtons.layout = Roact.createElement("UIListLayout", {
         Padding = UDim.new(0,PADDING),
         SortOrder = Enum.SortOrder.LayoutOrder,
-        VerticalAlignment = Enum.VerticalAlignment.Center,
-        HorizontalAlignment = Enum.HorizontalAlignment.Right,
+        VerticalAlignment = Enum.VerticalAlignment.Top,
+        HorizontalAlignment = Enum.HorizontalAlignment.Center,
+        FillDirection = Enum.FillDirection.Horizontal,
     })
 
     return Roact.createElement("Frame", {
-        AnchorPoint = Vector2.new(1,0.5),
+        AnchorPoint = Vector2.new(0.5,0),
         Size = UDim2.new(0,0,0,pixelSize),
-        Position = UDim2.new(1,-PADDING,0.5,(touchEnabled and -32) or 0),
+        Position = UDim2.new(0.5,0,0,PADDING),
 
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
