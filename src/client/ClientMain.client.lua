@@ -93,6 +93,7 @@ local module = common:WaitForChild("module")
 local sidedmodule = src:WaitForChild("module")
 
 local gameCore = PizzaAlpaca.GameCore.new()
+gameCore._debugprints = true
 
 gameCore:registerChildrenAsModules(module)
 gameCore:registerChildrenAsModules(sidedmodule)
