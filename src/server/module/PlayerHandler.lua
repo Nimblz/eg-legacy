@@ -11,14 +11,14 @@ local Actions = require(common:WaitForChild("Actions"))
 local Thunks = require(common:WaitForChild("Thunks"))
 
 local Signal = require(lib:WaitForChild("Signal"))
- 
+
 local PlayerHandler = PizzaAlpaca.GameModule:extend("PlayerHandler")
 PlayerHandler.playerLoaded = Signal.new()
 
 local function playerAdded(player,store,api)
     print("Loading data for: ", player)
     store:dispatch(Thunks.PLAYER_JOINED(player,api))
-    wait(3)
+    wait(0.5)
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"baseball2007"))
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"bandit"))
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"baconhair"))
