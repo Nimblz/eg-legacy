@@ -7,7 +7,11 @@ local Thunks = require(common:WaitForChild("Thunks"))
 return {
     id = "itempack_spooky",
     name = "Spooky Item Pack",
-    productId = 545309170,
+    desc = (
+        "Contains every halloween item!"
+    ),
+    productId = 838307012,
+    color = Color3.fromRGB(230, 130, 0),
     onSale = true,
 
     order = 0,
