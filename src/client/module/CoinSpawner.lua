@@ -80,6 +80,7 @@ function CoinSpawner:spawnCoin(spawnPart)
     spawnPart.Transparency = 1
 
     CollectionService:AddTag(newCoinModel,"Coin")
+    CollectionService:AddTag(newCoinModel,"Spinny")
     local coinComponent = self.recsCore:getComponent(newCoinModel, Components.Coin)
     coinComponent.spawnPart = spawnPart
 end
