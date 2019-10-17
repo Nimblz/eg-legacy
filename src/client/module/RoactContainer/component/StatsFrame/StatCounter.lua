@@ -130,6 +130,7 @@ function StatCounter:render()
         Size = props.Size,
         Position = props.Position,
         BackgroundTransparency = 1,
+        LayoutOrder = self.props.layoutOrder or 1,
     }, children)
 end
 
