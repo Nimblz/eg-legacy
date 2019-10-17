@@ -8,12 +8,12 @@ local Actions = require(common:WaitForChild("Actions"))
 
 local PLAYER_ADD = Actions.PLAYER_ADD
 
-return function(player,api)
+return function(player)
     return function(store)
         local playerSaveTable
         local defaultSave = {
             portals = {
-                AbyssPortal = true
+                AbyssPortal = false
             },
             inventory = {
                 -- default items should be given each time a player joins
@@ -32,21 +32,14 @@ return function(player,api)
             local dataStore2SaveTable = saveDataStore:Get(nil)
 
             if not dataStore2SaveTable then
-                local PlayerDataStore = require(lib:WaitForChild("PlayerDataStore"))
-                local oldSaveStore = PlayerDataStore:GetSaveData(player)
-                local oldSave = oldSaveStore:Get("playerSaveTable")
-                if oldSave then
-                    print("loading old save.")
-                    playerSaveTable = oldSave
-                end
+                print("No loaded, goin with default!")
+                playerSaveTable = defaultSave
             else
-                print("loading datastore2 save or default")
-                print("isDefault:",dataStore2SaveTable == nil)
-                playerSaveTable = dataStore2SaveTable or defaultSave
+                playerSaveTable = dataStore2SaveTable
             end
         end
 
-        store:dispatch(PLAYER_ADD(player,playerSaveTable or defaultSave))
-        api:initialPlayerState(player,store:getState())
+        store:dispatch(PLAYER_ADD(player, playerSaveTable))
+        print(("data loaded."))
     end
 end
