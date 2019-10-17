@@ -9,6 +9,6 @@ local Systems = require(script.Parent:WaitForChild("Systems"))
 -- services will be registered in the order given
 return {
     RECS.event(game:GetService("RunService").RenderStepped, {
-        Systems.CoinSystem,
+        Systems.SpinnySystem,
     }),
 }
