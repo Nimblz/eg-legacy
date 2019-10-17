@@ -26,7 +26,7 @@ function DevProductShopView:render()
             productButtons[product.id] = Roact.createElement("TextButton", {
                 Text = product.name,
                 TextColor3 = Color3.new(1,1,1),
-                BackgroundColor3 = Color3.fromRGB(2, 183, 87),
+                BackgroundColor3 = product.color or Color3.fromRGB(2, 183, 87),
                 BorderSizePixel = 0,
                 TextSize = 24,
                 Font = Enum.Font.GothamBlack,
