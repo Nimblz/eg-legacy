@@ -32,6 +32,10 @@ function ServerApiWrapper:preInit()
 			self.core:getModule("Coins"):requestCoinCollect(player,coinSpawn)
 		end,
 
+		requestCandyCollect = function(player,coinSpawn)
+			self.core:getModule("Candy"):requestCollect(player,coinSpawn)
+		end,
+
 		portalActivate = function(player,portalName)
 			self.store:dispatch(Actions.PORTAL_ACTIVATE(player,portalName))
 			self.core:getModule("PortalsListener"):portalActivate(player,portalName)

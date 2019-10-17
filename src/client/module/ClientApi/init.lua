@@ -26,21 +26,26 @@ function ClientApiWrapper:preInit()
 end
 
 function ClientApiWrapper:init()
-    local StoreContainer = self.core:getModule("StoreContainer")
-    local CoinSpawner = self.core:getModule("CoinSpawner")
+    local storeContainer = self.core:getModule("StoreContainer")
+    local coinSpawner = self.core:getModule("CoinSpawner")
+    local candySpawner = self.core:getModule("CandySpawner")
     self.api = ClientApi.new({
         initialPlayerState = function(gameState)
-            StoreContainer:createStore(gameState)
+            storeContainer:createStore(gameState)
         end,
 
         storeAction = function(action)
-            StoreContainer:getStore():andThen(function(store)
+            storeContainer:getStore():andThen(function(store)
                 store:dispatch(action)
             end)
         end,
 
         coinRespawn = function(coinSpawn)
-            CoinSpawner:spawnCoin(coinSpawn)
+            coinSpawner:spawnCoin(coinSpawn)
+        end,
+
+        candyRespawn = function(spawner)
+            candySpawner:spawn(spawner)
         end,
 
         equippedBroadcast = function(player, assetid, payload)

@@ -6,10 +6,13 @@ local lib = ReplicatedStorage:WaitForChild("lib")
 local RECS = require(lib:WaitForChild("RECS"))
 
 return RECS.defineComponent({
-    name = "Coin",
+    name = "CollectableItem",
     generator = function()
         return {
+            originalCFrame = nil,
+            timeOffset = nil,
             spawnPart = nil,
+            itemId = "child",
         }
     end,
 })

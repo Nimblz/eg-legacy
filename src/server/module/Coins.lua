@@ -162,7 +162,6 @@ end
 function Coins:postInit()
     local apiWrapper = self.core:getModule("ServerApi")
     local storeContainer = self.core:getModule("StoreContainer")
-    local collectables = self.core:getModule("Collectables")
 
     local function onAll(api, store)
         self.api = api

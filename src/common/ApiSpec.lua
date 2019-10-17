@@ -29,6 +29,11 @@ return {
                 t.Instance -- spawn the coin you are collecting is tied to
             )
 		},
+		requestCandyCollect = {
+            arguments = t.tuple(
+                t.Instance -- spawn the candy you are collecting is tied to
+            )
+		},
 		portalActivate = {
             arguments = t.tuple(
                 t.string -- id of portal you are activating
@@ -75,6 +80,11 @@ return {
         coinRespawn = {
             arguments = t.tuple(
                 t.Instance -- spawn that is respawning its coin
+            )
+		},
+		candyRespawn = {
+            arguments = t.tuple(
+                t.Instance -- spawn that is respawning its candy
             )
 		},
 		equippedBroadcast = {

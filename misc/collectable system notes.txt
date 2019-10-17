@@ -1,0 +1,3 @@
+I want to abstract coins to a more general collectables system
+
+Modules can register handlers to type collection and spawn new collectables
