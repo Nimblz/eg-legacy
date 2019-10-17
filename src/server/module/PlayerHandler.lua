@@ -18,7 +18,6 @@ PlayerHandler.playerLoaded = Signal.new()
 local function playerAdded(player,store,api)
     print("Loading data for: ", player)
     store:dispatch(Thunks.PLAYER_JOINED(player,api))
-    wait(0.5)
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"baseball2007"))
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"bandit"))
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"baconhair"))
@@ -30,6 +29,8 @@ local function playerAdded(player,store,api)
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"material_pastelyellow"))
     --store:dispatch(Thunks.ASSET_TRYGIVE(player,"10mil"))
     --store:dispatch(Thunks.ASSET_TRYGIVE(player,"pet_partyball"))
+
+    api:initialPlayerState(player,store:getState())
     PlayerHandler.playerLoaded:fire(player)
 end
 
