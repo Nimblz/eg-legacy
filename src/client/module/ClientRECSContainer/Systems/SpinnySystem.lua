@@ -77,7 +77,7 @@ function SpinnySystem:init()
     self.maid.componentRemoving =
     self.core:getComponentRemovingSignal(Components.Spinny):Connect(
         function(instance, spinny)
-            local tileCoords = self.spinnyIndex[spinny]
+            local tileCoords = self.spinnyIndex[instance]
             self:removeFromTile(tileCoords.X,tileCoords.Y, instance)
         end)
 
