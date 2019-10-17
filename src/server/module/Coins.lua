@@ -7,6 +7,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local common = ReplicatedStorage:WaitForChild("common")
 local lib = ReplicatedStorage:WaitForChild("lib")
 
+local Promise = require(lib:WaitForChild("Promise"))
 local PizzaAlpaca = require(lib:WaitForChild("PizzaAlpaca"))
 local Actions = require(common:WaitForChild("Actions"))
 local Selectors = require(common:WaitForChild("Selectors"))
@@ -20,31 +21,31 @@ local coinTypes = {
         respawnTime = 60,
     },
     redcoin = {
-        value = 10,
+        value = 5,
         respawnTime = 120,
     },
     bluecoin = {
-        value = 50,
+        value = 10,
         respawnTime = 180,
     },
     purplecoin = {
-        value = 100,
+        value = 25,
         respawnTime = 240,
     },
     greencoin = {
-        value = 250,
+        value = 50,
         respawnTime = 300,
     },
     silvercoin = {
-        value = 500,
+        value = 100,
         respawnTime = 400,
     },
     crystalcoin = {
-        value = 1000,
+        value = 250,
         respawnTime = 600,
     },
     cosmiccoin = {
-        value = 10000,
+        value = 500,
         respawnTime = 1200,
     },
 }
@@ -55,6 +56,9 @@ local tagCoinTypes = {
     bluecoin_spawn = "bluecoin",
     greencoin_spawn = "greencoin",
     purplecoin_spawn = "purplecoin",
+    silvercoin_spawn = "silvercoin",
+    crystalcoin_spawn = "crystalcoin",
+    cosmiccoin_spawn = "cosmiccoin",
 }
 
 local function getSpawnerType(instance)
@@ -156,11 +160,22 @@ function Coins:init()
 end
 
 function Coins:postInit()
-    self.core:getModule("StoreContainer"):getStore():andThen(function(store)
-        self.store = store
-    end)
-    self.core:getModule("ServerApi"):getApi():andThen(function(api)
+    local apiWrapper = self.core:getModule("ServerApi")
+    local storeContainer = self.core:getModule("StoreContainer")
+    local collectables = self.core:getModule("Collectables")
+
+    local function onAll(api, store)
         self.api = api
+        self.store = store
+    end
+
+    Promise.all({
+        apiWrapper:getApi(),
+        storeContainer:getStore()
+    }):andThen(function(resolved)
+        return Promise.async(function(resolve,reject)
+            onAll(unpack(resolved))
+        end)
     end)
 end
 
