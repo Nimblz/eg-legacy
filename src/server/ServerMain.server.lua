@@ -131,7 +131,6 @@
 -- -- Load modules
 -- Server:load()
 -- print("server started!")
--- _G.server = Server
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -151,3 +150,8 @@ gameCore:registerChildrenAsModules(module)
 gameCore:registerChildrenAsModules(sidedmodule)
 
 gameCore:load()
+_G.core = gameCore
+
+gameCore:getModule("StoreContainer"):getStore():andThen(function(store)
+    _G.store = store
+end)
