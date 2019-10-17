@@ -38,7 +38,6 @@ function ServerApiWrapper:preInit()
 		end,
 
 		buyAsset = function(player,assetId)
-			print("someone tried to buy")
 			self.store:dispatch(Thunks.ASSET_TRYBUY(player, assetId))
 		end,
 
