@@ -15,6 +15,10 @@ return (function(state,action)
         return nil
     end
 
+    if action.type == "!!!CLEAR_SAVE!!!" then -- DANGER ZONE!
+        state = {}
+    end
+
     return {
         inventory = inventory(state.inventory, action),
         equipped = equipped(state.equipped, action),
