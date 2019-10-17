@@ -32,11 +32,19 @@ function StatFrame:render()
         layout = Roact.createElement("UIListLayout",{
             SortOrder = Enum.SortOrder.LayoutOrder,
             VerticalAlignment = Enum.VerticalAlignment.Center,
+            Padding = UDim.new(0,16),
         }),
         coinCounter = Roact.createElement(StatCounter,{
             iconImage = "rbxassetid://1025945542",
-            statName = "Coins: ",
+            statName = "Coins: $",
             value = self.props.coins,
+            layoutOrder = 1,
+        }),
+        candyCounter = Roact.createElement(StatCounter,{
+            iconImage = "rbxassetid://556047601",
+            statName = "Candy: ",
+            value = self.props.candy,
+            layoutOrder = 2,
         }),
     })
 end
@@ -44,7 +52,8 @@ end
 local function mapStateToProps(state,props)
     local stats = Selectors.getStats(state, LocalPlayer)
     return {
-        coins = stats.coins or 0
+        coins = stats.coins or 0,
+        candy = stats.candy or 0,
     }
 end
 
