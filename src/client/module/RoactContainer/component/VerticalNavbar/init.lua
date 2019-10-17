@@ -13,6 +13,7 @@ function VerticalNavbar:init(initialProps)
 end
 
 function VerticalNavbar:render()
+    local catagories = self.props.catagories
 
     local children = {}
 
@@ -40,7 +41,7 @@ function VerticalNavbar:render()
         })
     })
 
-    for idx, catagory in pairs(AssetCatagories.all) do
+    for idx, catagory in pairs(catagories) do
         children["cata_"..catagory.id] = Roact.createElement(VerticalNavbarButton, {
             BackgroundColor3 = self.props.BackgroundColor3,
             LayoutOrder = idx,

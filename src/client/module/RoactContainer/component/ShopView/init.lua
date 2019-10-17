@@ -8,7 +8,7 @@ local component = script.Parent
 
 local Assets = require(common:WaitForChild("Assets"))
 local ShopProducts = require(common:WaitForChild("ShopProducts"))
-local AssetCatagories = require(common:WaitForChild("AssetCatagories"))
+local ShopCatagories = require(common:WaitForChild("ShopCatagories"))
 local Actions = require(common:WaitForChild("Actions"))
 local Selectors = require(common:WaitForChild("Selectors"))
 local Roact = require(lib:WaitForChild("Roact"))
@@ -31,20 +31,20 @@ end
 
 function ShopView:init()
     self:setState({
-        catagory = AssetCatagories.byId["hat"],
+        catagory = ShopCatagories.byId["hat"],
     })
 end
 
 function ShopView:render()
 
-    local cataButtons = AssetCatagories.all
+    local cataButtons = ShopCatagories.all
 
     local catagoryProducts = {}
 
     for _, product in ipairs(ShopProducts.all) do
         local productAsset = Assets.byId[product.id]
         if productAsset then
-            if productAsset.type == self.state.catagory.id then
+            if productAsset.shopCatagory == self.state.catagory.id then
                 table.insert(catagoryProducts, product.id)
             end
         end
@@ -117,7 +117,7 @@ function ShopView:render()
             BackgroundColor3 = Color3.fromRGB(255, 94, 14),
             hoveredColor3 = Color3.fromRGB(255, 122, 5),
             width = 64,
-            navButtons = cataButtons,
+            catagories = cataButtons,
             ZIndex = 2,
             selectedCatagory = self.state.catagory,
             onCatagorySelect = function(catagory)

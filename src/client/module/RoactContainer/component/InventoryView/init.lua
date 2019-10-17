@@ -116,7 +116,7 @@ function InventoryView:render()
         catagoriesNavbar = Roact.createElement(VerticalNavbar, {
             BackgroundColor3 = Color3.fromRGB(0, 145, 255),
             width = 64,
-            navButtons = cataButtons,
+            catagories = cataButtons,
             ZIndex = 2,
             selectedCatagory = self.state.catagory,
             onCatagorySelect = function(catagory)

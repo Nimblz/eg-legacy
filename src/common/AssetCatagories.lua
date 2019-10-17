@@ -34,18 +34,18 @@ local catagories = {
         maxEquipped = 3,
         defaultRenderer = EquipmentRenderers.EffectRenderer
     },
-    {
-        id = "tool",
-        image = "rbxassetid://3185662627",
-        name = "Tool",
-        maxEquipped = 3,
-    },
-    {
-        id = "ability",
-        image = "rbxassetid://3185662029",
-        name = "Ability",
-        maxEquipped = 99,
-    },
+    -- {
+    --     id = "tool",
+    --     image = "rbxassetid://3185662627",
+    --     name = "Tool",
+    --     maxEquipped = 3,
+    -- },
+    -- {
+    --     id = "ability",
+    --     image = "rbxassetid://3185662029",
+    --     name = "Ability",
+    --     maxEquipped = 99,
+    -- },
     {
         id = "pet",
         image = "rbxassetid://3210207976",
