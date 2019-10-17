@@ -35,7 +35,6 @@ function EquipmentRenderer:makeRenderer(player,assetId,equipmentBehavior)
                 end
             end
         end
-        print("Rendering "..assetId)
     end
 end
 
