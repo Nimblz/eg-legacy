@@ -26,12 +26,13 @@ function LoginBonus:onStore(store)
     local playerHandler = self.core:getModule("PlayerHandler")
 
     playerHandler.playerLoaded:connect(function(player)
+        wait(5)
         local state = store:getState()
         local shouldAward = shouldAwardBonus(state,player)
         if shouldAward then
             store:dispatch(Actions.COIN_ADD(player,DAILY_LOGIN_BONUS))
-            print(("%s logged in for the first time today!"):format(tostring(player)))
-            -- TODO: thank the player for joining with a notification
+            store:dispatch(Actions.CANDY_ADD(player,250))
+            -- TODO: thank the player for joining with a login award modal
         end
 
         store:dispatch(Actions.LASTLOGIN_SET(player,os.time()))
