@@ -58,6 +58,7 @@ end
 
 function ClientApiWrapper:postInit()
     self.api:connect()
+    self.api:ready()
 end
 
 

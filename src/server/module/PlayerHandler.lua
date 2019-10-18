@@ -17,6 +17,7 @@ PlayerHandler.playerLoaded = Signal.new()
 
 local function playerAdded(player,store,api)
     print("Loading data for: ", player)
+    wait(2)
     store:dispatch(Thunks.PLAYER_JOINED(player,api))
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"baseball2007"))
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"bandit"))
@@ -29,27 +30,34 @@ local function playerAdded(player,store,api)
     store:dispatch(Thunks.ASSET_TRYGIVE(player,"material_pastelyellow"))
     --store:dispatch(Thunks.ASSET_TRYGIVE(player,"10mil"))
     --store:dispatch(Thunks.ASSET_TRYGIVE(player,"pet_partyball"))
-
     api:initialPlayerState(player,store:getState())
     PlayerHandler.playerLoaded:fire(player)
+    print("Loaded!")
 end
 
 local function playerLeaving(player,store)
 	store:dispatch(Thunks.PLAYER_LEAVING(player))
 end
 
-function PlayerHandler:onStoreAndApi(store,api)
-    Players.PlayerAdded:Connect(function(player)
-        playerAdded(player,store,api)
-    end)
+function PlayerHandler:playerReady(player)
+    local apiWrapper = self.core:getModule("ServerApi")
+    local storeContainer = self.core:getModule("StoreContainer")
 
+    Promise.all({
+        storeContainer:getStore(),
+        apiWrapper:getApi()
+    }):andThen(function(resolved)
+        return Promise.async(function(resolve,reject)
+            local store, api = unpack(resolved)
+            playerAdded(player, store, api)
+        end)
+    end)
+end
+
+function PlayerHandler:onStoreAndApi(store,api)
     Players.PlayerRemoving:Connect(function(player)
         playerLeaving(player,store)
     end)
-
-    for _,player in pairs(Players:GetPlayers()) do
-        playerAdded(player,store,api)
-    end
 end
 
 function PlayerHandler:postInit()

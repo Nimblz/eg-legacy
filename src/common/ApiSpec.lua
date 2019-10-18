@@ -24,6 +24,11 @@ local t = require(lib:WaitForChild("t"))
 
 return {
 	fromClient = {
+		ready = {
+			arguments = t.tuple(
+				t.none
+			),
+		},
 		requestCoinCollect = {
             arguments = t.tuple(
                 t.Instance -- spawn the coin you are collecting is tied to

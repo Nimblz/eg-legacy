@@ -28,6 +28,10 @@ end
 
 function ServerApiWrapper:preInit()
 	self.api = ServerApi.create({
+		ready = function(player)
+			self.core:getModule("PlayerHandler"):playerReady(player)
+		end,
+
 		requestCoinCollect = function(player,coinSpawn)
 			self.core:getModule("Coins"):requestCoinCollect(player,coinSpawn)
 		end,
