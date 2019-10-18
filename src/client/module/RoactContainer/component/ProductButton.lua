@@ -31,9 +31,11 @@ function ProductButton:render()
     local children = {}
     local checkmark
     local asset = self.props.asset
+    local currencyCharacter = "$"
     if not asset then error("Asset not supplied to AssetButton element!") end
 
     local product = ShopProducts.byId[asset.id]
+    if product.currency == "candy" then currencyCharacter = "🍬" end
     local assetModel = getAssetModel(asset.id)
     if not assetModel then warn(("Asset [%s] has no model."):format(self.props.asset.id)) end
 
@@ -136,7 +138,7 @@ function ProductButton:render()
         modifiers = modifiersFrame,
         price = Roact.createElement(ShadowedTextLabel, {
             Font = Enum.Font.GothamBlack,
-            Text = "$"..beautifyNumber(product.price),
+            Text = currencyCharacter..beautifyNumber(product.price),
             TextSize = 24,
             TextStrokeTransparency = 0,
             BackgroundTransparency = 1,
