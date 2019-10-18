@@ -60,7 +60,7 @@ function Candy:requestCollect(player,spawnPart)
             return -- too far away :O
         end
 
-        self.store:dispatch(Actions.CANDY_ADD(player, 1))
+        self.store:dispatch(Actions.CANDY_ADD(player, math.random(1,5)))
 
         self.last5Secs[player] = (self.last5Secs[player] or 0) + 1
         if self.last5Secs[player] > 30 then
@@ -72,7 +72,6 @@ function Candy:requestCollect(player,spawnPart)
 end
 
 function Candy:init()
-
     for _, instance in pairs(CollectionService:GetTagged("candy_spawn")) do
         self.spawns[instance] = instance
     end
