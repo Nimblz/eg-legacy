@@ -10,7 +10,6 @@ local PLAYER_ADD = Actions.PLAYER_ADD
 
 return function(player)
     return function(store)
-        local playerSaveTable
         local defaultSave = {
             portals = {
                 AbyssPortal = false
@@ -24,6 +23,7 @@ return function(player)
                 coins = 0,
             }
         }
+        local playerSaveTable = defaultSave
         if game.PlaceId ~= 0 then
             local DataStore2 = require(lib:WaitForChild("DataStore2"))
 
@@ -31,7 +31,9 @@ return function(player)
             local saveDataStore = DataStore2("saveData",player)
             local dataStore2SaveTable = saveDataStore:Get(nil)
 
-            if not dataStore2SaveTable then
+            print(dataStore2SaveTable)
+
+            if dataStore2SaveTable == nil then
                 print("No loaded, goin with default!")
                 playerSaveTable = defaultSave
             else
