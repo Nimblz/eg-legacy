@@ -31,7 +31,7 @@ end
 
 function ShopView:init()
     self:setState({
-        catagory = ShopCatagories.byId["hat"],
+        catagory = ShopCatagories.byId["halloween"],
     })
 end
 

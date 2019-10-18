@@ -39,11 +39,21 @@ _G.coinGrabbing = false
 -- give everyone in server coins
 
 local Players = game:GetService("Players")
-local amount = 2500000
+local amount = 1000
 local server = _G.server
 
 for _, player in pairs(Players:GetPlayers()) do
     server.store:dispatch({type = "COIN_ADD", coins = amount, player = player, replicateTo = player})
+end
+
+-- give everyone in server candy
+
+local Players = game:GetService("Players")
+local amount = 1000
+local store = _G.store
+
+for _, player in pairs(Players:GetPlayers()) do
+    store:dispatch({type = "CANDY_ADD", candy = amount, player = player, replicateTo = player})
 end
 
 -- give everyone in server an asset

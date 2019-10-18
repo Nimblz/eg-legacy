@@ -88,8 +88,10 @@ end
 function Coins:bindCoinRespawn(player,coinPart, coinType)
     spawn(function()
         wait(coinType.respawnTime or 0)
-        self.coinCollections[player][coinPart] = false
-        self.api:coinRespawn(player,coinPart)
+        if self.coinCollections[player] then
+            self.coinCollections[player][coinPart] = false
+            self.api:coinRespawn(player,coinPart)
+        end
     end)
 end
 

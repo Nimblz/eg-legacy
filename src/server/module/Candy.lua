@@ -15,7 +15,7 @@ local Signal = require(lib:WaitForChild("Signal"))
 
 local Candy = PizzaAlpaca.GameModule:extend("Candy")
 
-local RESPAWN_TIME = 0
+local RESPAWN_TIME = 600
 
 function Candy:create()
     self.collections = {}
@@ -34,8 +34,10 @@ end
 function Candy:bindRespawn(player,spawnPart)
     spawn(function()
         wait(RESPAWN_TIME)
-        self.collections[player][spawnPart] = false
-        self.api:candyRespawn(player,spawnPart)
+        if self.collections[player] then
+            self.collections[player][spawnPart] = false
+            self.api:candyRespawn(player,spawnPart)
+        end
     end)
 end
 

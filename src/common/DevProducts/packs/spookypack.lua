@@ -4,6 +4,8 @@ local common = ReplicatedStorage:WaitForChild("common")
 
 local Thunks = require(common:WaitForChild("Thunks"))
 
+local Assets = require(common:WaitForChild("Assets"))
+
 return {
     id = "itempack_spooky",
     name = "Spooky Item Pack",
@@ -19,6 +21,13 @@ return {
 
     onProductPurchase = (function(player, server)
         server:getModule("StoreContainer"):getStore():andThen(function(store)
+            local allProducts = Assets.all
+
+            for _,product in pairs(allProducts) do
+                if product.shopCatagory == "halloween" then
+                    store:dispatch(Thunks.ASSET_TRYGIVE(player, product.id))
+                end
+            end
         end)
         return true -- Successful
     end)

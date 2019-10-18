@@ -15,7 +15,7 @@ local hitIsYou = require(util:WaitForChild("hitIsYou"))
 
 local CandySystem = RECS.System:extend("CandySystem")
 
-local COIN_SOUND_ID = 1453122289
+local COLLECT_SOUND_ID = 13075805
 
 function CandySystem:touched(coin, instance, hit)
     if hitIsYou(hit) then
@@ -25,8 +25,8 @@ function CandySystem:touched(coin, instance, hit)
         local Sound = self:getClientModule("Sound")
 
         if Sound then
-            local pitch = 1 + (math.random()*0.2 - 0.1)
-            Sound:playSound(COIN_SOUND_ID,0.5,pitch,coin.spawnPart)
+            local pitch = 1.1 + (math.random()*0.2)
+            Sound:playSound(COLLECT_SOUND_ID,0.5,pitch,coin.spawnPart)
         end
     end
 end
